@@ -9,6 +9,22 @@
       {
         "schema_id": "datatype.string",
         "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "i_tool_call_arguments",
+          "type": "datatype.string",
+          "description": "JSON form of the tool call arguments which will be passed to tool.",
+          "is_required": false,
+          "display_on_wizard": false,
+          "is_invisible": false,
+          "variable_string_format": "json"
+        },
+        "unique_name": "variable_workflow_02RYI3Z1BKG6R6tpC3EIzzw4xoP1MEuXJV8",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
           "value": "Short name of tool. NO SPACES",
           "scope": "input",
           "name": "i_tool_call_name",
@@ -25,16 +41,16 @@
         "schema_id": "datatype.string",
         "properties": {
           "value": "",
-          "scope": "input",
-          "name": "i_tool_call_arguments",
+          "scope": "output",
+          "name": "o_message_content",
           "type": "datatype.string",
-          "description": "JSON form of the tool call arguments which will be passed to tool.",
+          "description": "The output from the tool",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
-          "variable_string_format": "json"
+          "variable_string_format": "text"
         },
-        "unique_name": "variable_workflow_02RYI3Z1BKG6R6tpC3EIzzw4xoP1MEuXJV8",
+        "unique_name": "variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481",
         "object_type": "variable_workflow"
       }
     ],
@@ -106,6 +122,26 @@
                   "skip_execution": false
                 },
                 "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_02RZDZOTJPIMI0coCkPhSOY1Yr4QbAw8FpJ",
+                "name": "Set Variables",
+                "title": "Set o_message_content",
+                "type": "core.set_multiple_variables",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Set Variables",
+                  "display_name": "Set o_message_content",
+                  "skip_execution": false,
+                  "variables_to_update": [
+                    {
+                      "variable_to_update": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.output.variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481$",
+                      "variable_value_new": "$activity.02RYV1G1ZMZ3U57aMY8bynxpCynJwduo5Ex.output.variable_workflow_02RYLI5QOI12W1D8wfvv8GVV0RgSyekzemV$"
+                    }
+                  ]
+                },
+                "object_type": "definition_activity"
               }
             ]
           },
@@ -128,6 +164,38 @@
             "object_type": "definition_activity",
             "actions": [
               {
+                "unique_name": "definition_activity_02RZFRTBAW0JY4uFDg6gcQ79rXAb8iU3hDq",
+                "name": "JSONPath Query",
+                "title": "JSONPath Query",
+                "type": "corejava.jsonpathquery",
+                "base_type": "activity",
+                "properties": {
+                  "action_timeout": 180,
+                  "continue_on_failure": false,
+                  "description": "JSONPath Query to get value in JSON",
+                  "display_name": "JSONPath Query",
+                  "input_json": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.input.variable_workflow_02RYI3Z1BKG6R6tpC3EIzzw4xoP1MEuXJV8$",
+                  "jsonpath_queries": [
+                    {
+                      "jsonpath_query": "$.i_device_name",
+                      "jsonpath_query_name": "device_name",
+                      "jsonpath_query_type": "string",
+                      "set_default_value": false,
+                      "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    },
+                    {
+                      "jsonpath_query": "$.i_command",
+                      "jsonpath_query_name": "command",
+                      "jsonpath_query_type": "string",
+                      "set_default_value": false,
+                      "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                  ],
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              },
+              {
                 "unique_name": "definition_activity_02RYGC11691431MbmkAwxnnk7dpcIoOn0ck",
                 "name": "Tool - MCP RADKIT Exec Command",
                 "title": "Tool - MCP RADKIT Exec Command",
@@ -138,8 +206,8 @@
                   "description": "Executes a command to a device via RADKIT MCP Server",
                   "display_name": "Tool - MCP RADKIT Exec Command",
                   "input": {
-                    "variable_workflow_02RHRBIIEXFO10kLwJyrI5lVSVo0KAWe1Nh": "daa-csr1",
-                    "variable_workflow_02RHRBTX0EL1N7DTWBvnwll2bBc1v5TaI1H": "test"
+                    "variable_workflow_02RHRBIIEXFO10kLwJyrI5lVSVo0KAWe1Nh": "$activity.definition_activity_02RZFRTBAW0JY4uFDg6gcQ79rXAb8iU3hDq.output.jsonpath_queries.device_name$",
+                    "variable_workflow_02RHRBTX0EL1N7DTWBvnwll2bBc1v5TaI1H": "$activity.definition_activity_02RZFRTBAW0JY4uFDg6gcQ79rXAb8iU3hDq.output.jsonpath_queries.command$"
                   },
                   "runtime_user": {
                     "target_default": true
@@ -149,7 +217,27 @@
                     "no_target": true
                   },
                   "workflow_id": "definition_workflow_02RHRA78FVXF647oUKIzjqbWCnK075YJPXL",
-                  "workflow_name": "Tool - MCP RADKIT Exec Command"
+                  "workflow_name": "Tool - RADKIT Exec Command"
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_02RZDYNCMLHPK7n1nnVKqag8dEnhwtfgVHq",
+                "name": "Set Variables",
+                "title": "Set o_message_content",
+                "type": "core.set_multiple_variables",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Set Variables",
+                  "display_name": "Set o_message_content",
+                  "skip_execution": false,
+                  "variables_to_update": [
+                    {
+                      "variable_to_update": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.output.variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481$",
+                      "variable_value_new": "$activity.definition_activity_02RYGC11691431MbmkAwxnnk7dpcIoOn0ck.output.variable_workflow_02RHRDTAU3OGV3GBVn8awvxy1HCbdyZWIMV$"
+                    }
+                  ]
                 },
                 "object_type": "definition_activity"
               }
@@ -229,6 +317,26 @@
                   },
                   "workflow_id": "definition_workflow_02RYL955VDHXF2Oyw72YTZga9YbuHAJr2NJ",
                   "workflow_name": "Tool - Read Scratchpad"
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_02RZDZC5MA7YU7JiR3dt9OEnqII25zA7VzC",
+                "name": "Set Variables",
+                "title": "Set o_message_content",
+                "type": "core.set_multiple_variables",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Set Variables",
+                  "display_name": "Set o_message_content",
+                  "skip_execution": false,
+                  "variables_to_update": [
+                    {
+                      "variable_to_update": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.output.variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481$",
+                      "variable_value_new": "$activity.definition_activity_02RYV1G21XV7C6FhKdy1k5JD1Wrw5w42fLO.output.variable_workflow_02RYLI5QOI12W1D8wfvv8GVV0RgSyekzemV$"
+                    }
+                  ]
                 },
                 "object_type": "definition_activity"
               }
