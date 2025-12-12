@@ -206,6 +206,31 @@
                   "skip_execution": false
                 },
                 "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_02RYV1G21XV7C6FhKdy1k5JD1Wrw5w42fLO",
+                "name": "Tool - Read Scratchpad",
+                "title": "Tool - Read Scratchpad",
+                "type": "workflow.sub_workflow",
+                "base_type": "subworkflow",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Reads data from scratchpad",
+                  "display_name": "Tool - Read Scratchpad",
+                  "input": {
+                    "variable_workflow_02RYL9GMZUWWX5D23jxy2DadHOYhVSiJK2o": "instance id"
+                  },
+                  "runtime_user": {
+                    "target_default": true
+                  },
+                  "skip_execution": false,
+                  "target": {
+                    "no_target": true
+                  },
+                  "workflow_id": "definition_workflow_02RYL955VDHXF2Oyw72YTZga9YbuHAJr2NJ",
+                  "workflow_name": "Tool - Read Scratchpad"
+                },
+                "object_type": "definition_activity"
               }
             ]
           }
@@ -217,6 +242,7 @@
     ]
   },
   "dependent_workflows": [
-    "definition_workflow_02RHRA78FVXF647oUKIzjqbWCnK075YJPXL"
+    "definition_workflow_02RHRA78FVXF647oUKIzjqbWCnK075YJPXL",
+    "definition_workflow_02RYL955VDHXF2Oyw72YTZga9YbuHAJr2NJ"
   ]
 }
