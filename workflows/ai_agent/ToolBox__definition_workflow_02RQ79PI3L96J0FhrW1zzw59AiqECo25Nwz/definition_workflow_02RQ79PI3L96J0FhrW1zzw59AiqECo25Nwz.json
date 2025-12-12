@@ -10,16 +10,16 @@
         "schema_id": "datatype.string",
         "properties": {
           "value": "",
-          "scope": "input",
-          "name": "i_tool_call_arguments",
+          "scope": "output",
+          "name": "o_message_content",
           "type": "datatype.string",
-          "description": "JSON form of the tool call arguments which will be passed to tool.",
+          "description": "The output from the tool",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
-          "variable_string_format": "json"
+          "variable_string_format": "text"
         },
-        "unique_name": "variable_workflow_02RYI3Z1BKG6R6tpC3EIzzw4xoP1MEuXJV8",
+        "unique_name": "variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481",
         "object_type": "variable_workflow"
       },
       {
@@ -41,16 +41,16 @@
         "schema_id": "datatype.string",
         "properties": {
           "value": "",
-          "scope": "output",
-          "name": "o_message_content",
+          "scope": "input",
+          "name": "i_tool_call_arguments",
           "type": "datatype.string",
-          "description": "The output from the tool",
+          "description": "JSON form of the tool call arguments which will be passed to tool.",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
-          "variable_string_format": "text"
+          "variable_string_format": "json"
         },
-        "unique_name": "variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481",
+        "unique_name": "variable_workflow_02RYI3Z1BKG6R6tpC3EIzzw4xoP1MEuXJV8",
         "object_type": "variable_workflow"
       }
     ],
@@ -290,7 +290,22 @@
                   "description": "JSONPath Query to get value in JSON",
                   "display_name": "JSONPath Query",
                   "input_json": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.input.variable_workflow_02RYI3Z1BKG6R6tpC3EIzzw4xoP1MEuXJV8$",
-                  "jsonpath_queries": [],
+                  "jsonpath_queries": [
+                    {
+                      "jsonpath_query": "$.i_type",
+                      "jsonpath_query_name": "i_type",
+                      "jsonpath_query_type": "string",
+                      "set_default_value": false,
+                      "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    },
+                    {
+                      "jsonpath_query": "$.i_instance_id",
+                      "jsonpath_query_name": "i_instance_id",
+                      "jsonpath_query_type": "string",
+                      "set_default_value": false,
+                      "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                  ],
                   "skip_execution": false
                 },
                 "object_type": "definition_activity"
@@ -306,7 +321,8 @@
                   "description": "Reads data from scratchpad",
                   "display_name": "Tool - Read Scratchpad",
                   "input": {
-                    "variable_workflow_02RYL9GMZUWWX5D23jxy2DadHOYhVSiJK2o": "instance id"
+                    "variable_workflow_02RYL9GMZUWWX5D23jxy2DadHOYhVSiJK2o": "$activity.definition_activity_02RYI6LKKDPEJ5Wir5GF59ZlhIlOWGDEMtN.output.jsonpath_queries.i_instance_id$",
+                    "variable_workflow_02RZHJARDBWCJ1hi0OlBIAUXcIv3oUsdhLa": "$activity.definition_activity_02RYI6LKKDPEJ5Wir5GF59ZlhIlOWGDEMtN.output.jsonpath_queries.i_type$"
                   },
                   "runtime_user": {
                     "target_default": true
@@ -341,6 +357,112 @@
                 "object_type": "definition_activity"
               }
             ]
+          },
+          {
+            "unique_name": "definition_activity_02RZI1ELBPFYA1qSmuxABHiYX9eR5LHduy7",
+            "name": "Condition Branch",
+            "title": "Write Scratchad",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.input.variable_workflow_02RYI32YO5RFW4zpxEwAOu6qnjCvGHTvfD0$",
+                "operator": "eq",
+                "right_operand": "scratchpad_write"
+              },
+              "continue_on_failure": false,
+              "display_name": "Write Scratchad",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_02RZI1ELDTG9K6cmg7wnlHbEASHSb2Us7HV",
+                "name": "JSONPath Query",
+                "title": "JSONPath Query",
+                "type": "corejava.jsonpathquery",
+                "base_type": "activity",
+                "properties": {
+                  "action_timeout": 180,
+                  "continue_on_failure": false,
+                  "description": "JSONPath Query to get value in JSON",
+                  "display_name": "JSONPath Query",
+                  "input_json": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.input.variable_workflow_02RYI3Z1BKG6R6tpC3EIzzw4xoP1MEuXJV8$",
+                  "jsonpath_queries": [
+                    {
+                      "jsonpath_query": "$.i_type",
+                      "jsonpath_query_name": "i_type",
+                      "jsonpath_query_type": "string",
+                      "set_default_value": false,
+                      "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    },
+                    {
+                      "jsonpath_query": "$.i_instance_id",
+                      "jsonpath_query_name": "i_instance_id",
+                      "jsonpath_query_type": "string",
+                      "set_default_value": false,
+                      "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    },
+                    {
+                      "jsonpath_query": "$.i_content",
+                      "jsonpath_query_name": "i_content",
+                      "jsonpath_query_type": "string",
+                      "set_default_value": false,
+                      "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                  ],
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_02RZI1P70EC7E0yp6C3XLzMdYPm4FJgYZAK",
+                "name": "Tool - Write Scratchpad",
+                "title": "Tool - Write Scratchpad",
+                "type": "workflow.sub_workflow",
+                "base_type": "subworkflow",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Writes or updates data to scratchpad",
+                  "display_name": "Tool - Write Scratchpad",
+                  "input": {
+                    "variable_workflow_02RZHKJCYCV5610mfWqkyBvaLHFp0vMhH20": "$activity.definition_activity_02RZI1ELDTG9K6cmg7wnlHbEASHSb2Us7HV.output.jsonpath_queries.i_instance_id$",
+                    "variable_workflow_02RZHKJCYD43C7Vli0otrDw5lYV53pJgw2z": "$activity.definition_activity_02RZI1ELDTG9K6cmg7wnlHbEASHSb2Us7HV.output.jsonpath_queries.i_type$",
+                    "variable_workflow_02RZHSE19443G6Gfsq1PnPB7ThBdudg7zGi": "$activity.definition_activity_02RZI1ELDTG9K6cmg7wnlHbEASHSb2Us7HV.output.jsonpath_queries.i_content$"
+                  },
+                  "runtime_user": {
+                    "target_default": true
+                  },
+                  "skip_execution": false,
+                  "target": {
+                    "no_target": true
+                  },
+                  "workflow_id": "definition_workflow_02RZHKJCC4J3T0kZorv6n3y1Xeb0P3Vw51c",
+                  "workflow_name": "Tool - Write Scratchpad"
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_02RZI1ELL4ZAO3QnZZO5SI2GfYP5Eb2SEy4",
+                "name": "Set Variables",
+                "title": "Set o_message_content",
+                "type": "core.set_multiple_variables",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Set Variables",
+                  "display_name": "Set o_message_content",
+                  "skip_execution": false,
+                  "variables_to_update": [
+                    {
+                      "variable_to_update": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.output.variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481$",
+                      "variable_value_new": "$activity.definition_activity_02RZI1P70EC7E0yp6C3XLzMdYPm4FJgYZAK.output.variable_workflow_02RZHKJCYCJ7G1E3rwkLmSbCiT6iEpGYwn0$"
+                    }
+                  ]
+                },
+                "object_type": "definition_activity"
+              }
+            ]
           }
         ]
       }
@@ -351,6 +473,7 @@
   },
   "dependent_workflows": [
     "definition_workflow_02RHRA78FVXF647oUKIzjqbWCnK075YJPXL",
-    "definition_workflow_02RYL955VDHXF2Oyw72YTZga9YbuHAJr2NJ"
+    "definition_workflow_02RYL955VDHXF2Oyw72YTZga9YbuHAJr2NJ",
+    "definition_workflow_02RZHKJCC4J3T0kZorv6n3y1Xeb0P3Vw51c"
   ]
 }
