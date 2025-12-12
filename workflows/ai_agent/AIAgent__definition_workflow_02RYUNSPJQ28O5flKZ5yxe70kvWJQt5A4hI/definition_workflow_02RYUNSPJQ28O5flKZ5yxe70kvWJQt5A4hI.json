@@ -27,9 +27,9 @@
         "properties": {
           "value": "",
           "scope": "local",
-          "name": "l_run_Id",
+          "name": "l_run_id",
           "type": "datatype.string",
-          "description": "Global ai agent run id , equal to instance id",
+          "description": "Global AI agent run ID, equal to workflow instance ID",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
@@ -61,7 +61,7 @@
           "scope": "output",
           "name": "o_final_answer",
           "type": "datatype.string",
-          "description": "The final answer from the LLM after working through the incident with its available tools",
+          "description": "The final answer from the LLM after completing the assigned task using available tools",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
@@ -109,7 +109,7 @@
           "scope": "local",
           "name": "l_loop_end",
           "type": "datatype.string",
-          "description": "Determines if the LLM loop should be ended",
+          "description": "Flag to determine if the LLM interaction loop should terminate",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
@@ -125,7 +125,7 @@
           "scope": "output",
           "name": "o_messages",
           "type": "datatype.string",
-          "description": "A copy of the l_messages variable exposed to the outside",
+          "description": "Complete message history (chat history) exported for external use",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
@@ -157,7 +157,7 @@
           "scope": "local",
           "name": "l_iteration_number",
           "type": "datatype.integer",
-          "description": "Holds the current iteration number with LLM",
+          "description": "Current iteration count in the LLM interaction loop",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
@@ -189,7 +189,7 @@
           "scope": "local",
           "name": "l_llm_user_prompt_prefix",
           "type": "datatype.string",
-          "description": "Defines the text which will be prefixed to the incident details sent to the LLM",
+          "description": "Text prefix prepended to the task description in the user prompt",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
@@ -221,7 +221,7 @@
           "scope": "local",
           "name": "l_messages",
           "type": "datatype.string",
-          "description": "The messages array (Chat History)",
+          "description": "Message array containing the complete chat history",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
@@ -283,12 +283,12 @@
       {
         "unique_name": "definition_activity_02RYUNT4NPWQV5pOuMxfIgkBk3gCltIIYXf",
         "name": "Set Variables",
-        "title": "Set l_run_Id  and l_messages variable",
+        "title": "Initialize Run ID and Messages Array",
         "type": "core.set_multiple_variables",
         "base_type": "activity",
         "properties": {
           "continue_on_failure": false,
-          "display_name": "Set l_run_Id  and l_messages variable",
+          "display_name": "Initialize Run ID and Messages Array",
           "skip_execution": false,
           "variables_to_update": [
             {
@@ -306,13 +306,13 @@
       {
         "unique_name": "definition_activity_02RYUNTCV85427Q6igfCmT9GoE3S02tYaqW",
         "name": "While Loop",
-        "title": "While Loop",
+        "title": "Agent Iteration Loop",
         "type": "logic.while",
         "base_type": "activity",
         "properties": {
           "continue_on_failure": false,
-          "description": "Loops calls to the LLM until either a maximum number of calls is reached or the LLM is completed its work",
-          "display_name": "While Loop",
+          "description": "Iterates LLM calls until maximum iterations reached or agent completes the task",
+          "display_name": "Agent Iteration Loop",
           "skip_execution": false
         },
         "object_type": "definition_activity",
@@ -320,7 +320,7 @@
           {
             "unique_name": "definition_activity_02RYUNTF6L9UU363IOtT4i3ZqBjA5pkYNv5",
             "name": "Condition Branch",
-            "title": "If l_loop_end == False OR l_iteration_num = l_maximum_iterations",
+            "title": "Continue Loop Condition",
             "type": "logic.condition_block",
             "base_type": "activity",
             "properties": {
@@ -338,7 +338,7 @@
                 }
               },
               "continue_on_failure": false,
-              "display_name": "If l_loop_end == False OR l_iteration_num = l_maximum_iterations",
+              "display_name": "Continue Loop Condition",
               "skip_execution": false
             },
             "object_type": "definition_activity",
@@ -445,7 +445,7 @@
                   {
                     "unique_name": "definition_activity_02RYUNTYN0KCG37bipCjEuWrh7bRpwe7Ung",
                     "name": "Condition Branch",
-                    "title": "Response Calls Tool",
+                    "title": "LLM Requested Tool Execution",
                     "type": "logic.condition_block",
                     "base_type": "activity",
                     "properties": {
@@ -455,7 +455,7 @@
                         "right_operand": "[]"
                       },
                       "continue_on_failure": false,
-                      "display_name": "Response Calls Tool",
+                      "display_name": "LLM Requested Tool Execution",
                       "skip_execution": false
                     },
                     "object_type": "definition_activity",
@@ -495,12 +495,12 @@
                       {
                         "unique_name": "definition_activity_02RYUNU55BW443vDPwoKo0eFyforbJD1bXx",
                         "name": "Condition Block",
-                        "title": "Condition Block",
+                        "title": "Check for Message Content",
                         "type": "logic.if_else",
                         "base_type": "activity",
                         "properties": {
                           "continue_on_failure": false,
-                          "display_name": "Condition Block",
+                          "display_name": "Check for Message Content",
                           "skip_execution": false
                         },
                         "object_type": "definition_activity",
@@ -508,7 +508,7 @@
                           {
                             "unique_name": "definition_activity_02RYUNU7C1012599DYiXx1sua4ke9xkuFsu",
                             "name": "Condition Branch",
-                            "title": "There is Message Content",
+                            "title": "Message Content Present",
                             "type": "logic.condition_block",
                             "base_type": "activity",
                             "properties": {
@@ -518,8 +518,8 @@
                                 "right_operand": "....*"
                               },
                               "continue_on_failure": false,
-                              "description": "Handles the case where the LLM puts initial plan as message instead of using XDR update tool",
-                              "display_name": "There is Message Content",
+                              "description": "Handles the case where the LLM includes message content along with tool calls",
+                              "display_name": "Message Content Present",
                               "skip_execution": false
                             },
                             "object_type": "definition_activity"
@@ -574,13 +574,13 @@
                           {
                             "unique_name": "definition_activity_02RYUNUJ75KEP2uzo5gGDbpWv8kNkPTDAyW",
                             "name": "Group",
-                            "title": "Run Tool Workflow",
+                            "title": "Execute Tool Workflow",
                             "type": "logic.group",
                             "base_type": "activity",
                             "properties": {
                               "continue_on_failure": false,
                               "description": "Validate that there is valid input params and function name",
-                              "display_name": "Run Tool Workflow",
+                              "display_name": "Execute Tool Workflow",
                               "skip_execution": false
                             },
                             "object_type": "definition_activity",
@@ -621,12 +621,12 @@
                               {
                                 "unique_name": "definition_activity_02RYUNUSIO4DX3KKLTmQSa6nA1lqZ9vFBfI",
                                 "name": "Condition Block",
-                                "title": "Validate Tool Call And Execute",
+                                "title": "Validate and Execute Tool",
                                 "type": "logic.if_else",
                                 "base_type": "activity",
                                 "properties": {
                                   "continue_on_failure": false,
-                                  "display_name": "Validate Tool Call And Execute",
+                                  "display_name": "Validate and Execute Tool",
                                   "skip_execution": false
                                 },
                                 "object_type": "definition_activity",
@@ -757,13 +757,13 @@
                                       {
                                         "unique_name": "definition_activity_02RYUNV7KOO3A1iIZwTshYMn8QQwGup4EK0",
                                         "name": "Condition Block",
-                                        "title": "Handle Tool Workflow Start Failure",
+                                        "title": "Handle Tool Execution Failure",
                                         "type": "logic.if_else",
                                         "base_type": "activity",
                                         "properties": {
                                           "continue_on_failure": false,
-                                          "description": "Handles if the tool workflow was in failed state",
-                                          "display_name": "Handle Tool Workflow Start Failure",
+                                          "description": "Handles failures during tool execution",
+                                          "display_name": "Handle Tool Execution Failure",
                                           "skip_execution": false
                                         },
                                         "object_type": "definition_activity",
@@ -771,7 +771,7 @@
                                           {
                                             "unique_name": "definition_activity_02RYUNV8RPZA27CIOFSiKoXVec2c8zRXDZh",
                                             "name": "Condition Branch",
-                                            "title": "If tool workflow failed",
+                                            "title": "Tool Execution Failed",
                                             "type": "logic.condition_block",
                                             "base_type": "activity",
                                             "properties": {
@@ -781,7 +781,7 @@
                                                 "right_operand": false
                                               },
                                               "continue_on_failure": false,
-                                              "display_name": "If tool workflow failed",
+                                              "display_name": "Tool Execution Failed",
                                               "skip_execution": false
                                             },
                                             "object_type": "definition_activity",
@@ -906,71 +906,13 @@
                             ]
                           }
                         ]
-                      },
-                      {
-                        "unique_name": "definition_activity_02RYUNVH0909T4Y5EF8cgocE0LJvwCrKKxP",
-                        "name": "Condition Block",
-                        "title": "If INC Update is Final Response",
-                        "type": "logic.if_else",
-                        "base_type": "activity",
-                        "properties": {
-                          "continue_on_failure": false,
-                          "display_name": "If INC Update is Final Response",
-                          "skip_execution": false
-                        },
-                        "object_type": "definition_activity",
-                        "blocks": [
-                          {
-                            "unique_name": "definition_activity_02RYUNVI8G8LW0lV4gwl00dZkEMyggmZcZx",
-                            "name": "Condition Branch",
-                            "title": "Condition Branch",
-                            "type": "logic.condition_block",
-                            "base_type": "activity",
-                            "properties": {
-                              "condition": {
-                                "left_operand": "$activity.definition_activity_02RZE9OW0BST15d5UxQWfLd5c72tFRS82hK.output.variable_workflow_02RYK4PDJZEN92nyzA6zFXDpqFAWnkh80ba$",
-                                "operator": "mregex",
-                                "right_operand": "{{FINAL_ANSWER}}"
-                              },
-                              "continue_on_failure": false,
-                              "display_name": "Condition Branch",
-                              "skip_execution": false
-                            },
-                            "object_type": "definition_activity",
-                            "actions": [
-                              {
-                                "unique_name": "definition_activity_02RYUNVJT95E45xlauUo39tM4UZlRKLdiE2",
-                                "name": "Set Variables",
-                                "title": "Set Variables",
-                                "type": "core.set_multiple_variables",
-                                "base_type": "activity",
-                                "properties": {
-                                  "continue_on_failure": false,
-                                  "display_name": "Set Variables",
-                                  "skip_execution": false,
-                                  "variables_to_update": [
-                                    {
-                                      "variable_to_update": "$workflow.definition_workflow_02RYUNSPJQ28O5flKZ5yxe70kvWJQt5A4hI.local.variable_workflow_02RYUNSPTP3T41x793oVoWFbhaNYn1E7CEE$",
-                                      "variable_value_new": "true"
-                                    },
-                                    {
-                                      "variable_to_update": "$workflow.definition_workflow_02RYUNSPJQ28O5flKZ5yxe70kvWJQt5A4hI.output.variable_workflow_02RYUNSPTOOH316R9o8Os3ImsRskHtaZ8s2$",
-                                      "variable_value_new": "$activity.definition_activity_02RZE9OW0BST15d5UxQWfLd5c72tFRS82hK.output.variable_workflow_02RYK4PDK09VV2y59s2PGyUvJgCTtf2gH4X$"
-                                    }
-                                  ]
-                                },
-                                "object_type": "definition_activity"
-                              }
-                            ]
-                          }
-                        ]
                       }
                     ]
                   },
                   {
                     "unique_name": "definition_activity_02RYUNVL9XT791y74MNS4wlRagosBlyZP7X",
                     "name": "Condition Branch",
-                    "title": "Response Does Not Contain Tool Calls Message",
+                    "title": "No Tool Calls in Response",
                     "type": "logic.condition_block",
                     "base_type": "activity",
                     "properties": {
@@ -980,7 +922,7 @@
                         "right_operand": "[]"
                       },
                       "continue_on_failure": false,
-                      "display_name": "Response Does Not Contain Tool Calls Message",
+                      "display_name": "No Tool Calls in Response",
                       "skip_execution": false
                     },
                     "object_type": "definition_activity",
@@ -1019,12 +961,12 @@
               {
                 "unique_name": "definition_activity_02RYUNVQZ591P065IiuHKx5JB6hk8RGQTtF",
                 "name": "Set Variables",
-                "title": "Increase Iteration count",
+                "title": "Increment Iteration Counter",
                 "type": "core.set_multiple_variables",
                 "base_type": "activity",
                 "properties": {
                   "continue_on_failure": false,
-                  "display_name": "Increase Iteration count",
+                  "display_name": "Increment Iteration Counter",
                   "skip_execution": false,
                   "variables_to_update": [
                     {
