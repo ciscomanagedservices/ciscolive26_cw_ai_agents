@@ -1,0 +1,5 @@
+excalidraw.log
+tmp/
+*.bak
+*.tmp
+.DS_Store
