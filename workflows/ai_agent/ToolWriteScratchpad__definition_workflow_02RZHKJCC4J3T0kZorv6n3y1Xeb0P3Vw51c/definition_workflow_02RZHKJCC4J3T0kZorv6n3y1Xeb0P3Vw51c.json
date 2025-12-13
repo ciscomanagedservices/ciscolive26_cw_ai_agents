@@ -132,13 +132,13 @@
       {
         "unique_name": "definition_activity_02RZHQU70LCF05btxdADDcQ6zWk4bG6WdIg",
         "name": "Condition Block",
-        "title": "Condition Block",
+        "title": "Check if Scratchpad Entry Exists",
         "type": "logic.if_else",
         "base_type": "activity",
         "properties": {
           "continue_on_failure": false,
           "description": "If-Else condition block",
-          "display_name": "Condition Block",
+          "display_name": "Check if Scratchpad Entry Exists",
           "skip_execution": false
         },
         "object_type": "definition_activity",

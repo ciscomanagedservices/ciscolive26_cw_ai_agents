@@ -13,7 +13,7 @@
           "scope": "input",
           "name": "i_run_id",
           "type": "datatype.string",
-          "description": "The run_id or instance_id of agent requesting change",
+          "description": "The run_id or instance_id of agent requesting clarification",
           "is_required": true,
           "display_on_wizard": false,
           "is_invisible": false,
@@ -27,7 +27,7 @@
         "properties": {
           "value": "",
           "scope": "output",
-          "name": "o_mesage_content",
+          "name": "o_message_content",
           "type": "datatype.string",
           "description": "The output",
           "is_required": false,
@@ -45,7 +45,7 @@
           "scope": "input",
           "name": "i_prompt",
           "type": "datatype.string",
-          "description": "Prompt to send to Human that details the change being  requested.  Use Markdown",
+          "description": "Prompt to send to Human that details the question being asked.  Use Markdown",
           "is_required": true,
           "display_on_wizard": false,
           "is_invisible": false,
@@ -60,7 +60,7 @@
         "is_atomic": false
       },
       "delete_workflow_instance": false,
-      "description": "Tool to ask clarifiying question from Human\n\nWhen asking question, provide full context of your task so human will not have context to what you are working on.",
+      "description": "Tool to ask clarifying question from Human\n\nWhen asking question, provide full context of your task so human will not have context to what you are working on.",
       "display_name": "Tool - Ask Clarifying Question",
       "runtime_user": {
         "target_default": true

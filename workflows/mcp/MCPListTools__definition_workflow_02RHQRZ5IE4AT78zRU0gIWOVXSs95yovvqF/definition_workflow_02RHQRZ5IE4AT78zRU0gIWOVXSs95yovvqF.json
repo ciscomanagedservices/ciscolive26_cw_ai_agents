@@ -61,6 +61,7 @@
         "is_atomic": true
       },
       "delete_workflow_instance": false,
+      "description": "Lists available tools from an MCP server using Bearer authentication",
       "display_name": "MCP - List Tools (Bearer Auth)",
       "runtime_user": {
         "target_default": true

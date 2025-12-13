@@ -11,7 +11,7 @@
         "properties": {
           "value": "",
           "scope": "output",
-          "name": "o_mesage_content",
+          "name": "o_message_content",
           "type": "datatype.string",
           "description": "The output",
           "is_required": false,

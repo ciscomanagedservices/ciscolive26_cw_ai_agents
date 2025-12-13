@@ -107,7 +107,7 @@
         "properties": {
           "value": "Additional instructions:\n* Use the webex notification tool in following cases\n- Before asking for change approval\n- Before asking for human clarification\n- Task finished\n* On task finish, include summary of tasks, actions taken, notable information, and next steps\n",
           "scope": "input",
-          "name": "i_addtional_info",
+          "name": "i_additional_info",
           "type": "datatype.string",
           "description": "Additional information or instructions you wish to add to agent system propmt",
           "is_required": false,
@@ -327,14 +327,14 @@
               {
                 "unique_name": "definition_activity_02RZQUPW4UXPJ0H2l5vP1wiQ5gRmW3ayL6F",
                 "name": "Execute Python Script",
-                "title": "TODO: Messages Summarization",
+                "title": "Messages Summarization (Future Enhancement)",
                 "type": "python3.script",
                 "base_type": "activity",
                 "properties": {
                   "action_timeout": 180,
                   "continue_on_failure": false,
                   "description": "Summarize the message history if it gets to large.  NOT YET IMPLEMENTED",
-                  "display_name": "TODO: Messages Summarization",
+                  "display_name": "Messages Summarization (Future Enhancement)",
                   "script": "pass",
                   "skip_execution": true
                 },
@@ -596,7 +596,7 @@
                                   {
                                     "unique_name": "definition_activity_02RYUNUTVSJC059dvyfbbvBHNIzlX8og6I9",
                                     "name": "Condition Branch",
-                                    "title": "is_valid==false",
+                                    "title": "Tool Validation Failed",
                                     "type": "logic.condition_block",
                                     "base_type": "activity",
                                     "properties": {
@@ -606,7 +606,7 @@
                                         "right_operand": false
                                       },
                                       "continue_on_failure": false,
-                                      "display_name": "is_valid==false",
+                                      "display_name": "Tool Validation Failed",
                                       "skip_execution": false
                                     },
                                     "object_type": "definition_activity",
@@ -677,7 +677,7 @@
                                   {
                                     "unique_name": "definition_activity_02RYUNV3ZQ32R0PEBIOugUvks35nGFjTGtQ",
                                     "name": "Condition Branch",
-                                    "title": "is_valid==true",
+                                    "title": "Tool Validation Passed",
                                     "type": "logic.condition_block",
                                     "base_type": "activity",
                                     "properties": {
@@ -687,7 +687,7 @@
                                         "right_operand": true
                                       },
                                       "continue_on_failure": false,
-                                      "display_name": "is_valid==true",
+                                      "display_name": "Tool Validation Passed",
                                       "skip_execution": false
                                     },
                                     "object_type": "definition_activity",

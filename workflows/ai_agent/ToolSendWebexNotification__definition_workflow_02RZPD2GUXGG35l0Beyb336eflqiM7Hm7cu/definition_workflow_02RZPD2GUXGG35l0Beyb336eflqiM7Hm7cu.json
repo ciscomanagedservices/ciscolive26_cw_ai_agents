@@ -13,7 +13,7 @@
           "scope": "local",
           "name": "l_meraki_dashboard_url",
           "type": "datatype.string",
-          "description": "Used for making link back.\nExample:\nhttps://n219.dashboard.meraki.com/o/DQJF8b/",
+          "description": "Used for making link back to workflow dashboard.\nExample:\nhttps://n219.dashboard.meraki.com/o/DQJF8b/",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
@@ -61,6 +61,7 @@
           "scope": "output",
           "name": "o_message_content",
           "type": "datatype.string",
+          "description": "The output from the tool",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
@@ -75,6 +76,7 @@
         "is_atomic": false
       },
       "delete_workflow_instance": false,
+      "description": "Sends a webex notification to space. No replies through this tool",
       "display_name": "Tool - Send Webex Notification",
       "runtime_user": {
         "target_default": true
