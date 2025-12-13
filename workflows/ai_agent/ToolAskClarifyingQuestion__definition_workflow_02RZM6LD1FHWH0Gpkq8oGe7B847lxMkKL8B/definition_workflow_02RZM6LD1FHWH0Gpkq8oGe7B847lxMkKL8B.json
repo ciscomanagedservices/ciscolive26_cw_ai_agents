@@ -11,15 +11,15 @@
         "properties": {
           "value": "",
           "scope": "input",
-          "name": "i_prompt",
+          "name": "i_run_id",
           "type": "datatype.string",
-          "description": "Prompt to send to Human that details the change being  requested. ",
+          "description": "The run_id or instance_id of agent requesting change",
           "is_required": true,
           "display_on_wizard": false,
           "is_invisible": false,
           "variable_string_format": "text"
         },
-        "unique_name": "variable_workflow_02RZM6LDLU9RC3Itg8cE1sfCswtiHwiAOF2",
+        "unique_name": "variable_workflow_02RZM6LDLTVZV4XU4NvRUxGNHMmV6Qn1X4H",
         "object_type": "variable_workflow"
       },
       {
@@ -43,15 +43,15 @@
         "properties": {
           "value": "",
           "scope": "input",
-          "name": "i_run_id",
+          "name": "i_prompt",
           "type": "datatype.string",
-          "description": "The run_id or instance_id of agent requesting change",
+          "description": "Prompt to send to Human that details the change being  requested.  Use Markdown",
           "is_required": true,
           "display_on_wizard": false,
           "is_invisible": false,
           "variable_string_format": "text"
         },
-        "unique_name": "variable_workflow_02RZM6LDLTVZV4XU4NvRUxGNHMmV6Qn1X4H",
+        "unique_name": "variable_workflow_02RZM6LDLU9RC3Itg8cE1sfCswtiHwiAOF2",
         "object_type": "variable_workflow"
       }
     ],
@@ -60,7 +60,7 @@
         "is_atomic": false
       },
       "delete_workflow_instance": false,
-      "description": "Tool to ask clarifiying question from Human",
+      "description": "Tool to ask clarifiying question from Human\n\nWhen asking question, provide full context of your task so human will not have context to what you are working on.",
       "display_name": "Tool - Ask Clarifying Question",
       "runtime_user": {
         "target_default": true
@@ -71,6 +71,32 @@
     },
     "object_type": "definition_workflow",
     "actions": [
+      {
+        "unique_name": "definition_activity_02RZMSE1WT1HW36hHZwqZ8cwec3xgkBj7Si",
+        "name": "Execute Python Script",
+        "title": "Clean prompt",
+        "type": "python3.script",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "description": "Execute Python Script",
+          "display_name": "Clean prompt",
+          "script": "import sys\nimport json\n\n# 1. Get the raw string argument\nraw_messages_input = sys.argv[1]\n\n# 2. Fix the escaped newlines (turn literal \"\\n\" into real line breaks)\ncleaned_messages_input = raw_messages_input.replace(\"\\\\n\", \"\\n\")",
+          "script_arguments": [
+            "$workflow.definition_workflow_02RZM6LD1FHWH0Gpkq8oGe7B847lxMkKL8B.input.variable_workflow_02RZM6LDLU9RC3Itg8cE1sfCswtiHwiAOF2$"
+          ],
+          "script_queries": [
+            {
+              "script_query": "cleaned_messages_input",
+              "script_query_name": "prompt",
+              "script_query_type": "string"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
       {
         "unique_name": "definition_activity_02RZM7ICO6BZW7U3oWkv2EWTXCeQwqh8Hwk",
         "name": "Create Prompt",
@@ -86,7 +112,7 @@
             "$workflow.definition_workflow_02RZM6LD1FHWH0Gpkq8oGe7B847lxMkKL8B.output.started_by$"
           ],
           "continue_on_failure": false,
-          "description": "Create Prompt Request",
+          "description": "Ask for clarification",
           "display_name": "Create Prompt",
           "expiration_date": {
             "is_relative_time": true,
@@ -103,8 +129,8 @@
               "form_option_label_key": ""
             }
           ],
-          "prompt_body": "Agent Run ID: $workflow.definition_workflow_02RZM6LD1FHWH0Gpkq8oGe7B847lxMkKL8B.input.variable_workflow_02RZM6LDLTVZV4XU4NvRUxGNHMmV6Qn1X4H$\n\n$workflow.definition_workflow_02RZM6LD1FHWH0Gpkq8oGe7B847lxMkKL8B.input.variable_workflow_02RZM6LDLU9RC3Itg8cE1sfCswtiHwiAOF2$",
-          "prompt_title": "AI Agent Question",
+          "prompt_body": "Agent Run ID: $workflow.definition_workflow_02RZM6LD1FHWH0Gpkq8oGe7B847lxMkKL8B.input.variable_workflow_02RZM6LDLTVZV4XU4NvRUxGNHMmV6Qn1X4H$[$workflow.definition_workflow_02RZM6LD1FHWH0Gpkq8oGe7B847lxMkKL8B.input.variable_workflow_02RZM6LDLTVZV4XU4NvRUxGNHMmV6Qn1X4H$](https://dashboard.meraki.com/o/DQJF8b/manage/automate/runs/$workflow.definition_workflow_02RZM6LD1FHWH0Gpkq8oGe7B847lxMkKL8B.input.variable_workflow_02RZM6LDLTVZV4XU4NvRUxGNHMmV6Qn1X4H$)\n\n$activity.definition_activity_02RZMSE1WT1HW36hHZwqZ8cwec3xgkBj7Si.output.script_queries.prompt$",
+          "prompt_title": "AI Agent -  Request for clarification ",
           "skip_execution": false,
           "task_owner": "$workflow.definition_workflow_02RZM6LD1FHWH0Gpkq8oGe7B847lxMkKL8B.output.started_by$",
           "task_requestor": "$workflow.definition_workflow_02RZM6LD1FHWH0Gpkq8oGe7B847lxMkKL8B.output.started_by$",
