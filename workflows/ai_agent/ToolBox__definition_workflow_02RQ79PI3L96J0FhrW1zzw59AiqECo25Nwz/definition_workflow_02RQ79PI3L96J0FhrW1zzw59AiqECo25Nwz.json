@@ -10,16 +10,16 @@
         "schema_id": "datatype.string",
         "properties": {
           "value": "",
-          "scope": "input",
-          "name": "i_tool_call_arguments",
+          "scope": "output",
+          "name": "o_message_content",
           "type": "datatype.string",
-          "description": "JSON form of the tool call arguments which will be passed to tool.",
+          "description": "The output from the tool",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
-          "variable_string_format": "json"
+          "variable_string_format": "text"
         },
-        "unique_name": "variable_workflow_02RYI3Z1BKG6R6tpC3EIzzw4xoP1MEuXJV8",
+        "unique_name": "variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481",
         "object_type": "variable_workflow"
       },
       {
@@ -41,16 +41,16 @@
         "schema_id": "datatype.string",
         "properties": {
           "value": "",
-          "scope": "output",
-          "name": "o_message_content",
+          "scope": "input",
+          "name": "i_tool_call_arguments",
           "type": "datatype.string",
-          "description": "The output from the tool",
+          "description": "JSON form of the tool call arguments which will be passed to tool.",
           "is_required": false,
           "display_on_wizard": false,
           "is_invisible": false,
-          "variable_string_format": "text"
+          "variable_string_format": "json"
         },
-        "unique_name": "variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481",
+        "unique_name": "variable_workflow_02RYI3Z1BKG6R6tpC3EIzzw4xoP1MEuXJV8",
         "object_type": "variable_workflow"
       }
     ],
@@ -155,7 +155,7 @@
               "condition": {
                 "left_operand": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.input.variable_workflow_02RYI32YO5RFW4zpxEwAOu6qnjCvGHTvfD0$",
                 "operator": "eq",
-                "right_operand": "exec_command"
+                "right_operand": "radkit_exec_command"
               },
               "continue_on_failure": false,
               "display_name": "Exec Command",
@@ -184,8 +184,8 @@
                       "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
                     },
                     {
-                      "jsonpath_query": "$.i_command",
-                      "jsonpath_query_name": "command",
+                      "jsonpath_query": "$.i_commands",
+                      "jsonpath_query_name": "commands",
                       "jsonpath_query_type": "string",
                       "set_default_value": false,
                       "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
@@ -207,7 +207,7 @@
                   "display_name": "Tool - MCP RADKIT Exec Command",
                   "input": {
                     "variable_workflow_02RHRBIIEXFO10kLwJyrI5lVSVo0KAWe1Nh": "$activity.definition_activity_02RZFRTBAW0JY4uFDg6gcQ79rXAb8iU3hDq.output.jsonpath_queries.device_name$",
-                    "variable_workflow_02RHRBTX0EL1N7DTWBvnwll2bBc1v5TaI1H": "$activity.definition_activity_02RZFRTBAW0JY4uFDg6gcQ79rXAb8iU3hDq.output.jsonpath_queries.command$"
+                    "variable_workflow_02RHRBTX0EL1N7DTWBvnwll2bBc1v5TaI1H": "$activity.definition_activity_02RZFRTBAW0JY4uFDg6gcQ79rXAb8iU3hDq.output.jsonpath_queries.commands$"
                   },
                   "runtime_user": {
                     "target_default": true
@@ -236,6 +236,272 @@
                     {
                       "variable_to_update": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.output.variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481$",
                       "variable_value_new": "$activity.definition_activity_02RYGC11691431MbmkAwxnnk7dpcIoOn0ck.output.variable_workflow_02RHRDTAU3OGV3GBVn8awvxy1HCbdyZWIMV$"
+                    }
+                  ]
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          },
+          {
+            "unique_name": "definition_activity_02S0C40KHDDJA5X2mU3mSF3F9IptR5sXRWV",
+            "name": "Condition Branch",
+            "title": "Get Device Attributes",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.input.variable_workflow_02RYI32YO5RFW4zpxEwAOu6qnjCvGHTvfD0$",
+                "operator": "eq",
+                "right_operand": "radkit_exec_command"
+              },
+              "continue_on_failure": false,
+              "display_name": "Get Device Attributes",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_02S0C40KKVZ7C09z0BaFe5IQcli5TEis1fi",
+                "name": "JSONPath Query",
+                "title": "JSONPath Query",
+                "type": "corejava.jsonpathquery",
+                "base_type": "activity",
+                "properties": {
+                  "action_timeout": 180,
+                  "continue_on_failure": false,
+                  "description": "JSONPath Query to get value in JSON",
+                  "display_name": "JSONPath Query",
+                  "input_json": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.input.variable_workflow_02RYI3Z1BKG6R6tpC3EIzzw4xoP1MEuXJV8$",
+                  "jsonpath_queries": [
+                    {
+                      "jsonpath_query": "$.i_device_name",
+                      "jsonpath_query_name": "device_name",
+                      "jsonpath_query_type": "string",
+                      "set_default_value": false,
+                      "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                  ],
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_02S0C499WH5VY22MLUbXk5wF89kyVIU5a7h",
+                "name": "Tool - RADKIT Get Device Attributes",
+                "title": "Tool - RADKIT Get Device Attributes",
+                "type": "workflow.sub_workflow",
+                "base_type": "subworkflow",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Returns a JSON string with the attributes of the specified target device.",
+                  "display_name": "Tool - RADKIT Get Device Attributes",
+                  "input": {
+                    "variable_workflow_02S0C0UP4Z19M3XULku9PFkl9gcSmSSaVzk": "$activity.definition_activity_02S0C40KKVZ7C09z0BaFe5IQcli5TEis1fi.output.jsonpath_queries.device_name$"
+                  },
+                  "runtime_user": {
+                    "target_default": true
+                  },
+                  "skip_execution": false,
+                  "target": {
+                    "no_target": true
+                  },
+                  "workflow_id": "definition_workflow_02S0C0UOK34SU3d9mSNIoEKJomsRSor9lBz",
+                  "workflow_name": "Tool - RADKIT Get Device Attributes"
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_02S0C40KU1YVA1YGu1LJBVKxYghxqhwyX2S",
+                "name": "Set Variables",
+                "title": "Set o_message_content",
+                "type": "core.set_multiple_variables",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Set Variables",
+                  "display_name": "Set o_message_content",
+                  "skip_execution": false,
+                  "variables_to_update": [
+                    {
+                      "variable_to_update": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.output.variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481$",
+                      "variable_value_new": "$activity.definition_activity_02S0C499WH5VY22MLUbXk5wF89kyVIU5a7h.output.variable_workflow_02S0C0UP4Z95G1VqdcK4iKCo7aiz1cB4wLn$"
+                    }
+                  ]
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          },
+          {
+            "unique_name": "definition_activity_02S0C36KMIUXY6Q3wxys0PZo8v91ckZnjAR",
+            "name": "Condition Branch",
+            "title": "Get Inventory",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.input.variable_workflow_02RYI32YO5RFW4zpxEwAOu6qnjCvGHTvfD0$",
+                "operator": "eq",
+                "right_operand": "radkit_get_inventory"
+              },
+              "continue_on_failure": false,
+              "display_name": "Get Inventory",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_02S0C3H2RFR5P4Lpd4fL3MPNJgUqsP7YCOz",
+                "name": "Tool - RADKIT Get Inventory Names",
+                "title": "Tool - RADKIT Get Inventory Names",
+                "type": "workflow.sub_workflow",
+                "base_type": "subworkflow",
+                "properties": {
+                  "description": "Gets a list of device name from RADKit Inventory",
+                  "display_name": "Tool - RADKIT Get Inventory Names",
+                  "runtime_user": {
+                    "target_default": true
+                  },
+                  "target": {
+                    "no_target": true
+                  },
+                  "workflow_id": "definition_workflow_02S0BYZV89GRR7J17vKNZ6oP2oDYUuBLI2Y",
+                  "workflow_name": "Tool - RADKIT Get Inventory Names"
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_02S0C36KV9A726xNNxXvKwkXvgH7u9sMGTG",
+                "name": "Set Variables",
+                "title": "Set o_message_content",
+                "type": "core.set_multiple_variables",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Set Variables",
+                  "display_name": "Set o_message_content",
+                  "skip_execution": false,
+                  "variables_to_update": [
+                    {
+                      "variable_to_update": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.output.variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481$",
+                      "variable_value_new": "$activity.definition_activity_02S0C3H2RFR5P4Lpd4fL3MPNJgUqsP7YCOz.output.variable_workflow_02S0BYZVSOW2M48XAmKJVC7dJGqMfLpoZgR$"
+                    }
+                  ]
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_02S0C53VXJCEH3XsTBf1hunGXuzjGbAXhpJ",
+        "name": "Condition Block",
+        "title": "Device Interaction Tools (Cisco Workflows)",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "conditions": [],
+          "continue_on_failure": false,
+          "description": "If-Else condition block",
+          "display_name": "Device Interaction Tools (Cisco Workflows)",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_02S0C53VZ3VM66SfrKEHC95UCZmp8hzZEJO",
+            "name": "Condition Branch",
+            "title": "Execute Terminal Command",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.input.variable_workflow_02RYI32YO5RFW4zpxEwAOu6qnjCvGHTvfD0$",
+                "operator": "eq",
+                "right_operand": "exec_terminal_command"
+              },
+              "continue_on_failure": false,
+              "display_name": "Execute Terminal Command",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_02S0C53W0W9HL1mV84vAjv1HPwHlTlpUjo7",
+                "name": "JSONPath Query",
+                "title": "JSONPath Query",
+                "type": "corejava.jsonpathquery",
+                "base_type": "activity",
+                "properties": {
+                  "action_timeout": 180,
+                  "continue_on_failure": false,
+                  "description": "JSONPath Query to get value in JSON",
+                  "display_name": "JSONPath Query",
+                  "input_json": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.input.variable_workflow_02RYI3Z1BKG6R6tpC3EIzzw4xoP1MEuXJV8$",
+                  "jsonpath_queries": [
+                    {
+                      "jsonpath_query": "$.i_device_name",
+                      "jsonpath_query_name": "device_name",
+                      "jsonpath_query_type": "string",
+                      "set_default_value": false,
+                      "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    },
+                    {
+                      "jsonpath_query": "$.i_commands",
+                      "jsonpath_query_name": "commands",
+                      "jsonpath_query_type": "string",
+                      "set_default_value": false,
+                      "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                  ],
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_02S0C8RRWH9U51DcCNjpGhcPOLvFNPIG2FV",
+                "name": "Tool - Execute Terminal Command",
+                "title": "Tool - Execute Terminal Command",
+                "type": "workflow.sub_workflow",
+                "base_type": "subworkflow",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Executes a command via terminal (SSH)",
+                  "display_name": "Tool - Execute Terminal Command",
+                  "input": {
+                    "variable_workflow_02S0C5LE777IL2Lvydj9o6LxmrTjdRf2cKC": "$activity.definition_activity_02S0C53W0W9HL1mV84vAjv1HPwHlTlpUjo7.output.jsonpath_queries.commands$",
+                    "variable_workflow_02S0C5LE77J810xSMYMbTsUxbAKJ52tH4AV": "$activity.definition_activity_02S0C53W0W9HL1mV84vAjv1HPwHlTlpUjo7.output.jsonpath_queries.device_name$"
+                  },
+                  "runtime_user": {
+                    "target_default": true
+                  },
+                  "skip_execution": false,
+                  "target": {
+                    "execute_on_this_target_group": true,
+                    "target_group_id": "target_group_02RZJ94JAKPEN5eH2xyuq4p1H97KrJ0mcDF"
+                  },
+                  "workflow_id": "definition_workflow_02S0C5LDO0NLF2E7Lc2TG0jjb5diLO2zfpO",
+                  "workflow_name": "Tool - Execute Terminal Command"
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_02S0C53W8XTDV2qPBJwzHnkQi22PDDMOt3z",
+                "name": "Set Variables",
+                "title": "Set o_message_content",
+                "type": "core.set_multiple_variables",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Set Variables",
+                  "display_name": "Set o_message_content",
+                  "skip_execution": false,
+                  "variables_to_update": [
+                    {
+                      "variable_to_update": "$workflow.definition_workflow_02RQ79PI3L96J0FhrW1zzw59AiqECo25Nwz.output.variable_workflow_02RZDYYGRRE4C4uQjp0qHrUgclCwixmQ481$",
+                      "variable_value_new": "$activity.definition_activity_02S0C8RRWH9U51DcCNjpGhcPOLvFNPIG2FV.output.variable_workflow_02S0C5LE76UIO5KA41gpIahBsNGsrkKGY9z$"
                     }
                   ]
                 },
@@ -813,8 +1079,29 @@
       }
     }
   },
+  "target_groups": {
+    "target_group_02RZJ94JAKPEN5eH2xyuq4p1H97KrJ0mcDF": {
+      "unique_name": "target_group_02RZJ94JAKPEN5eH2xyuq4p1H97KrJ0mcDF",
+      "name": "Terminal Targets",
+      "title": "Terminal Targets",
+      "type": "generic.target_group",
+      "base_type": "target_group",
+      "version": "1.0.0",
+      "targets": [
+        {
+          "data_target_type": "terminal.endpoint",
+          "view_target_type": "terminal.endpoint",
+          "include_all_targets": true
+        }
+      ],
+      "object_type": "target_group"
+    }
+  },
   "dependent_workflows": [
     "definition_workflow_02RHRA78FVXF647oUKIzjqbWCnK075YJPXL",
+    "definition_workflow_02S0C0UOK34SU3d9mSNIoEKJomsRSor9lBz",
+    "definition_workflow_02S0BYZV89GRR7J17vKNZ6oP2oDYUuBLI2Y",
+    "definition_workflow_02S0C5LDO0NLF2E7Lc2TG0jjb5diLO2zfpO",
     "definition_workflow_02RZPD2GUXGG35l0Beyb336eflqiM7Hm7cu",
     "definition_workflow_02RYL955VDHXF2Oyw72YTZga9YbuHAJr2NJ",
     "definition_workflow_02RZHKJCC4J3T0kZorv6n3y1Xeb0P3Vw51c",
