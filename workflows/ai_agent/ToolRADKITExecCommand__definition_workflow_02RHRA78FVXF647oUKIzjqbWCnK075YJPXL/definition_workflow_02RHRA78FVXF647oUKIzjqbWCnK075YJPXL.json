@@ -193,8 +193,9 @@
       "properties": {
         "value": "*****",
         "scope": "global",
-        "name": "RADKIT MCP API KEY - SCDOZIER",
+        "name": "RADKIT MCP API KEY",
         "type": "datatype.secure_string",
+        "description": "This api key is used for authentication into the RADKit MCP server",
         "is_required": false,
         "display_on_wizard": false,
         "is_invisible": false,
