@@ -51,7 +51,7 @@
           "input": {
             "variable_workflow_02RHQY1X5Z0RI7Pis56V8wvbwPdL7Nyjfhs": "get_device_inventory_names_tool",
             "variable_workflow_02RHQYMO1JN8V0kzHsrPXHu6xC7c2Js4lbO": "{}",
-            "variable_workflow_02RYHEXC3QWJL4Ro7i4OmTg49ygRt2C3r4R": "RADKIT MCP - CLEU26",
+            "variable_workflow_02RYHEXC3QWJL4Ro7i4OmTg49ygRt2C3r4R": "RADKit MCP - Lab",
             "variable_workflow_02RYHFBZSC0WY1INizHuLUtEZvNYAgCCpAd": "$global.variable_02RHQAIG53FFR7Yd8kPzhwBsGm17NQgchy9.global.variable_02RHQAIG53FFR7Yd8kPzhwBsGm17NQgchy9$"
           },
           "runtime_user": {
@@ -103,6 +103,29 @@
       "object_type": "category"
     }
   },
+  "targets": {
+    "definition_target_02SMOHM917XJ23K1sk7tknhPdXB9rXh4gDB": {
+      "unique_name": "definition_target_02SMOHM917XJ23K1sk7tknhPdXB9rXh4gDB",
+      "name": "RADKit MCP - Lab",
+      "title": "RADKit MCP - Lab",
+      "type": "web-service.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "ao_remote_id": "02SLLOV6S59O55gx1n5KESWLmkbunABQF3a",
+        "description": "",
+        "disable_certificate_validation": false,
+        "display_name": "RADKit MCP - Lab",
+        "host": "198.18.1.250",
+        "ignore_proxy": false,
+        "is_https_proxy": false,
+        "no_runtime_user": true,
+        "path": "sse/",
+        "port": 8000,
+        "protocol": "http"
+      }
+    }
+  },
   "target_groups": {
     "target_group_02RYHDV1SR1VF4TYYHXXxGoD7dYMatZ9EIs": {
       "unique_name": "target_group_02RYHDV1SR1VF4TYYHXXxGoD7dYMatZ9EIs",
@@ -117,12 +140,8 @@
           "data_target_type": "web-service.endpoint",
           "view_target_type": "web-service.endpoint",
           "include_all_targets": false,
-          "criteria": [
-            {
-              "operator": "mw",
-              "left_operand": "$input.display_name$",
-              "right_operand": "*MCP*"
-            }
+          "selected_target_ids": [
+            "definition_target_02SMOHM917XJ23K1sk7tknhPdXB9rXh4gDB"
           ]
         }
       ],
@@ -135,8 +154,9 @@
       "properties": {
         "value": "*****",
         "scope": "global",
-        "name": "RADKIT MCP API KEY - SCDOZIER",
+        "name": "RADKIT MCP API KEY",
         "type": "datatype.secure_string",
+        "description": "This api key is used for authentication into the RADKit MCP server",
         "is_required": false,
         "display_on_wizard": false,
         "is_invisible": false,
@@ -148,6 +168,30 @@
   "atomic_workflows": [
     "definition_workflow_02RHQTNWT7JIA7Y13uzndETnyCO9dJXYvwM"
   ],
+  "remotemetas": {
+    "remote_meta_02SLLOV755UJF68VkCKLui2OrD3T1dv2on7": {
+      "base_type": "remote_meta",
+      "type": "generic.remote_meta",
+      "name": "sholl-remote",
+      "title": "sholl-remote",
+      "version": "1.0.0",
+      "properties": {
+        "advanced": {
+          "require_advanced": false
+        },
+        "cloud_type": "vmware",
+        "display_name": "sholl-remote",
+        "network": {
+          "is_dhcp": true
+        },
+        "proxy": {
+          "require_proxy": false
+        }
+      },
+      "unique_name": "remote_meta_02SLLOV755UJF68VkCKLui2OrD3T1dv2on7",
+      "object_type": "remote_meta"
+    }
+  },
   "dependent_workflows": [
     "definition_workflow_02RHQTNWT7JIA7Y13uzndETnyCO9dJXYvwM"
   ]
