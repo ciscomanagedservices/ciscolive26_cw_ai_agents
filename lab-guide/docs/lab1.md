@@ -117,7 +117,7 @@ We need to ensure Splunk is listening for syslog traffic.
 
 1. Go to **Settings> Data> Data inputs> UDP**.
 2. In upper right, click **New Local UDP**. Configure the listener for UDP, port 514. Hit **Next**.
-3. Set the **App context** to `Cisco Networks`, **Host method** as `IP`, **index* to `syslog`.
+3. Set the **App context** to `Cisco Networks`, **Host method** as `IP`, **index** to `syslog`.
 4. Click **Review** and validate your configuration then click **Submit**.
 
 > **Tip:**
@@ -143,7 +143,7 @@ If you want to use our demo instance, we will provide you with access and you wi
 
 ## Step 5: Building a basic response workflow
 
-Here we will fist build a basic workflow to acknowledge that we can get an event to trigger a workflow. It won't do any troubleshooting/repair just yet.
+Here we will first build a basic workflow to acknowledge that we can get an event to trigger a workflow. It won't do any troubleshooting/repair just yet.
 
 ### 5.1 Creating a new Workflow
 1. Click on **Automation> Workspace> New Workflow**. Click the **+ Create** button in the upper right, and choose `Workflow with Automation Rule` since we will be attaching a webhook rule to this workflow.
@@ -167,7 +167,7 @@ We need to setup a webex API before we can finish wiring up our workflow notific
 2. Name the key `<yourName>-webex`, set **String Type** to `Secure String` and put the webex bearer token in the value. Click **Save**.
 3. Go back to our workflow in **Automation> Workspace> *your_workflow_name***. Click the name of the workflow and Click **View Workflow** on the lower right hand corner.
 4. Click on the **Webex Send Message** activity box, then in **Access Token** click the 'variable icon' on the right of the text box and select **Global> *your_access_token***.
-5. Put your webex account email address in the **Recepient Email** box, and put `# It worked!` in the **Markdown Message** box. Hit enter for a new line and then click the variable icon to the right and also add the variable **Rule> Webhook Rule> Output> Request Headers**. This will take the JSON from the webhook and send it in a Webex Teams message.
+5. Put your webex account email address in the **Recipient Email** box, and put `# It worked!` in the **Markdown Message** box. Hit enter for a new line and then click the variable icon to the right and also add the variable **Rule> Webhook Rule> Output> Request Headers**. This will take the JSON from the webhook and send it in a Webex Teams message.
 6. Under Target, choose **Override workflow target** and click the **+** to add a new target. Create an **HTTP endpoint** with protocol of `HTTPS` and **host address** for `webexapis.com`. Set the **No account keys** to `True` and check **Disable server certification validation** and click **Save**.
 7. You should now be able to click **Validate**, and **Run** in the upper right and receive a message in your Webex Teams.
 
@@ -207,8 +207,8 @@ We do this with a saved search that triggers a webhook. Splunk doesn't have flex
     - **Trigger alert when:** `Per-Result`
     - **Trigger Actions:** `Better Webhook`
 
-> **Troubleshooting tip:
->You may want to also add a **Trigger action** for `Add to Triggered Alerts` so that you can troubleshoot that the alert generates by looking in **Activity> Triggered Alerts**. It will not log to there unless this is configured.
+> **Troubleshooting tip:**
+> You may want to also add a **Trigger action** for `Add to Triggered Alerts` so that you can troubleshoot that the alert generates by looking in **Activity> Triggered Alerts**. It will not log to there unless this is configured.
 
 ---
 

@@ -2,7 +2,7 @@
 
 ## Recap
 
-So so far you have:
+So far you have:
 * Integrated a network topology's events into Cisco Workflows
 * Configured deterministic automated response in Workflows
 * Configured agentic operational response into Workflows
@@ -33,10 +33,10 @@ ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(
 1. Go to https://198.18.1.202 and login with `admin / welcome`.
 2. Set the new password and click **change password**. `Cisco123!` will work for the password policy.
 3. Add account `pl4okteoylmox9t60vi1ghz456ixeoa7` and click `continue`.
-4. Click `Complete`. Dont worry about the Gateway not pingable and NTP server errors. They will resolve.
+4. Click `Complete`. Don't worry about the Gateway not pingable and NTP server errors. They will resolve.
 5. Change the **hostname** to `<your_name>-thousandeyes` and **Save Changes**
 
-## 1.2 Validate registration
+### 1.2 Validate registration
 
 1. Login to https://www.thousandeyes.com and go to **Network & App Synthetics> Agent Settings**.
 2. You should see your agent in the list, under the hostname field.
@@ -63,7 +63,7 @@ ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(
 > [!TIP]
 > Adaptive alerting is a neat feature, but it requires a day to run to build normality for the anomaly detection. We don't have that much time here, so even in a world of predictive AI, we're going with old-school manual thresholds.
 
-4. Set to `An conditions are met by the same 1 agent 2 of 2 times in a row`
+4. Set to `Any conditions are met by the same 1 agent 2 of 2 times in a row`
 5. Set the rules to:
 * **Latency** >= 200ms
 * **Jitter** >= 200ms
@@ -77,18 +77,18 @@ ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(
 2. Name it `<your_name>-te`
 3. **Save** and then go back and view it to get the URL and save this to your local notepad for later reference.
 
-### 2.4 Configuring the webhook integration in Splunk
+### 2.4 Configuring the webhook integration in ThousandEyes
 
 1. Click the **Notifications** tab below the alert name you specified.
-2. Enable **Send emails** to your personal email, if desired. This is sometimes helpful to see quickly 3hen alerts change state.
-4. Under **Integrations** click **Manage integrations** and go to **Integrations 2.0**. 
-5. Choose **Custom Webhook**
-6. Name the webhook `<your_name>-wh`.
-8. Define the target as the Cisco Workflows webhook URL you created earlier in this lab.
-9. No Auth Type is needed since the API key is in the URL.
-10. Click **Save and assign operation**
-11. Set **Operation Name** to `<your_name>-congestion-json` and choose the **Preset Configuration** of `Splunk`. We aren't sending to splunk but the preset for Splunk is a nice simple JSON format that Cisco Workflows and our AI agent will nicely process. It should prepopulate the **Content-Type** header for `application/json` which we want.
-12. Leave this browser tab open. We will run a test by clicking the **test** button after we configure our workflow to handle ThousandEyes.
+2. Enable **Send emails** to your personal email, if desired. This is sometimes helpful to see quickly when alerts change state.
+3. Under **Integrations** click **Manage integrations** and go to **Integrations 2.0**.
+4. Choose **Custom Webhook**
+5. Name the webhook `<your_name>-wh`.
+6. Define the target as the Cisco Workflows webhook URL you created earlier in this lab.
+7. No Auth Type is needed since the API key is in the URL.
+8. Click **Save and assign operation**
+9. Set **Operation Name** to `<your_name>-congestion-json` and choose the **Preset Configuration** of `Splunk`. We aren't sending to Splunk but the preset for Splunk is a nice simple JSON format that Cisco Workflows and our AI agent will nicely process. It should prepopulate the **Content-Type** header for `application/json` which we want.
+10. Leave this browser tab open. We will run a test by clicking the **test** button after we configure our workflow to handle ThousandEyes.
 
 ### 2.5 Importing a workflow for ThousandEyes event handling
 1. In Cisco Workflows, go to the Automation Workspace where the workflows are listed.
@@ -96,11 +96,11 @@ ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(
 3. Click **Actions> Import Workflow> From Git** and import the `get_te_path_info` workflow first, and then `te_alert_webhook` workflow.
 
 
-### 2.5 Configuring the trigger for the workflow
+### 2.6 Configuring the trigger for the workflow
 
 1. Now go back to Cisco Workflows and  **Automation> Rules> Automation rules> + New automation rule** and hook your new ThousandEyes webhook and workflow up.
 
-### Step 3: Create congestion on the network to generate an incident
+## Step 3: Create congestion on the network to generate an incident
 
 ### 3.1 Create impairment
 1. Let's create impairment on R2 in the middle of the router chain. `ssh cisco@198.18.1.102`
@@ -126,9 +126,9 @@ You have successfully configured:
 
 | Component | Status | Purpose |
 |-----------|--------|---------|
-| ThousandEyes | Connected | Allows for sending terminal commands to devices |
+| ThousandEyes | Connected | Detects network performance degradation and triggers alerts |
 | Cisco Workflows | Automated response | Now performing automated actions on devices |
-| Target groups | Educational | Learned application for target groups for automating across your estate |
+| RADKit | Integrated | Provides secure device access for troubleshooting |
 
 And with that, you have seen event stimulus to drive agentic network troubleshooting, all the way through root cause resolution.
 
@@ -136,7 +136,7 @@ Now--imagine the power of it having the ThousandEyes alert, network path, and ac
 
 ## Take home ideas
 
-We encourage you to continue to test and enhance the power of agentic troublshooting at home. Some other things to consider trying are:
-* Intgrating both device event/log data and observability event data from ThousandEyes, Splunk, AppDynamics, or other tools
+We encourage you to continue to test and enhance the power of agentic troubleshooting at home. Some other things to consider trying are:
+* Integrating both device event/log data and observability event data from ThousandEyes, Splunk, AppDynamics, or other tools
 * Integrate your knowledge base to augment and refine specific policies or processes
 * Integrate with your enterprise ITSM change management, such as ServiceNow
