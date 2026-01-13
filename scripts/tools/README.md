@@ -1,6 +1,6 @@
 # Cisco ToolBox to OpenAI Tools Converter
 
-This script converts Cisco Workflow ToolBox JSON exports into OpenAI Chat Completions API tool specifications.
+This script converts Cisco Workflow ToolBox JSON exports into OpenAI Chat Completions API tool specifications. Once Cisco Workflows releases their API, this script will be deprecated in favor of natively obtaining the tool list via a workflow API call to the workflows list, but this is in place in case you want to add your own tools before the API is available.
 
 ## Usage
 
