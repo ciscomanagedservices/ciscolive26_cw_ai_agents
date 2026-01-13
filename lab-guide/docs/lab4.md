@@ -137,6 +137,7 @@ Now--imagine the power of it having the ThousandEyes alert, network path, and ac
 ## Take home ideas
 
 We encourage you to continue to test and enhance the power of agentic troubleshooting at home. Some other things to consider trying are:
+* What tool would you build? Try to build another tool and integrate it into the AI agent. See the `scripts/tools/convert_toolbox_to_openai_tools.py`
 * Integrating both device event/log data and observability event data from ThousandEyes, Splunk, AppDynamics, or other tools
 * Integrate your knowledge base to augment and refine specific policies or processes
 * Integrate with your enterprise ITSM change management, such as ServiceNow
