@@ -1,143 +1,142 @@
-# Lab 2 - Using Cisco Workflows for automated response
+# Lab 4 - Agentic response with ThousandEyes and dynamic network path data
+
+## Recap
+
+So so far you have:
+* Integrated a network topology's events into Cisco Workflows
+* Configured deterministic automated response in Workflows
+* Configured agentic operational response into Workflows
+* Integrated inventory and remote access with RADKit
 
 ## Overview
 
-In this lab, you will build on the event handling and workflow created in Lab 1, by setting up a remote server for Cisco Workflows to talk to your infrastructure through. You will define a rule-based remediation workflow, allowing for autonomous closed-loop infrastructure operations.
+In this lab, you will build on the agentic response, but instead trigger troubleshooting off an assurance event from ThousandEyes for digital user experience degrading.
 
 By the end of this lab, you will:
 
-- Be able to have Cisco Workflows talk to devices in your infrastructure.
-- Configure static / rule-based workflows where you can automate defined response and remediation.
-
-This will show one way to have automated response, before we bring in cognitive agentic response.
+- Have ThousandEyes integrated into Cisco Workflows
+- Enrich the event data with network path data from ThousandEyes path info
+- Observe how effective troubleshooting is with *just* an event from ThousandEyes and device access
 
 The following diagram illustrates the event flow we are building:
 
 ```txt
-device -> [syslog] -> splunk -> [webhook] -> Cisco Workflows -> [commands] -> Workflow's Remote Server -> device
+ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(s)
 ```
 
 ---
 
-## Step 1: Registering a remote server to Workflows
+## Step 1: Setting up ThousandEyes Agent
 
-1. Go to [meraki.cisco.com](https://meraki.cisco.com)
-2. Browse to **Automation> Targets> Remote Targets** click **+ New Remote**.
-3. Set the **Display name** to `<your_name>-remote` and click **Save**.
-4. Back on the **Remote Targets** page, click the **...** under **Actions** and choose **Connect**/
-5. Click **Generate Package** from the popup. This will generate and automatically download a file `remotePackage.zip`.generate text to allow the remote appliance to register to this Workflows account.
-6. Copy the file over to the wf-remote server (192.18.1.204):
-```sh
-scp remotePackage-12.zip root@198.18.1.204:/root/
-```
-7. Run the python script passing in the zip package to initiate the remote server registration procedure:
-```sh
-./register_remote.py remotePackage-12.zip
-```
-8. Wait a few seconds, and then refresh the Workflow's Targets page. You should see your remote move into a `Connected` status.
+### 1.1 Register the agent appliance
 
-> **Note:** The official process for registering a remote server differs from this a bit. Cisco Workflows currently only supports remote servers running on virtual appliances where you can pass the initialization/registration text into an OVF template. Since dCloud doesn't support OVF templates, we feed the remotePackage into a python script that runs the same cloud init script that the OVF template would have triggered. For the full documentation on deploying a remote server, see the official [Cisco Workflows documentation](https://documentation.meraki.com/Platform_Management/Workflows/Targets/Automation_Remote/Remote_Setup_and_Deployment).
+1. Go to https://198.18.1.202 and login with `admin / welcome`.
+2. Set the new password and click **change password**. `Cisco123!` will work for the password policy.
+3. Add account `pl4okteoylmox9t60vi1ghz456ixeoa7` and click `continue`.
+4. Click `Complete`. Dont worry about the Gateway not pingable and NTP server errors. They will resolve.
+5. Change the **hostname** to `<your_name>-thousandeyes` and **Save Changes**
 
-## Step 2: Configuring remote targets
+## 1.2 Validate registration
 
-### 2.1 Configuring R3 as a target
-1. In **Automation> Targets** go to **+ New target** and set:
-    - **Target type:** `Terminal endpoint`
-    - **Display name:** `<your_name>-R3`
-    - **Target type:** `Terminal endpoint`
-    - **Remote Keys:** `<your_name>-remote` #This specifies that this device should use the remote server to connect
-    - **Protocol:** `SSH`
-    - **Host/IP Address:** `198.18.1.103`    
-    - **Port:** `22`    
-    - **Prompt:** `#`
- 2. Under **Default Account Keys*, click the down arrow and say **Add new** and specify:
-    - **Account Key Type**: `Terminal password-based credentials`
-    - **Display Name**: `<your_name>-R3-creds`
-    - **User name:** `cisco`
-    - **Password:** `cisco`    
-3. Ensure that the **status** of the devices shows as `Valid` which is ensuring a basic connection check to the device.
+1. Login to https://www.thousandeyes.com and go to **Network & App Synthetics> Agent Settings**.
+2. You should see your agent in the list, under the hostname field.
+3. Notice how the agent name has a random ID suffix created during registration due to everyone participating in the lab having the same OS hostname. Let's rename this agent name as well for better identification. Click the agent and change **Agent Name** to be `<your_name>-thousandeyes` and **Save Changes**.
 
-### 2.2 Create a Target group
-Target groups contain the sets of devices that you can run the automation on. We want to create a group that would contain all possible devices that we'd run the automation on.
+## Step 2: Configuring ThousandEyes Testing
 
-> Info:
-> Target groups can only be associated at the workflow level, not at the per-activity level. The same target group needs to apply across all activities that need targets. So if we have a workflow with activities to multiple targets in the same workflow, they need to be in the same target group. There are two approaches here: a) Move the webex notification to a standalone workflow overriding the target to the webex URL, and call it with the **Workflows** activity; or b) Put both targets in a target group, and use the **override target condition** function to define a conditional that picks the appropriate target(s) from the aggregate target group list. This is overly complicated, so let's take Approach A.
+### 2.1 Configure the HTTP Server test
+1. Login to https://www.thousandeyes.com and go to **Network & App Synthetics> Test Settings> Add New Test> HTTP Server**.
+2. Configure URL of https://cisco.webex.com
+3. Run the test every `1 minute`
+4. **Select Agents**. Select your Agent name `<your_name>-thousandeyes`. Make sure you change the **Default interface selection** to `eth1 198.18.13.202` so the test runs out the access network across R3-R2-R1 instead of across the mgmt network. Click **Close**.
+5. Click **Deploy**.
 
-1. Go to **Automation> Targets> + New target group** and name it `<your_name-routers>`.
-2. Click **+ Add target type** and choose the **target type** of `Terminal Endpoint`.
-3. You could either implicitly add all targets you'd potentially run the automation on here, specify a matching condition, or you could enable the **Include all targets of this type** if all terminal endpoints should get this workflow treatment. Since we are potentially dealing with other lab pods in the same tenant, let's just add our one device matching `<your_name>-R3` into the target group. You could add your other pod routers in this group in the future, if you want.
+### 2.2 Configure an alert for the test
+1. **Manage> Alert Rules> Add New Alert Rule**
+2. Set these parameters:
+* **Alert Type: ** `Web> HTTP Server`
+* **Alert Rule Name**: `Congestion Alert`
+* **Tests**: `<Select your test name from 2.1>`
+* **Agents**: `<Select your agent>`
+3. Change **Alert Detection** to `Manual`
 
-### 2.3 Convert the notification atomic to a standalone workflow
-1. Go back to the workflow list, and duplicate your workflow under the **...> Duplicate** section. Call the new workflow `<your_name>-notify2`
-2. Under workflow **variables**, click **+ Add variable** and add a String variable named `message_body`, with **Scope** of input and enable **required for workflow to run**. Set the default value to `-1` just so you know if it doesn't get set properly.
-3. Change the **Markdown Message** field to pull the workflow input variable `message_body`.
-4. Ensure the target is set to **override workflow target** and set to `<your_name>-webex`
+> [!TIP]
+> Adaptive alerting is a neat feature, but it requires a day to run to build normality for the anomaly detection. We don't have that much time here, so even in a world of predictive AI, we're going with old-school manual thresholds.
 
-### 2.4 Parsing webhook content in workflow for target device
-1. Now lets create a new workflow called `<your_name-unshut-int`
-2. First we need to parse out the device that generated the event, which is in the webhook JSON payload.
-3. Find the **JSONPath Query** activity and drag it below **Start**. 
-4. In the **Source JSON to Query** click the variable icon and select **Rule> Webhook Rule> Output> Request Body**.
-5. We need to parse the JSON from the webhook for the variable `dvc`, so we will use **JSONPath Query** of `$.result.dvc` to extract the value (device IP) from that JSON path.
-6. Under **Property Name** set it to `target_device`, which will define the variable the extracted IP will be stored in for later reference. Use property type of `String`.
-7. Finally a good practice is to name the display name something succinct but describing the purpose of the block, so let's call it `get_device_ip`.
+4. Set to `An conditions are met by the same 1 agent 2 of 2 times in a row`
+5. Set the rules to:
+* **Latency** >= 200ms
+* **Jitter** >= 200ms
+* **Packet Loss** >= 5%
+* **Error** is present
+6. Stay on this screen through the next step.
 
-### 2.4 Defining commands to send to the device
+### 2.3 Configuring the webhook integration in Workflows
 
-1. In **Activities** drag the **Terminal> Execute Terminal Commands** activity below the JSON activity.
-2. Set the **Display Name** to something like `unshut interface`.
-3. In the **Terminal> Input Commands** section add commands to unshut the interface:
-```cisco
-conf t
-int lo0
-no sh
-send log "Cisco Workflows has automated unshutting an interface." 
-```
-5. Try to set the Target to use our target group.
-6. See how can't set the target group in the activity? You only can override a single target or the target group criteria? Workflows expects that we have the target group defined at the workflow level.
-7. Click off the activity to get the main workflow parameters and now set the workflow **Target** to `Execute on this target group` and select your `<your_name>-routers` group.
-8. Now we need to add a filtering condition to our target group which selects the actual device(s) you want to use, but at the workflow level we haven't yet defined the actual device IP, since we need to parse the JSON step after the workflow runs. So we need to set some dummy target group criteria to pass syntax check.
-8. Choose the **target type** of `Terminal Endpoint` and the add a condition where:
-    - **Property**: (variable) `Terminal Endpoint> Input> Host/IPAddress`
-    - **Comparison**: `Equals`    
-    - **Value**: `-2`
-9. The above condition's intent is to never be true.
-10. Now go back into the command activity block, and choose **Override target group condition** and set the condition to:
-    - **Property**: (variable) `Terminal Endpoint> Input> Host/IPAddress`
-    - **Comparison**: `Equals`    
-    - **Value**: `Activities> JSONPath Query> JSONPath Queries> target_device`
+1. Now we need to create a new webhook for our ThousandEyes event. **Automation> Rules> Webhooks> + New webhook** 
+2. Name it `<your_name>-te`
+3. **Save** and then go back and view it to get the URL and save this to your local notepad for later reference.
 
-### 2.5 Adding notification
+### 2.4 Configuring the webhook integration in Splunk
 
-1. Now we will go to the workflow tab on the left sidebar, and get our workflow `<your_name>-notify2` and drag it below the command activity.
-2. Click the notify2 workflow instance, and in the `message_body` input set it to the response from the terminal commands (`Activities> Execute Terminal Commands> Response body`). This will send the command responses to the notification. You could add additional text or variables in here, if you desire, for more detailed notification.
-3. Click **Validate** and ensure the workflow passes syntax checks.
+1. Click the **Notifications** tab below the alert name you specified.
+2. Enable **Send emails** to your personal email, if desired. This is sometimes helpful to see quickly 3hen alerts change state.
+4. Under **Integrations** click **Manage integrations** and go to **Integrations 2.0**. 
+5. Choose **Custom Webhook**
+6. Name the webhook `<your_name>-wh`.
+8. Define the target as the Cisco Workflows webhook URL you created earlier in this lab.
+9. No Auth Type is needed since the API key is in the URL.
+10. Click **Save and assign operation**
+11. Set **Operation Name** to `<your_name>-congestion-json` and choose the **Preset Configuration** of `Splunk`. We aren't sending to splunk but the preset for Splunk is a nice simple JSON format that Cisco Workflows and our AI agent will nicely process. It should prepopulate the **Content-Type** header for `application/json` which we want.
+12. Leave this browser tab open. We will run a test by clicking the **test** button after we configure our workflow to handle ThousandEyes.
 
-### 2.6 Changing the workflow trigger
+### 2.5 Importing a workflow for ThousandEyes event handling
+1. In Cisco Workflows, go to the Automation Workspace where the workflows are listed.
+2. Add the git repo for ThousandEyes workflows like you did in Lab 3. `https://github.com/ciscomanagedservices/ciscolive26_cw_ai_agents/tree/main/workflows/ThousandEyes`
+3. Click **Actions> Import Workflow> From Git** and import the `get_te_path_info` workflow first, and then `te_alert_webhook` workflow.
 
-1. Go to the trigger you defined for the original notification workflow and change the triggered workflow from that to your new `*-shut-int` workflow.
 
-### Step 4: Validation
+### 2.5 Configuring the trigger for the workflow
 
-1. Go to R3, ensure the loopback0 interface is in an up state. If not, bring it up and then `clear log`.
-2. Shut the loopback0 interface down with `shut`
-3. Wait about 90 seconds, and see if your new workflow runs in **More Actions> View runs**.
+1. Now go back to Cisco Workflows and  **Automation> Rules> Automation rules> + New automation rule** and hook your new ThousandEyes webhook and workflow up.
 
-### Step 5: Troubleshooting
+### Step 3: Create congestion on the network to generate an incident
 
-1. The same steps for isolating the problem that we used in Lab1 apply here.
-2. If you see errors in your workflow, inspect the JSON errors to determine what the issue is.
+### 3.1 Create impairment
+1. Let's create impairment on R2 in the middle of the router chain. `ssh cisco@198.18.1.102`
+2. Run `event manager run CONGESTION_ON` which triggers an applet to apply interface policing and shaping on Gig1 and Gig2 to impair the access network.
+
+### 3.2 Validating the troubleshooting run
+1. It will take a few minutes for ThousandEyes to see the result, since we have a 2 minute alert. Any one have any good stories or jokes? If not, Steve is going to play music he likes which may not be to your favor.
+2. If you signed up for an email alert, you should receive it soon. Otherwise, check the **workflow run** section in Cisco Workflows to validate that the workflow has started to run.
+3. It should now be troubleshooting the network. This takes some time to analyze output and determine the action to take for remediation--roughly 20 minutes with current early 2026 models. To watch for progress as it troubleshoots you can click **...** on the `AI Agent` subworkflow in the webhook workflow run, and then click `Update I_messages variable` to watch for the latest updates in realtime. You will want to change the iteration in the main `Agent Iteration Loop` to the last or second to last iteration (sometimes the last iteration is still processing and won't have content).
+4. Alternatively, you can just wait for Webex Teams summary messages at milestones.
+5. Eventually you should see it request a task to be approved. Go to **Automation> User Tasks** to see if it is requesting a task approval. If it needs more info from you, it may also request something in **Prompts** but for this use case we don't expect it to need a prompt as it should have all the info it needs from ThousandEyes + RADKit to identify what it needs to solve the issue.
+6. Once you see the change request, take a look at it. You should see a well curated explanation of the symptom, isolation to the root cause, and suggested fix if the change is approved. It even qualifies the risk of the change.
+7. Click **Approve**. It will take a few more minutes, but then the policy should be removed and ThousandEyes alert should clear.
+8. The agent may keep assessing. We often see that after the fix it analyzes like a Problem Manager would, to determine how to prevent this issue from ever occurring again. See if you see that and a second change request.
 
 ---
 
 ## Summary
 
-You have successfully configured the foundational infrastructure for agentic network operations:
+That's it--great job!
+
+You have successfully configured:
 
 | Component | Status | Purpose |
 |-----------|--------|---------|
-| Remote Server | Registered | Allows for sending terminal commands to devices |
+| ThousandEyes | Connected | Allows for sending terminal commands to devices |
 | Cisco Workflows | Automated response | Now performing automated actions on devices |
 | Target groups | Educational | Learned application for target groups for automating across your estate |
 
-In the next lab, you will configure Cisco Workflows to have cognitive agentic intelligence, where it determines the next steps instead of you defining what commands to run. We will also leverage Cisco IQ's remote device connectivity (formerly known as CX RADKit) to simplify managing devices across the estate.
+And with that, you have seen event stimulus to drive agentic network troubleshooting, all the way through root cause resolution.
+
+Now--imagine the power of it having the ThousandEyes alert, network path, and access to device level events/logs. What other types of your network issues do you think you can use Cisco workflows ambient agent to solve for you?
+
+## Take home ideas
+
+We encourage you to continue to test and enhance the power of agentic troublshooting at home. Some other things to consider trying are:
+* Intgrating both device event/log data and observability event data from ThousandEyes, Splunk, AppDynamics, or other tools
+* Integrate your knowledge base to augment and refine specific policies or processes
+* Integrate with your enterprise ITSM change management, such as ServiceNow
