@@ -53,7 +53,8 @@ Extend agentic response with ThousandEyes observability:
 │   └── docs/               # Lab markdown files
 ├── scripts/                # Setup scripts
 │   └── mcp-server/         # MCP server enrollment and setup
-├── utils/                  # Utility functions
+│   └── tools/              # Script to update JSON for AI agent tool list
+│   └── radkit/             # Radkit setup--not needed for the lab
 └── workflows/              # Cisco Workflows JSON exports
 ```
 
