@@ -204,9 +204,41 @@ You should have imported a total of **5 workflows**:
    - **Path:** (leave blank)
 4. If any settings are incorrect, update them and click **Save**
 
-### 1.7 Test the AI Agent
+### 1.7 Test Individual Tools
 
-Now let's verify the AI Agent workflow runs correctly before connecting it to your event trigger.
+Before testing the full AI Agent, let's verify that the individual tools work correctly.
+
+#### 1.7.1 Test RADKit Exec Command Tool
+
+1. Go to **Automation** -> **Workspace**
+2. Click on **Tool - RADKIT Exec Command** to open the workflow
+3. Click **Run** in the upper right corner
+4. When prompted, fill out the input variables:
+   - **i_device_name:** `r1`
+   - **i_commands:** `show version`
+5. Click **Run** to execute the workflow
+6. Verify the workflow completes successfully and returns the device output
+
+> **Success Criteria:** The workflow should complete without errors and display the `show version` output from device r1.
+
+#### 1.7.2 Test Webex Notification Tool
+
+1. Go to **Automation** -> **Workspace**
+2. Click on **Tool - Send Webex Notification** to open the workflow
+3. On the right side panel, expand **Variables**
+4. Update the local variable `l_room_name` to the name of your test Webex space that has the Webex bot
+5. Click **Run** in the upper right corner
+6. When prompted, fill out the input variables:
+   - **i_instance_id:** `test`
+   - **i_message:** `Hello from the AI Agent lab! This is a test notification.`
+7. Click **Run** to execute the workflow
+8. Check your Webex space to verify you received the message
+
+> **Success Criteria:** You should see your test message appear in the configured Webex room.
+
+### 1.8 Test the AI Agent
+
+Now let's verify the full AI Agent workflow runs correctly.
 
 1. Go to **Automation** -> **Workspace**
 2. Click on **AIAgent** to open the workflow
@@ -223,19 +255,4 @@ Now let's verify the AI Agent workflow runs correctly before connecting it to yo
 > - Verify the OPENAI_API_KEY is set correctly
 > - Check that the OPENAI_ENDPOINT target is configured properly
 > - Ensure your Webex access token is valid
-
-### 1.8 Configure the Webex Notification Tool (Optional)
-
-The Webex notification capability is embedded within the ToolBox workflow as a subworkflow. If you need to customize the Webex room or dashboard URL, follow these steps:
-
-#### 1.8.1 Configure Workflow Variables
-
-1. Go to **Automation** -> **Workspace**
-2. Click on **ToolBox** to open the workflow
-3. In the workflow canvas, locate and double-click on the **ToolSendWebexNotification** subworkflow
-4. On the right side panel, expand **Variables**
-5. Update the **Local Variables** if needed:
-   - `l_meraki_dashboard_url` - Your Meraki Dashboard URL
-   - `l_room_name` - The Webex room/space name for notifications
-
-> **Tip:** The room name should match an existing Webex space where you want to receive AI Agent notifications.
+> - Re-run the individual tool tests (1.7.1 and 1.7.2) to isolate the issue
