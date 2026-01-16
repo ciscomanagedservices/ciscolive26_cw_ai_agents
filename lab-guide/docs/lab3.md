@@ -256,3 +256,143 @@ Now let's verify the full AI Agent workflow runs correctly.
 > - Check that the OPENAI_ENDPOINT target is configured properly
 > - Ensure your Webex access token is valid
 > - Re-run the individual tool tests (1.7.1 and 1.7.2) to isolate the issue
+
+---
+
+## Step 2: Create AI Agent Workflow for Event Remediation
+
+Now that you have the AI Agent working, let's connect it to respond to the same network event from Lab 2. Instead of hardcoded commands, the AI Agent will cognitively analyze the event and determine the appropriate remediation.
+
+### 2.1 Duplicate the Lab 2 Workflow
+
+We'll start by duplicating your Lab 2 workflow and modifying it to use the AI Agent.
+
+1. Go to **Automation** → **Workspace**
+2. Find your workflow `<your_name>-unshut-int` from Lab 2
+3. Click the **...** menu on the workflow and select **Duplicate**
+
+### 2.2 Configure the New Workflow
+
+1. Click on the duplicated workflow `Copy(1) <your_name>-unshut-int` to open it
+2. In the **General** tab, rename the workflow to `<your_name>-ai-fix-shut-interface`
+3. Delete the **Terminal** activity (the static remediation commands)
+4. Delete the existing **sub workflow** activity
+
+### 2.3 Add the AI Agent Activity
+
+1. On the left side panel, click **Workflows**
+2. Search for `AI Agent`
+3. Drag the **AIAgent** workflow into the flow after the **JSON Path Query** activity
+
+### 2.4 Configure the AI Agent Task
+
+1. Click on the **AI Agent** block to select it
+2. Expand the `i_agent_task` input variable
+3. Configure it with the following text:
+
+```
+A network event was received for device
+```
+
+4. After "device ", add a **reference variable** pointing to the JSON Path Query output `target_device`
+5. Continue the text:
+
+```
+:
+
+raw event:
+
+```
+
+6. Add another **reference variable** pointing to the **Webhook Request Body**
+7. Finally, add this instruction at the end:
+
+```
+
+You MUST proceed with investigation. If any change is required to resolve alert, you MUST call tool to request change approval.
+```
+
+> **Note:** We're keeping it simple - giving the agent minimal parsing and letting it analyze the raw event. The final instruction ensures the agent requests your approval before making any changes.
+
+### 2.5 Validate the Workflow
+
+1. Click **Validate** in the upper right corner
+2. Ensure there are no validation errors
+3. If errors appear, verify the reference variables are correctly linked
+
+### 2.6 Update the Trigger Rule
+
+1. Go to **Automation** → **Rules**
+2. Find your rule from Lab 1
+3. **Enable** the action for the new `<your_name>-ai-fix-shut-interface` workflow
+4. **Disable** the action for the prior `<your_name>-unshut-int` workflow
+
+### 2.7 Test the AI Agent Response
+
+1. SSH to R3 (198.18.1.103)
+2. Execute the following commands to shut down the interface:
+   ```
+   conf t
+   int lo0
+   shut
+   ```
+3. Wait for the webhook to fire and observe the AI Agent workflow execution
+
+### 2.8 Respond to Clarifying Questions (If Any)
+
+The AI Agent may ask clarifying questions before proceeding - that's OK! It's just trying to make sure it's doing the right thing.
+
+1. Check Webex for any **clarifying questions** from the agent
+2. If the agent asks a question, click the **Cisco Workflow Run** link in the Webex message
+3. In the Cisco Workflows UI, click **View Task**
+4. Provide as much detail as possible to help the agent understand the situation:
+   - Confirm the interface should be brought back up
+   - Specify that this is a loopback interface on R3
+   - Indicate that the interface was administratively shut down and needs to be restored
+
+> **Tip:** The more context you provide, the better the agent can proceed with confidence and open a change request!
+
+### 2.9 Approve the Change Request
+
+Once the agent has enough information, it will request your approval before making changes:
+
+1. Check Webex for a **change approval notification** from the agent
+2. Click the **Cisco Workflow Run** link in the Webex message
+3. In the Cisco Workflows UI, click **View Task**
+4. Review the agent's proposed action and click **Approve** to allow the agent to bring the interface back up
+
+> **Note:** The next lab uses a workflow with more detailed prompting for complex ThousandEyes troubleshooting scenarios.
+
+### 2.10 Validation
+
+1. Check R3: Run `show ip int brief` - loopback0 should be up after approval
+2. Check Webex for the agent's completion notification
+3. Review the workflow run to see the agent's reasoning chain
+
+---
+
+## Summary
+
+You have successfully configured a cognitive AI Agent for network operations:
+
+| Component | Status | Purpose |
+|-----------|--------|---------|
+| AI Agent Workflow | Imported | Orchestrates LLM-driven analysis and tool execution |
+| OpenAI Integration | Configured | Provides cognitive reasoning capabilities |
+| ToolBox | Imported | Gives agent access to device commands, notifications, and approvals |
+| Event-Triggered Agent | Working | Responds to network events with intelligent remediation |
+
+### Key Differences: Lab 2 vs Lab 3
+
+| Aspect | Lab 2 (Static) | Lab 3 (Cognitive) |
+|--------|----------------|-------------------|
+| **Logic** | Hardcoded: `conf t`, `int lo0`, `no sh` | AI analyzes event and decides action |
+| **Flexibility** | Only handles loopback0 | Can handle any interface/device |
+| **Approval** | None - auto-executes | Human-in-the-loop via change approval |
+| **Transparency** | Just runs commands | Agent explains reasoning in Webex |
+
+In the next lab, you will integrate ThousandEyes for network performance monitoring and see the AI Agent troubleshoot more complex scenarios with enriched path data.
+
+---
+
+**Congratulations!** Once the AI Agent successfully brings loopback0 back up, Lab 3 is complete!
