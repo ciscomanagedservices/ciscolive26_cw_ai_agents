@@ -73,10 +73,10 @@ You will add **3 repositories** using the steps below. Each repository uses the 
 1. Click **New git repository**
 2. Fill the repository details:
    - **Display Name:** `LTRAI-1487 - AI`
-   - Click Default Account Keys -> **Add New** 
-     - You may optionally use your GitHub username/password, but it's better to create a classic access token. If you do not have a GitHub access token, follow these steps: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens 
-     - Username: `<your username>`
-     - Password: `<token>`
+   - Click **Default Account Keys** -> **Add New**
+     - **Account Key Type:** `Git Token-Based Credentials`
+     - **Display Name:** `LTRAI-1487 GitHub`
+     - **Token:** Use the GitHub token provided by your administrator (found in the dCloud lab details)
    - **REST API Repository:** `api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents`
    - **Branch:** `main`
    - **Code Path:** `workflows/ai`
