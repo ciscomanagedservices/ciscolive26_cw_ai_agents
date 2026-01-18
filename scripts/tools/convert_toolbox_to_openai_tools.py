@@ -33,6 +33,9 @@ Examples:
 
   # Use custom workflows directory for subworkflows
   %(prog)s -i custom_toolbox.json --workflows-dir /path/to/workflows --all
+
+  # Generate tool spec from a single workflow via stdin
+  cat workflow.json | %(prog)s --stdin --function-name my_tool_name
         """
     )
     parser.add_argument(
@@ -57,6 +60,16 @@ Examples:
         help="Base workflows directory for finding subworkflows (default: workflows/)",
         default="workflows/",
         metavar="DIR"
+    )
+    parser.add_argument(
+        "--stdin",
+        action="store_true",
+        help="Read a single workflow JSON from stdin instead of ToolBox"
+    )
+    parser.add_argument(
+        "--function-name",
+        help="Function name for the tool (required with --stdin)",
+        metavar="NAME"
     )
     return parser.parse_args()
 
@@ -323,6 +336,37 @@ def build_openai_function(tool: Dict[str, Any]) -> Dict[str, Any]:
 def main():
     """Main entry point."""
     args = parse_args()
+
+    # Handle stdin mode for single workflow
+    if args.stdin:
+        if not args.function_name:
+            print("Error: --function-name is required when using --stdin", file=sys.stderr)
+            sys.exit(1)
+
+        try:
+            workflow_json = json.load(sys.stdin)
+        except json.JSONDecodeError as e:
+            print(f"Error: Invalid JSON from stdin: {e}", file=sys.stderr)
+            sys.exit(1)
+
+        parsed = parse_subworkflow(workflow_json)
+
+        tool = {
+            "function_name": args.function_name,
+            "description": parsed["description"],
+            "parameters": parsed["parameters"]
+        }
+
+        spec = build_openai_function(tool)
+        output_json = json.dumps([spec], indent=2)
+
+        if args.output:
+            with open(args.output, 'w') as f:
+                f.write(output_json)
+            print(f"Tool specification written to: {args.output}", file=sys.stderr)
+
+        print(output_json)
+        return
 
     # Find and load ToolBox JSON
     toolbox_path = find_toolbox_file(args.input)
