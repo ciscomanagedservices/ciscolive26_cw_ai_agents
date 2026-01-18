@@ -4,6 +4,8 @@
 
 In this lab, you will configure Cisco Workflows to act as an AI Agent that can respond, investigate, and remediate (with your approval) incoming events. By the end of this lab, you will have:
 
+- Installed and configured RADKit Service for device management
+- Set up the RADKit MCP Server for tool integration
 - Imported the AI Agent workflow definitions from GitHub
 - Configured OpenAI API credentials for LLM access
 - Connected the AI Agent to your existing webhook trigger
@@ -42,7 +44,170 @@ However, the agentic response will be a series of LLM calls which trigger tools 
 
 ---
 
-## Step 1: Import the Cognitive Response Workflows
+## Step 1: Install RADKit Service
+
+RADKit (Remote Access and Diagnostic Kit) provides secure remote access to network devices. We'll install it as a Docker container on the ubuntu-server.
+
+### 1.1 Connect to the Ubuntu Server
+
+1. From your workstation, SSH to the ubuntu-server:
+   ```bash
+   ssh root@198.18.1.250
+   ```
+
+### 1.2 Clone the Lab Repository
+
+1. Clone the GitHub repository:
+   ```bash
+   git clone https://github.com/ciscomanagedservices/ciscolive26_cw_ai_agents.git
+   ```
+
+   > **Note:** The repository is public. If you encounter issues, use the GitHub PAT from the dCloud credentials file.
+
+2. Navigate to the RADKit scripts directory:
+   ```bash
+   cd ciscolive26_cw_ai_agents/scripts/radkit
+   ```
+
+### 1.3 Run the RADKit Installation Script
+
+1. Run the installation script:
+   ```bash
+   ./radkit-install.sh
+   ```
+
+2. When prompted for the superadmin password during bootstrap, enter:
+   ```
+   0e52nsq5jf7f-bxq8whdi7dnT
+   ```
+
+The script will:
+- Load the RADKit Docker image
+- Create a data directory at `/tmp/radkit`
+- Bootstrap the RADKit service
+- Start the container on port 8081
+
+3. Verify the container is running:
+   ```bash
+   docker ps | grep radkit
+   ```
+
+---
+
+## Step 2: Configure RADKit Service
+
+Now we'll configure RADKit through its web interface to enroll with Cisco Cloud, add devices, and set up remote users.
+
+### 2.1 Login to RADKit WebUI
+
+1. Open a browser and navigate to: **https://198.18.1.250:8081/**
+2. Accept the self-signed certificate warning
+3. Login with:
+   - **Username:** `superadmin`
+   - **Password:** `0e52nsq5jf7f-bxq8whdi7dnT`
+
+### 2.2 Enroll RADKit Service with SSO
+
+1. Click **Connectivity** in the left menu
+2. Click **Enroll with SSO**
+3. Enter your **Cisco.com (CCO) email address**
+4. Click **Submit**
+5. Click the **CLICK HERE** link to complete SSO authentication
+6. After SSO completes, close the SSO tab and return to the RADKit WebUI
+
+> **Important:** Note the **Service ID** displayed at the top center of the screen (e.g., `xxxx-yyyy-zzzz`). You will need this for MCP server setup in Step 3.
+
+### 2.3 Add Network Devices
+
+1. Click **Devices** in the left menu
+2. Click **Add Device**
+3. Add the following three devices:
+
+| Name | IP Address | Device Type |
+|------|------------|-------------|
+| r1 | 198.18.1.101 | IOS XE |
+| r2 | 198.18.1.102 | IOS XE |
+| r3 | 198.18.1.103 | IOS XE |
+
+For each device:
+1. Enter the **Name** and **IP Address**
+2. Select **IOS XE** as the device type
+3. Check **Active (remotely manageable)**
+4. Enable **Terminal Management**
+5. Scroll down to **Terminal Settings**
+6. Add SSH credentials:
+   - **Username:** `cisco`
+   - **Password:** `cisco`
+7. Click **Add & continue** (or **Add & close** for the last device)
+
+### 2.4 Add Remote Users
+
+1. Click **Remote Users** in the left menu
+2. Click **Add User**
+3. Enter your **email address**
+4. Check **Activate this user**
+5. Click **Add & close**
+
+---
+
+## Step 3: Setup RADKit MCP Server
+
+The MCP (Model Context Protocol) server allows Cisco Workflows to interact with RADKit-managed devices through a standardized API.
+
+### 3.1 Navigate to MCP Scripts
+
+1. On the ubuntu-server (still connected via SSH), navigate to the MCP scripts:
+   ```bash
+   cd /root/ciscolive26_cw_ai_agents/scripts/mcp-server
+   ```
+
+### 3.2 Update the Service Serial
+
+1. Edit `setup_mcp.sh` and update the Service Serial with your Service ID from Step 2.2:
+   ```bash
+   nano setup_mcp.sh
+   ```
+
+2. Find the line:
+   ```bash
+   RADKIT_DEFAULT_SERVICE_SERIAL=fjkj-2njn-04q7
+   ```
+
+3. Replace `fjkj-2njn-04q7` with your actual Service ID from the RADKit WebUI
+
+4. Save and exit (Ctrl+X, Y, Enter)
+
+### 3.3 Run the MCP Setup Script
+
+1. Run the setup script:
+   ```bash
+   ./setup_mcp.sh
+   ```
+
+2. When prompted, enter your **email address** (the same one used for RADKit registration)
+
+The script will:
+- Enroll client certificates with RADKit
+- Create a Docker network for RADKit communication
+- Build and run the MCP server container on port 8000
+
+### 3.4 Verify MCP Server
+
+1. Run the test script to verify the MCP server is working:
+   ```bash
+   ./radkit-mcp-test.sh
+   ```
+
+2. Verify all tests show `[OK]`:
+   - Test 1: Initialize MCP Session
+   - Test 2: List Available Tools
+   - Test 3: Call Tool
+
+> **Success Criteria:** All three tests should pass. The MCP endpoint is now available at: `http://198.18.1.250:8000/mcp`
+
+---
+
+## Step 4: Import the Cognitive Response Workflows
 
 We will need to import the cognitive response workflow definitions from GitHub into your Cisco Workflows instance.
 
@@ -60,7 +225,7 @@ We will need to import the cognitive response workflow definitions from GitHub i
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 1.1 Add Git Repositories to Cisco Workflows
+### 4.1 Add Git Repositories to Cisco Workflows
 
 1. Go to Meraki Dashboard on your workstation
 2. Go to **Automation** -> **Workspace**
@@ -68,7 +233,7 @@ We will need to import the cognitive response workflow definitions from GitHub i
 
 You will add **3 repositories** using the steps below. Each repository uses the same GitHub credentials but a different **Code Path**.
 
-### 1.2 Repository 1: AI (OpenAI Chat Completion)
+### 4.2 Repository 1: AI (OpenAI Chat Completion)
 
 1. Click **New git repository**
 2. Fill the repository details:
@@ -81,7 +246,7 @@ You will add **3 repositories** using the steps below. Each repository uses the 
    - **Branch:** `main`
    - **Code Path:** `workflows/ai`
 
-### 1.3 Repository 2: AI Agent (Agent Workflow + ToolBox)
+### 4.3 Repository 2: AI Agent (Agent Workflow + ToolBox)
 
 1. Click **New git repository** again
 2. Fill the repository details:
@@ -91,7 +256,7 @@ You will add **3 repositories** using the steps below. Each repository uses the 
    - **Branch:** `main`
    - **Code Path:** `workflows/ai_agent`
 
-### 1.4 Repository 3: MCP (Model Context Protocol)
+### 4.4 Repository 3: MCP (Model Context Protocol)
 
 1. Click **New git repository** again
 2. Fill the repository details:
@@ -101,7 +266,7 @@ You will add **3 repositories** using the steps below. Each repository uses the 
    - **Branch:** `main`
    - **Code Path:** `workflows/mcp`
 
-### 1.5 Verify Repository Configuration
+### 4.5 Verify Repository Configuration
 
 Confirm that you have 3 Git repositories configured in Cisco Workflows:
 
@@ -111,7 +276,7 @@ Confirm that you have 3 Git repositories configured in Cisco Workflows:
 | LTRAI-1487 - AI Agent | `workflows/ai_agent` |
 | LTRAI-1487 - MCP | `workflows/mcp` |
 
-### 1.6 Import Workflows
+### 4.6 Import Workflows
 
 You will now import workflows from all three Git repositories. Follow the steps below in order, as some workflows depend on others.
 
@@ -126,7 +291,7 @@ You will now import workflows from all three Git repositories. Follow the steps 
 4. AI Agent (AI Agent repo)                  ← Main orchestrator
 ```
 
-#### 1.6.1 Import OpenAI Chat Completion
+#### 4.6.1 Import OpenAI Chat Completion
 
 1. Go to **Automation** -> **Workspace**
 2. Click **Actions** -> **Import Workflow**, then click the **Git** tab
@@ -140,7 +305,7 @@ You will now import workflows from all three Git repositories. Follow the steps 
    - **Ask your instructor for this key if you don't have it**
 6. Click **Import**
 
-#### 1.6.2 Import MCP Server Tools
+#### 4.6.2 Import MCP Server Tools
 
 1. Click **Actions** -> **Import Workflow**, then click the **Git** tab
 2. Import `MCPListTools`:
@@ -154,7 +319,7 @@ You will now import workflows from all three Git repositories. Follow the steps 
    - **Version:** Latest
    - Click **Import**
 
-#### 1.6.3 Import ToolBox
+#### 4.6.3 Import ToolBox
 
 The ToolBox workflow includes all tool subworkflows as embedded components, so you only need to import this single workflow to get all the tools.
 
@@ -167,7 +332,7 @@ The ToolBox workflow includes all tool subworkflows as embedded components, so y
 
 > **Note:** The ToolBox workflow bundles all individual tools (scratchpad, Webex notifications, change approval, terminal commands, and RADKIT tools) as subworkflows. You do not need to import them separately.
 
-#### 1.6.4 Import AI Agent
+#### 4.6.4 Import AI Agent
 
 1. Click **Actions** -> **Import Workflow** -> **Git** tab
 2. Select:
@@ -178,7 +343,7 @@ The ToolBox workflow includes all tool subworkflows as embedded components, so y
 4. When prompted for **OPENAI_API_KEY**, enter the API key found in the dCloud file
    - **Ask your instructor if you cannot locate this key**
 
-#### 1.6.5 Validate All Workflows
+#### 4.6.5 Validate All Workflows
 
 After importing all workflows, validate that they are configured correctly:
 
@@ -194,7 +359,7 @@ You should have imported a total of **5 workflows**:
 - 2 from MCP repository (MCPListTools, MCPRunTool)
 - 2 from AI Agent repository (ToolBox + AIAgent)
 
-#### 1.6.6 Verify OpenAI Endpoint Configuration
+#### 4.6.6 Verify OpenAI Endpoint Configuration
 
 1. Go to **Automation** -> **Targets**
 2. Click on **OPENAI_ENDPOINT**
@@ -204,11 +369,11 @@ You should have imported a total of **5 workflows**:
    - **Path:** (leave blank)
 4. If any settings are incorrect, update them and click **Save**
 
-### 1.7 Test Individual Tools
+### 4.7 Test Individual Tools
 
 Before testing the full AI Agent, let's verify that the individual tools work correctly.
 
-#### 1.7.1 Test RADKit Exec Command Tool
+#### 4.7.1 Test RADKit Exec Command Tool
 
 1. Go to **Automation** -> **Workspace**
 2. Click on **Tool - RADKIT Exec Command** to open the workflow
@@ -221,7 +386,7 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 
 > **Success Criteria:** The workflow should complete without errors and display the `show version` output from device r1.
 
-#### 1.7.2 Test Webex Notification Tool
+#### 4.7.2 Test Webex Notification Tool
 
 1. Go to **Automation** -> **Workspace**
 2. Click on **Tool - Send Webex Notification** to open the workflow
@@ -236,7 +401,7 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 
 > **Success Criteria:** You should see your test message appear in the configured Webex room.
 
-### 1.8 Test the AI Agent
+### 4.8 Test the AI Agent
 
 Now let's verify the full AI Agent workflow runs correctly.
 
@@ -255,15 +420,15 @@ Now let's verify the full AI Agent workflow runs correctly.
 > - Verify the OPENAI_API_KEY is set correctly
 > - Check that the OPENAI_ENDPOINT target is configured properly
 > - Ensure your Webex access token is valid
-> - Re-run the individual tool tests (1.7.1 and 1.7.2) to isolate the issue
+> - Re-run the individual tool tests (4.7.1 and 4.7.2) to isolate the issue
 
 ---
 
-## Step 2: Create AI Agent Workflow for Event Remediation
+## Step 5: Create AI Agent Workflow for Event Remediation
 
 Now that you have the AI Agent working, let's connect it to respond to the same network event from Lab 2. Instead of hardcoded commands, the AI Agent will cognitively analyze the event and determine the appropriate remediation.
 
-### 2.1 Duplicate the Lab 2 Workflow
+### 5.1 Duplicate the Lab 2 Workflow
 
 We'll start by duplicating your Lab 2 workflow and modifying it to use the AI Agent.
 
@@ -271,20 +436,20 @@ We'll start by duplicating your Lab 2 workflow and modifying it to use the AI Ag
 2. Find your workflow `<your_name>-unshut-int` from Lab 2
 3. Click the **...** menu on the workflow and select **Duplicate**
 
-### 2.2 Configure the New Workflow
+### 5.2 Configure the New Workflow
 
 1. Click on the duplicated workflow `Copy(1) <your_name>-unshut-int` to open it
 2. In the **General** tab, rename the workflow to `<your_name>-ai-fix-shut-interface`
 3. Delete the **Terminal** activity (the static remediation commands)
 4. Delete the existing **sub workflow** activity
 
-### 2.3 Add the AI Agent Activity
+### 5.3 Add the AI Agent Activity
 
 1. On the left side panel, click **Workflows**
 2. Search for `AI Agent`
 3. Drag the **AIAgent** workflow into the flow after the **JSON Path Query** activity
 
-### 2.4 Configure the AI Agent Task
+### 5.4 Configure the AI Agent Task
 
 1. Click on the **AI Agent** block to select it
 2. Expand the `i_agent_task` input variable
@@ -314,20 +479,20 @@ You MUST proceed with investigation. If any change is required to resolve alert,
 
 > **Note:** We're keeping it simple - giving the agent minimal parsing and letting it analyze the raw event. The final instruction ensures the agent requests your approval before making any changes.
 
-### 2.5 Validate the Workflow
+### 5.5 Validate the Workflow
 
 1. Click **Validate** in the upper right corner
 2. Ensure there are no validation errors
 3. If errors appear, verify the reference variables are correctly linked
 
-### 2.6 Update the Trigger Rule
+### 5.6 Update the Trigger Rule
 
 1. Go to **Automation** → **Rules**
 2. Find your rule from Lab 1
 3. **Enable** the action for the new `<your_name>-ai-fix-shut-interface` workflow
 4. **Disable** the action for the prior `<your_name>-unshut-int` workflow
 
-### 2.7 Test the AI Agent Response
+### 5.7 Test the AI Agent Response
 
 1. SSH to R3 (198.18.1.103)
 2. Execute the following commands to shut down the interface:
@@ -338,7 +503,7 @@ You MUST proceed with investigation. If any change is required to resolve alert,
    ```
 3. Wait for the webhook to fire and observe the AI Agent workflow execution
 
-### 2.8 Respond to Clarifying Questions (If Any)
+### 5.8 Respond to Clarifying Questions (If Any)
 
 The AI Agent may ask clarifying questions before proceeding - that's OK! It's just trying to make sure it's doing the right thing.
 
@@ -352,7 +517,7 @@ The AI Agent may ask clarifying questions before proceeding - that's OK! It's ju
 
 > **Tip:** The more context you provide, the better the agent can proceed with confidence and open a change request!
 
-### 2.9 Approve the Change Request
+### 5.9 Approve the Change Request
 
 Once the agent has enough information, it will request your approval before making changes:
 
@@ -363,7 +528,7 @@ Once the agent has enough information, it will request your approval before maki
 
 > **Note:** The next lab uses a workflow with more detailed prompting for complex ThousandEyes troubleshooting scenarios.
 
-### 2.10 Validation
+### 5.10 Validation
 
 1. Check R3: Run `show ip int brief` - loopback0 should be up after approval
 2. Check Webex for the agent's completion notification
@@ -377,6 +542,8 @@ You have successfully configured a cognitive AI Agent for network operations:
 
 | Component | Status | Purpose |
 |-----------|--------|---------|
+| RADKit Service | Installed & Configured | Secure remote access to network devices |
+| RADKit MCP Server | Running | API interface for device tool execution |
 | AI Agent Workflow | Imported | Orchestrates LLM-driven analysis and tool execution |
 | OpenAI Integration | Configured | Provides cognitive reasoning capabilities |
 | ToolBox | Imported | Gives agent access to device commands, notifications, and approvals |
