@@ -231,8 +231,7 @@ This should produce a new log as seen in `show logging` with contents of `%LINEP
 
 ### 7.2 Validation
 
-1. View the results of the `index=syslog "%LINEPROTO-5-UPDOWN"` saved search from the **New Report New Alert
-Searches, Reports, and Alerts** page, by clicking **Run**. Be sure to change the search scope (right of search bar) from `Real-time` to `All-time` to see historical results. You may need to wait a couple minutes for the event to get picked up and indexed. We generally see end-to-end processing for this lab in about 60 seconds from device syslog generation.
+1. View the results of the `index=syslog "%LINEPROTO-5-UPDOWN"` saved search from the **Searches, Reports, and Alerts** page, by clicking **Run**. Be sure to change the search scope (right of search bar) from `Real-time` to `All-time` to see historical results. You may need to wait a couple minutes for the event to get picked up and indexed. We generally see end-to-end processing for this lab in about 60 seconds from device syslog generation.
 2. If you see interface results in the saved search, now let's see if the webhook triggered a workflow in Cisco Workflows. In Meraki, go to **Automation> Run Monitoring** and see if you see your workflow run. You can click it and go to **View run details** in the lower right. Click the Webex activity box and you will be able to see the payload of the syslog message that was sent to Webex.
 3. Hopefully by now you also received a webex message with JSON payload of the syslog event. Notice some extra info in here, that the Cisco Networks app is doing some parsing magic on, since it can recognize and parse the syslog format.
 

@@ -1,5 +1,14 @@
 # Lab 5 - Extending the AI Agent with Custom Tools
 
+## Prerequisites
+
+Before starting this lab, ensure you have completed:
+
+- **Lab 3** - AI Agent and ToolBox workflows must be imported and working
+- **Lab 1** - Webex bot configured (for testing notifications)
+
+---
+
 ## Overview
 
 In this lab, you will learn how to extend the AI Agent's capabilities by creating a custom tool. You will build a weather retrieval tool that uses the public [wttr.in](https://github.com/chubin/wttr.in) API service.

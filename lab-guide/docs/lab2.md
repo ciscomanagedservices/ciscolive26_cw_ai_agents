@@ -44,7 +44,6 @@ scp remotePackage.zip root@198.18.1.204:/root/
 1. In **Automation> Targets** go to **+ New target** and set:
     - **Target type:** `Terminal endpoint`
     - **Display name:** `<your_name>-R3`
-    - **Target type:** `Terminal endpoint`
     - **Remote Keys:** `<your_name>-remote` #This specifies that this device should use the remote server to connect
     - **Protocol:** `SSH`
     - **Host/IP Address:** `198.18.1.103`    
@@ -115,7 +114,7 @@ send log "Cisco Workflows has automated unshutting an interface."
 
 ### 2.7 Changing the workflow trigger
 
-1. Go to the trigger you defined for the original notification workflow and change the triggered workflow from that to your new `*-shut-int` workflow.
+1. Go to the trigger you defined for the original notification workflow and change the triggered workflow from that to your new `*-unshut-int` workflow.
 
 ## Step 3: Validation
 

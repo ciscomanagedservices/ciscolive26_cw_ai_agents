@@ -52,6 +52,7 @@ Key IP addresses for you to reference:
 | splunk         | http://198.18.1.210:8000 | admin / cisco        |
 | wf-remote      | ssh root@198.18.1.204             | cisco        |
 | jumphost       | ssh root@198.18.1.200   | cisco |
+| ubuntu-server  | ssh root@198.18.1.250    | cisco        |
 
 The event chain will ultimately be:
 ```txt

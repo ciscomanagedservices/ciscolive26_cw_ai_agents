@@ -1,5 +1,14 @@
 # Lab 4 - Agentic response with ThousandEyes and dynamic network path data
 
+## Prerequisites
+
+Before starting this lab, ensure you have completed:
+
+- **Lab 3** - AI Agent workflow, RADKit, and MCP server must be configured and working
+- **Lab 1** - Webex bot and notification workflow (for receiving agent messages)
+
+---
+
 ## Recap
 
 So far you have:
@@ -92,7 +101,12 @@ ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(
 
 ### 2.5 Importing a workflow for ThousandEyes event handling
 1. In Cisco Workflows, go to the Automation Workspace where the workflows are listed.
-2. Add the git repo for ThousandEyes workflows like you did in Lab 3. `https://github.com/ciscomanagedservices/ciscolive26_cw_ai_agents/tree/main/workflows/ThousandEyes`
+2. Add the git repo for ThousandEyes workflows like you did in Lab 3:
+   - **Display Name:** `LTRAI-1487 - ThousandEyes`
+   - Use the same Account Keys from Lab 3
+   - **REST API Repository:** `api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents`
+   - **Branch:** `main`
+   - **Code Path:** `workflows/ThousandEyes`
 3. Click **Actions> Import Workflow> From Git** and import the `get_te_path_info` workflow first, and then `te_alert_webhook` workflow.
 
 
