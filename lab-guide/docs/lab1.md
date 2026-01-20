@@ -161,6 +161,16 @@ We need to setup a webex API before we can finish wiring up our workflow notific
 4. Name your bot `workflows-lab` and set the username to something globally unique across all Webex users like `<your_name>-<company_name>-workflows-bot`. You must select an icon to submit. Feel free to upload a fun robot icon if you desire. Click **Add bot**.
 5. Copy your **Bot access token** and **Bot ID** to a safe place.
 
+### 5.2.5 Create a Webex Space for Notifications
+
+Create a Webex space where the bot will send notifications. You will use this space throughout the remaining labs.
+
+1. Open Webex (app or web at https://web.webex.com)
+2. Click **+** to create a new space
+3. Name the space `<your_name>-workflows-lab`
+4. Add your bot to the space by typing its username (e.g., `<your_name>-<company_name>-workflows-bot@webex.bot`)
+5. Note the space name - you will use this in later labs for AI Agent notifications
+
 ### 5.3 Adding the webex integration
 
 1. Go to **Automation> Variables** and click the **+ Create** button in the upper right.

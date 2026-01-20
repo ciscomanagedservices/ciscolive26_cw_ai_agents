@@ -112,7 +112,14 @@ ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(
 
 ### 2.6 Configuring the trigger for the workflow
 
-1. Now go back to Cisco Workflows and  **Automation> Rules> Automation rules> + New automation rule** and hook your new ThousandEyes webhook and workflow up.
+1. In Cisco Workflows, go to **Automation > Rules**
+2. Click the **Automation rules** tab, then click **+ Add automation rule**
+3. Configure the rule:
+   - **Type:** `Webhook rule`
+   - **Title:** `<your_name>-te-alert`
+   - **Webhook:** Select your webhook (`<your_name>-te`)
+   - **Workflow:** Select `te_alert_webhook`
+4. Click **Save**
 
 ## Step 3: Create congestion on the network to generate an incident
 

@@ -30,11 +30,17 @@ device -> [syslog] -> splunk -> [webhook] -> Cisco Workflows -> [commands] -> Wo
 ```sh
 scp remotePackage.zip root@198.18.1.204:/root/
 ```
-7. Run the python script passing in the zip package to initiate the remote server registration procedure:
+7. SSH to the wf-remote server and clone the lab repository:
 ```sh
-./register_remote.py remotePackage.zip
+ssh root@198.18.1.204
+git clone https://github.com/ciscomanagedservices/ciscolive26_cw_ai_agents.git
 ```
-8. Wait a few seconds, and then refresh the Workflow's Targets page. You should see your remote move into a `Connected` status.
+8. Run the python script passing in the zip package to initiate the remote server registration procedure:
+```sh
+cd ciscolive26_cw_ai_agents/scripts/remote_server
+./remote_register.py /root/remotePackage.zip
+```
+9. Wait a few seconds, and then refresh the Workflow's Targets page. You should see your remote move into a `Connected` status.
 
 > **Note:** The official process for registering a remote server differs from this a bit. Cisco Workflows currently only supports remote servers running on virtual appliances where you can pass the initialization/registration text into an OVF template. Since dCloud doesn't support OVF templates, we feed the remotePackage into a python script that runs the same cloud init script that the OVF template would have triggered. For the full documentation on deploying a remote server, see the official [Cisco Workflows documentation](https://documentation.meraki.com/Platform_Management/Workflows/Targets/Automation_Remote/Remote_Setup_and_Deployment).
 

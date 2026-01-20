@@ -176,15 +176,17 @@ The RADKit MCP server source code is pre-loaded in `/home/cisco/` and maintained
 
 ### 3.2 Copy Setup Scripts
 
-1. Copy the setup scripts from the lab repository:
+1. Copy the setup scripts from the lab repository to the MCP server directory:
    ```bash
    cp /root/ciscolive26_cw_ai_agents/scripts/mcp-server/setup_mcp.sh .
    cp /root/ciscolive26_cw_ai_agents/scripts/mcp-server/enroll_client.py .
    ```
 
+   > **Note:** You should still be in the `/home/cisco/radkit-mcp-server-community` directory from Step 3.1.
+
 ### 3.3 Run the MCP Setup Script
 
-1. Run the setup script:
+1. Run the setup script (from the `/home/cisco/radkit-mcp-server-community` directory):
    ```bash
    ./setup_mcp.sh
    ```
@@ -202,7 +204,7 @@ The script will:
 
 1. Run the test script to verify the MCP server is working:
    ```bash
-   ./radkit-mcp-test.sh
+   /root/ciscolive26_cw_ai_agents/scripts/mcp-server/radkit-mcp-test.sh
    ```
 
 2. Verify all tests show `[OK]`:
@@ -398,7 +400,7 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 1. Go to **Automation** -> **Workspace**
 2. Click on **Tool - Send Webex Notification** to open the workflow
 3. On the right side panel, expand **Variables**
-4. Update the local variable `l_room_name` to the name of your test Webex space that has the Webex bot
+4. Update the local variable `l_room_name` to the name of the Webex space you created in Lab 1 (e.g., `<your_name>-workflows-lab`)
 5. Click **Run** in the upper right corner
 6. When prompted, fill out the input variables:
    - **i_instance_id:** `test`
@@ -406,7 +408,7 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 7. Click **Run** to execute the workflow
 8. Check your Webex space to verify you received the message
 
-> **Success Criteria:** You should see your test message appear in the configured Webex room.
+> **Success Criteria:** You should see your test message appear in your Webex space from Lab 1.
 
 ### 4.8 Test the AI Agent
 
