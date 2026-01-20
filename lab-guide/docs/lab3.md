@@ -69,11 +69,15 @@ RADKit (Remote Access and Diagnostic Kit) provides secure remote access to netwo
    cd ciscolive26_cw_ai_agents/scripts/radkit
    ```
 
+> **Pre-loaded Files:** The following files are pre-loaded on the ubuntu-server in `/home/cisco/`:
+> - `radkit-service.tar` - RADKit Docker image
+> - `radkit-mcp-server-community/` - MCP server source code repository
+
 ### 1.3 Run the RADKit Installation Script
 
-1. Run the installation script:
+1. Run the installation script, specifying the pre-loaded tar file:
    ```bash
-   ./radkit-install.sh
+   ./radkit-install.sh -t /home/cisco/radkit-service.tar
    ```
 
 2. When prompted for the superadmin password during bootstrap, enter:
@@ -154,28 +158,29 @@ For each device:
 
 The MCP (Model Context Protocol) server allows Cisco Workflows to interact with RADKit-managed devices through a standardized API.
 
-### 3.1 Navigate to MCP Scripts
+### 3.1 Update the RADKit MCP Server Repository
 
-1. On the ubuntu-server (still connected via SSH), navigate to the MCP scripts:
+The RADKit MCP server source code is pre-loaded in `/home/cisco/` and maintained in a community repository on GitHub.
+
+1. On the ubuntu-server (still connected via SSH), update the MCP server repository to get the latest version:
    ```bash
-   cd /root/ciscolive26_cw_ai_agents/scripts/mcp-server
+   cd /home/cisco/radkit-mcp-server-community
+   git pull
    ```
 
-### 3.2 Update the Service Serial
+   > **Note:** If the directory doesn't exist, clone it:
+   > ```bash
+   > cd /home/cisco
+   > git clone https://github.com/CiscoDevNet/radkit-mcp-server-community
+   > ```
 
-1. Edit `setup_mcp.sh` and update the Service Serial with your Service ID from Step 2.2:
+### 3.2 Copy Setup Scripts
+
+1. Copy the setup scripts from the lab repository:
    ```bash
-   nano setup_mcp.sh
+   cp /root/ciscolive26_cw_ai_agents/scripts/mcp-server/setup_mcp.sh .
+   cp /root/ciscolive26_cw_ai_agents/scripts/mcp-server/enroll_client.py .
    ```
-
-2. Find the line:
-   ```bash
-   RADKIT_DEFAULT_SERVICE_SERIAL=fjkj-2njn-04q7
-   ```
-
-3. Replace `fjkj-2njn-04q7` with your actual Service ID from the RADKit WebUI
-
-4. Save and exit (Ctrl+X, Y, Enter)
 
 ### 3.3 Run the MCP Setup Script
 
@@ -184,7 +189,9 @@ The MCP (Model Context Protocol) server allows Cisco Workflows to interact with 
    ./setup_mcp.sh
    ```
 
-2. When prompted, enter your **email address** (the same one used for RADKit registration)
+2. When prompted, enter:
+   - Your **email address** (the same one used for RADKit registration)
+   - Your **RADKit Service Serial** (the Service ID from Step 2.2, e.g., `xxxx-yyyy-zzzz`)
 
 The script will:
 - Enroll client certificates with RADKit

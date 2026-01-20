@@ -30,13 +30,16 @@ echo "Radkit network created and connected."
 echo "Enter your email used to register radkit:"
 read EMAIL
 
+echo "Enter your RADKit Service Serial (from Step 2.2, e.g., xxxx-yyyy-zzzz):"
+read RADKIT_SERVICE_SERIAL
+
 IDENTITY_DIR=~/.radkit/identities/prod.radkit-cloud.cisco.com/$EMAIL
 echo "Identity directory set to $IDENTITY_DIR"
 
 echo "Creating .env"
 cat > .env << EOF
 RADKIT_IDENTITY=$EMAIL
-RADKIT_DEFAULT_SERVICE_SERIAL=fjkj-2njn-04q7
+RADKIT_DEFAULT_SERVICE_SERIAL=$RADKIT_SERVICE_SERIAL
 RADKIT_CERT_B64=$(base64 -w0 $IDENTITY_DIR/certificate.pem)
 RADKIT_KEY_B64=$(base64 -w0 $IDENTITY_DIR/private_key_encrypted.pem)
 RADKIT_CA_B64=$(base64 -w0 $IDENTITY_DIR/chain.pem)
