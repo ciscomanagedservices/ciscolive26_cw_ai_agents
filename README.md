@@ -2,7 +2,7 @@
 
 **Cisco Workflows AI Agents Lab**
 
-A 4-hour instructor-led lab at Cisco Live EMEA Amsterdam demonstrating how to build agentic AI-driven network operations using Cisco Workflows, ThousandEyes, and RADKit.
+A 4-hour instructor-led lab at Cisco Live EMEA Amsterdam demonstrating how to build agentic AI-driven network operations using Cisco Workflows, ThousandEyes, and CX RADKit.
 
 ## Overview
 
