@@ -31,19 +31,15 @@ jobs:
       
       - name: Sync docs directory
         run: |
-          # Use rsync to sync docs content only
-          # Exclude ciscodocs-specific directories that are managed in their repo:
-          # - overrides: custom theme templates
-          # - template_assets: logos and branding
-          # - stylesheets: custom CSS
-          # - data: macro variables (vars_global.yaml, vars_pods.yaml)
-          rsync -av --delete \
-            --exclude='.git' \
-            --exclude='overrides' \
-            --exclude='template_assets' \
-            --exclude='stylesheets' \
-            --exclude='data' \
-            lab-guide/docs/ target-repo/docs/
+          # Copy our lab guide markdown files and images to target
+          # We do NOT use --delete to preserve ciscodocs-specific files
+
+          # Copy markdown files (overwrite existing, add new)
+          cp lab-guide/docs/*.md target-repo/docs/
+
+          # Copy img directory
+          mkdir -p target-repo/docs/img
+          cp -r lab-guide/docs/img/* target-repo/docs/img/
 
           # Navigate to target repo
           cd target-repo
