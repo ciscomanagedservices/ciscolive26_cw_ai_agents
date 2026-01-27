@@ -1,0 +1,56 @@
+name: Sync Lab Guide to ciscodocs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'lab-guide/docs/**'
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  sync-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+      
+      - name: Clone target repository
+        env:
+          CISCODOCS_PAT: ${{ secrets.CISCODOCS_PAT }}
+        run: |
+          git clone https://x-access-token:${CISCODOCS_PAT}@github.com/ciscodocs/ltrai-1487-clemea26.git target-repo
+      
+      - name: Sync docs directory
+        run: |
+          # Remove existing docs in target
+          rm -rf target-repo/docs/*
+          
+          # Copy new docs from source
+          cp -r lab-guide/docs/* target-repo/docs/
+          
+          # Navigate to target repo
+          cd target-repo
+          
+          # Check if there are changes
+          if [[ -n $(git status -s) ]]; then
+            echo "Changes detected, committing..."
+            git add docs/
+            git commit -m "Sync lab guide from ciscomanagedservices/ciscolive26_cw_ai_agents@${GITHUB_SHA:0:7}
+
+Triggered by: ${GITHUB_ACTOR}
+Source commit: ${GITHUB_SHA}"
+            git push origin main
+            echo "✅ Successfully synced docs to ciscodocs repository"
+          else
+            echo "ℹ️ No changes to sync"
+          fi
+
