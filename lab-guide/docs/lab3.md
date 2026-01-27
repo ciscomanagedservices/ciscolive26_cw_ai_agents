@@ -372,6 +372,7 @@ After importing all workflows, validate that they are configured correctly:
 3. If you see any errors, check that all required credentials were entered correctly
 
 You should have imported a total of **5 workflows**:
+
 - 1 from AI repository (OpenAIChatCompletion)
 - 2 from MCP repository (MCPListTools, MCPRunTool)
 - 2 from AI Agent repository (ToolBox + AIAgent)

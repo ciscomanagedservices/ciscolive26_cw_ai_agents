@@ -78,7 +78,8 @@ Now we will create the workflow that retrieves weather data for a given city.
 
 Expand the **Variables** tab and create two variables:
 
-**Input Variable - i_city_name:**
+#### Input Variable - i_city_name
+
 1. Click <em class="button-click">+ Add variable</em>
 2. Set <em class="lab-warning">Name</em> to <em class="example-input">i_city_name</em>
 3. Set <em class="lab-warning">Type</em> to <em class="example-input">String</em>
@@ -87,7 +88,8 @@ Expand the **Variables** tab and create two variables:
 6. Add <em class="lab-warning">Description</em>: <em class="example-input">Name of city for weather retrieval</em>
 7. Click <em class="button-click">Save</em>
 
-**Output Variable - o_message_content:**
+#### Output Variable - o_message_content
+
 1. Click <em class="button-click">+ Add variable</em>
 2. Set <em class="lab-warning">Name</em> to <em class="example-input">o_message_content</em>
 3. Set <em class="lab-warning">Type</em> to <em class="example-input">String</em>
@@ -163,11 +165,13 @@ The wttr.in API is free and not always reliable. Let's add retry logic to handle
 
 ### 3.5 Duplicate Activities for Each Path
 
-**For the Success Path (== 200):**
+#### For the Success Path (== 200)
+
 1. Move or add a <em class="lab-warning">Set Variables</em> activity in the success branch
 2. Configure it to set <em class="lab-warning">o_message_content</em> from the original HTTP Request's Response Body
 
-**For the Retry Path (!= 200):**
+#### For the Retry Path (!= 200)
+
 1. Duplicate the <em class="lab-warning">HTTP Request</em> block and add it after the Sleep activity
 2. Duplicate the <em class="lab-warning">Set Variables</em> block and add it after the retry HTTP Request
 3. Ensure the Set Variables block references the <em class="lab-warning">retry HTTP Request's Response Body</em> (not the original)
