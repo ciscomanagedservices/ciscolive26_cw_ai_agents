@@ -67,11 +67,7 @@ Extend agentic response with ThousandEyes observability:
 
 ## Lab Guide
 
-The full lab guide is available online at:
-
-**🌐 [https://cl-ltr.ciscolabs.com/0361f55971/](https://cl-ltr.ciscolabs.com/0361f55971/)**
-
-You can also serve the guide locally with MkDocs:
+The full lab guide is available in the `lab-guide/` directory and can be served locally with MkDocs:
 
 ```bash
 cd lab-guide
