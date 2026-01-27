@@ -69,8 +69,8 @@ ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(
 * <em class="lab-warning">Agents</em>: <em class="example-input">&lt;Select your agent&gt;</em>
 3. Change <em class="lab-warning">Alert Detection</em> to <em class="example-input">Manual</em>
 
-> [!TIP]
-> Adaptive alerting is a neat feature, but it requires a day to run to build normality for the anomaly detection. We don't have that much time here, so even in a world of predictive AI, we're going with old-school manual thresholds.
+!!! tip
+    Adaptive alerting is a neat feature, but it requires a day to run to build normality for the anomaly detection. We don't have that much time here, so even in a world of predictive AI, we're going with old-school manual thresholds.
 
 4. Set to <em class="example-input">Any conditions are met by the same 1 agent 2 of 2 times in a row</em>
 5. Set the rules to:

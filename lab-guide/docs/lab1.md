@@ -120,8 +120,8 @@ We need to ensure Splunk is listening for syslog traffic.
 3. Set the <em class="lab-warning">App context</em> to <em class="example-input">Cisco Networks</em>, <em class="lab-warning">Host method</em> as <em class="example-input">IP</em>, <em class="lab-warning">index</em> to <em class="example-input">syslog</em>.
 4. Click <em class="button-click">Review</em> and validate your configuration then click <em class="button-click">Submit</em>.
 
-> **Tip:**
-> You have the **expires** and **trigger conditions** to control an event state machine within Splunk. This is handy for when you may have flapping/thrashing events, where you may not want to run a workflow every time the event occurs. For this lab, we will keep it simple and trigger every time we see the event, and expire events after 5 minutes.
+!!! tip "Tip"
+    You have the **expires** and **trigger conditions** to control an event state machine within Splunk. This is handy for when you may have flapping/thrashing events, where you may not want to run a workflow every time the event occurs. For this lab, we will keep it simple and trigger every time we see the event, and expire events after 5 minutes.
 
 The configuration we have done so far gets the events into Splunk, but does not yet trigger any outbound webhooks to automation. Before we can set that up, we need to work backwards from Cisco Workflows and set some API keys up, so let's park our work in Splunk for a minute.
 
@@ -217,8 +217,8 @@ We do this with a saved search that triggers a webhook. Splunk doesn't have flex
     - <em class="lab-warning">Trigger alert when:</em> <em class="example-input">Per-Result</em>
     - <em class="lab-warning">Trigger Actions:</em> <em class="example-input">Better Webhook</em>
 
-> **Troubleshooting tip:**
-> You may want to also add a <em class="lab-warning">Trigger action</em> for <em class="example-input">Add to Triggered Alerts</em> so that you can troubleshoot that the alert generates by looking in <em class="button-click">Activity > Triggered Alerts</em>. It will not log to there unless this is configured.
+!!! tip "Troubleshooting Tip"
+    You may want to also add a <em class="lab-warning">Trigger action</em> for <em class="example-input">Add to Triggered Alerts</em> so that you can troubleshoot that the alert generates by looking in <em class="button-click">Activity > Triggered Alerts</em>. It will not log to there unless this is configured.
 
 ---
 
