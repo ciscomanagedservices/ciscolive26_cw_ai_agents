@@ -104,27 +104,27 @@ Now we'll configure RADKit through its web interface to enroll with Cisco Cloud,
 
 ### 2.1 Login to RADKit WebUI
 
-1. Open a browser and navigate to: **https://198.18.1.250:8081/**
+1. Open a browser and navigate to: <em class="example-input">https://198.18.1.250:8081/</em>
 2. Accept the self-signed certificate warning
 3. Login with:
-   - **Username:** `superadmin`
-   - **Password:** `0e52nsq5jf7f-bxq8whdi7dnT`
+   - <em class="lab-warning">Username:</em> <em class="example-input">superadmin</em>
+   - <em class="lab-warning">Password:</em> <em class="example-input">0e52nsq5jf7f-bxq8whdi7dnT</em>
 
 ### 2.2 Enroll RADKit Service with SSO
 
-1. Click **Connectivity** in the left menu
-2. Click **Enroll with SSO**
-3. Enter your **Cisco.com (CCO) email address**
-4. Click **Submit**
-5. Click the **CLICK HERE** link to complete SSO authentication
+1. Click <em class="button-click">Connectivity</em> in the left menu
+2. Click <em class="button-click">Enroll with SSO</em>
+3. Enter your <em class="lab-warning">Cisco.com (CCO) email address</em>
+4. Click <em class="button-click">Submit</em>
+5. Click the <em class="button-click">CLICK HERE</em> link to complete SSO authentication
 6. After SSO completes, close the SSO tab and return to the RADKit WebUI
 
-> **Important:** Note the **Service ID** displayed at the top center of the screen (e.g., `xxxx-yyyy-zzzz`). You will need this for MCP server setup in Step 3.
+> **Important:** Note the <em class="lab-warning">Service ID</em> displayed at the top center of the screen (e.g., <em class="example-input">xxxx-yyyy-zzzz</em>). You will need this for MCP server setup in Step 3.
 
 ### 2.3 Add Network Devices
 
-1. Click **Devices** in the left menu
-2. Click **Add Device**
+1. Click <em class="button-click">Devices</em> in the left menu
+2. Click <em class="button-click">Add Device</em>
 3. Add the following three devices:
 
 | Name | IP Address | Device Type |
@@ -134,23 +134,23 @@ Now we'll configure RADKit through its web interface to enroll with Cisco Cloud,
 | r3 | 198.18.1.103 | IOS XE |
 
 For each device:
-1. Enter the **Name** and **IP Address**
-2. Select **IOS XE** as the device type
-3. Check **Active (remotely manageable)**
-4. Enable **Terminal Management**
-5. Scroll down to **Terminal Settings**
+1. Enter the <em class="lab-warning">Name</em> and <em class="lab-warning">IP Address</em>
+2. Select <em class="example-input">IOS XE</em> as the device type
+3. Check <em class="lab-warning">Active (remotely manageable)</em>
+4. Enable <em class="lab-warning">Terminal Management</em>
+5. Scroll down to <em class="lab-warning">Terminal Settings</em>
 6. Add SSH credentials:
-   - **Username:** `cisco`
-   - **Password:** `cisco`
-7. Click **Add & continue** (or **Add & close** for the last device)
+   - <em class="lab-warning">Username:</em> <em class="example-input">cisco</em>
+   - <em class="lab-warning">Password:</em> <em class="example-input">cisco</em>
+7. Click <em class="button-click">Add & continue</em> (or <em class="button-click">Add & close</em> for the last device)
 
 ### 2.4 Add Remote Users
 
-1. Click **Remote Users** in the left menu
-2. Click **Add User**
-3. Enter your **email address**
-4. Check **Activate this user**
-5. Click **Add & close**
+1. Click <em class="button-click">Remote Users</em> in the left menu
+2. Click <em class="button-click">Add User</em>
+3. Enter your <em class="lab-warning">email address</em>
+4. Check <em class="lab-warning">Activate this user</em>
+5. Click <em class="button-click">Add & close</em>
 
 ---
 
@@ -237,43 +237,43 @@ We will need to import the cognitive response workflow definitions from GitHub i
 ### 4.1 Add Git Repositories to Cisco Workflows
 
 1. Go to Meraki Dashboard on your workstation
-2. Go to **Automation** -> **Workspace**
-3. On the right, click the **Actions** button and then **Manage Git Repositories**
+2. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
+3. On the right, click the <em class="button-click">Actions</em> button and then <em class="button-click">Manage Git Repositories</em>
 
-You will add **3 repositories** using the steps below. Each repository uses the same GitHub credentials but a different **Code Path**.
+You will add **3 repositories** using the steps below. Each repository uses the same GitHub credentials but a different <em class="lab-warning">Code Path</em>.
 
 ### 4.2 Repository 1: AI (OpenAI Chat Completion)
 
-1. Click **New git repository**
+1. Click <em class="button-click">New git repository</em>
 2. Fill the repository details:
-   - **Display Name:** `LTRAI-1487 - AI`
-   - Click **Default Account Keys** -> **Add New**
-     - **Account Key Type:** `Git Token-Based Credentials`
-     - **Display Name:** `LTRAI-1487 GitHub`
-     - **Token:** Use the GitHub token provided by your administrator (found in the dCloud lab details)
-   - **REST API Repository:** `api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents`
-   - **Branch:** `main`
-   - **Code Path:** `workflows/ai`
+   - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - AI</em>
+   - Click <em class="button-click">Default Account Keys</em> -> <em class="button-click">Add New</em>
+     - <em class="lab-warning">Account Key Type:</em> <em class="example-input">Git Token-Based Credentials</em>
+     - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 GitHub</em>
+     - <em class="lab-warning">Token:</em> Use the GitHub token provided by your administrator (found in the dCloud lab details)
+   - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
+   - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
+   - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai</em>
 
 ### 4.3 Repository 2: AI Agent (Agent Workflow + ToolBox)
 
-1. Click **New git repository** again
+1. Click <em class="button-click">New git repository</em> again
 2. Fill the repository details:
-   - **Display Name:** `LTRAI-1487 - AI Agent`
+   - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
    - Use the same Account Keys you created in Repository 1
-   - **REST API Repository:** `api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents`
-   - **Branch:** `main`
-   - **Code Path:** `workflows/ai_agent`
+   - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
+   - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
+   - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai_agent</em>
 
 ### 4.4 Repository 3: MCP (Model Context Protocol)
 
-1. Click **New git repository** again
+1. Click <em class="button-click">New git repository</em> again
 2. Fill the repository details:
-   - **Display Name:** `LTRAI-1487 - MCP`
+   - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - MCP</em>
    - Use the same Account Keys you created in Repository 1
-   - **REST API Repository:** `api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents`
-   - **Branch:** `main`
-   - **Code Path:** `workflows/mcp`
+   - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
+   - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
+   - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/mcp</em>
 
 ### 4.5 Verify Repository Configuration
 
@@ -302,64 +302,64 @@ You will now import workflows from all three Git repositories. Follow the steps 
 
 #### 4.6.1 Import OpenAI Chat Completion
 
-1. Go to **Automation** -> **Workspace**
-2. Click **Actions** -> **Import Workflow**, then click the **Git** tab
+1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
+2. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em>, then click the <em class="button-click">Git</em> tab
 3. Select:
-   - **Repository:** `LTRAI-1487 - AI`
-   - **Workflow:** `OpenAIChatCompletion`
-   - **Version:** Latest
-4. Click **Import**
-5. When prompted for `i_api_key`:
+   - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI</em>
+   - <em class="lab-warning">Workflow:</em> <em class="example-input">OpenAIChatCompletion</em>
+   - <em class="lab-warning">Version:</em> Latest
+4. Click <em class="button-click">Import</em>
+5. When prompted for <em class="lab-warning">i_api_key</em>:
    - Enter your lab OpenAI API key
    - **Ask your instructor for this key if you don't have it**
-6. Click **Import**
+6. Click <em class="button-click">Import</em>
 
 #### 4.6.2 Import MCP Server Tools
 
-1. Click **Actions** -> **Import Workflow**, then click the **Git** tab
-2. Import `MCPListTools`:
-   - **Repository:** `LTRAI-1487 - MCP`
-   - **Workflow:** `MCPListTools`
-   - **Version:** Latest
-   - Click **Import**
-3. Import `MCPRunTool`:
-   - **Repository:** `LTRAI-1487 - MCP`
-   - **Workflow:** `MCPRunTool`
-   - **Version:** Latest
-   - Click **Import**
+1. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em>, then click the <em class="button-click">Git</em> tab
+2. Import <em class="example-input">MCPListTools</em>:
+   - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - MCP</em>
+   - <em class="lab-warning">Workflow:</em> <em class="example-input">MCPListTools</em>
+   - <em class="lab-warning">Version:</em> Latest
+   - Click <em class="button-click">Import</em>
+3. Import <em class="example-input">MCPRunTool</em>:
+   - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - MCP</em>
+   - <em class="lab-warning">Workflow:</em> <em class="example-input">MCPRunTool</em>
+   - <em class="lab-warning">Version:</em> Latest
+   - Click <em class="button-click">Import</em>
 
 #### 4.6.3 Import ToolBox
 
 The ToolBox workflow includes all tool subworkflows as embedded components, so you only need to import this single workflow to get all the tools.
 
-1. Click **Actions** -> **Import Workflow** -> **Git** tab
+1. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em> -> <em class="button-click">Git</em> tab
 2. Select:
-   - **Repository:** `LTRAI-1487 - AI Agent`
-   - **Workflow:** `ToolBox`
-   - **Version:** Latest
-3. Click **Import**
+   - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+   - <em class="lab-warning">Workflow:</em> <em class="example-input">ToolBox</em>
+   - <em class="lab-warning">Version:</em> Latest
+3. Click <em class="button-click">Import</em>
 
 > **Note:** The ToolBox workflow bundles all individual tools (scratchpad, Webex notifications, change approval, terminal commands, and RADKIT tools) as subworkflows. You do not need to import them separately.
 
 #### 4.6.4 Import AI Agent
 
-1. Click **Actions** -> **Import Workflow** -> **Git** tab
+1. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em> -> <em class="button-click">Git</em> tab
 2. Select:
-   - **Repository:** `LTRAI-1487 - AI Agent`
-   - **Workflow:** `AIAgent`
-   - **Version:** Latest
-3. Click **Import**
-4. When prompted for **OPENAI_API_KEY**, enter the API key found in the dCloud file
+   - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+   - <em class="lab-warning">Workflow:</em> <em class="example-input">AIAgent</em>
+   - <em class="lab-warning">Version:</em> Latest
+3. Click <em class="button-click">Import</em>
+4. When prompted for <em class="lab-warning">OPENAI_API_KEY</em>, enter the API key found in the dCloud file
    - **Ask your instructor if you cannot locate this key**
 
 #### 4.6.5 Validate All Workflows
 
 After importing all workflows, validate that they are configured correctly:
 
-1. Go to **Automation** -> **Workspace**
+1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
 2. For each imported workflow:
    - Click on the workflow name to open it
-   - Click **Validate** in the upper right corner
+   - Click <em class="button-click">Validate</em> in the upper right corner
    - Ensure there are no validation errors
 3. If you see any errors, check that all required credentials were entered correctly
 
@@ -370,13 +370,13 @@ You should have imported a total of **5 workflows**:
 
 #### 4.6.6 Verify OpenAI Endpoint Configuration
 
-1. Go to **Automation** -> **Targets**
-2. Click on **OPENAI_ENDPOINT**
+1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Targets</em>
+2. Click on <em class="button-click">OPENAI_ENDPOINT</em>
 3. Verify the following settings:
-   - **Host:** `ciscolive-llm.com`
-   - **Port:** `443`
-   - **Path:** (leave blank)
-4. If any settings are incorrect, update them and click **Save**
+   - <em class="lab-warning">Host:</em> <em class="example-input">ciscolive-llm.com</em>
+   - <em class="lab-warning">Port:</em> <em class="example-input">443</em>
+   - <em class="lab-warning">Path:</em> (leave blank)
+4. If any settings are incorrect, update them and click <em class="button-click">Save</em>
 
 ### 4.7 Test Individual Tools
 
@@ -384,28 +384,28 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 
 #### 4.7.1 Test RADKit Exec Command Tool
 
-1. Go to **Automation** -> **Workspace**
-2. Click on **Tool - RADKIT Exec Command** to open the workflow
-3. Click **Run** in the upper right corner
+1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
+2. Click on <em class="button-click">Tool - RADKIT Exec Command</em> to open the workflow
+3. Click <em class="button-click">Run</em> in the upper right corner
 4. When prompted, fill out the input variables:
-   - **i_device_name:** `r1`
-   - **i_commands:** `show version`
-5. Click **Run** to execute the workflow
+   - <em class="lab-warning">i_device_name:</em> <em class="example-input">r1</em>
+   - <em class="lab-warning">i_commands:</em> <em class="example-input">show version</em>
+5. Click <em class="button-click">Run</em> to execute the workflow
 6. Verify the workflow completes successfully and returns the device output
 
 > **Success Criteria:** The workflow should complete without errors and display the `show version` output from device r1.
 
 #### 4.7.2 Test Webex Notification Tool
 
-1. Go to **Automation** -> **Workspace**
-2. Click on **Tool - Send Webex Notification** to open the workflow
-3. On the right side panel, expand **Variables**
-4. Update the local variable `l_room_name` to the name of the Webex space you created in Lab 1 (e.g., `<your_name>-workflows-lab`)
-5. Click **Run** in the upper right corner
+1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
+2. Click on <em class="button-click">Tool - Send Webex Notification</em> to open the workflow
+3. On the right side panel, expand <em class="lab-warning">Variables</em>
+4. Update the local variable <em class="lab-warning">l_room_name</em> to the name of the Webex space you created in Lab 1 (e.g., <em class="example-input">&lt;your_name&gt;-workflows-lab</em>)
+5. Click <em class="button-click">Run</em> in the upper right corner
 6. When prompted, fill out the input variables:
-   - **i_instance_id:** `test`
-   - **i_message:** `Hello from the AI Agent lab! This is a test notification.`
-7. Click **Run** to execute the workflow
+   - <em class="lab-warning">i_instance_id:</em> <em class="example-input">test</em>
+   - <em class="lab-warning">i_message:</em> <em class="example-input">Hello from the AI Agent lab! This is a test notification.</em>
+7. Click <em class="button-click">Run</em> to execute the workflow
 8. Check your Webex space to verify you received the message
 
 > **Success Criteria:** You should see your test message appear in your Webex space from Lab 1.
@@ -414,12 +414,12 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 
 Now let's verify the full AI Agent workflow runs correctly.
 
-1. Go to **Automation** -> **Workspace**
-2. Click on **AIAgent** to open the workflow
-3. Click **Run** in the upper right corner
+1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
+2. Click on <em class="button-click">AIAgent</em> to open the workflow
+3. Click <em class="button-click">Run</em> in the upper right corner
 4. When prompted, fill out the input variables:
-   - **i_agent_task:** `Go to r1, get the current time and interfaces which are up. Output these results exactly to webex and include a short summary.`
-5. Click **Run** to execute the workflow
+   - <em class="lab-warning">i_agent_task:</em> <em class="example-input">Go to r1, get the current time and interfaces which are up. Output these results exactly to webex and include a short summary.</em>
+5. Click <em class="button-click">Run</em> to execute the workflow
 6. Monitor the workflow execution and verify it completes without errors
 7. Check your Webex space to confirm the agent sent the results
 
@@ -441,34 +441,34 @@ Now that you have the AI Agent working, let's connect it to respond to the same 
 
 We'll start by duplicating your Lab 2 workflow and modifying it to use the AI Agent.
 
-1. Go to **Automation** → **Workspace**
-2. Find your workflow `<your_name>-unshut-int` from Lab 2
-3. Click the **...** menu on the workflow and select **Duplicate**
+1. Go to <em class="button-click">Automation</em> → <em class="button-click">Workspace</em>
+2. Find your workflow <em class="example-input">&lt;your_name&gt;-unshut-int</em> from Lab 2
+3. Click the <em class="button-click">...</em> menu on the workflow and select <em class="button-click">Duplicate</em>
 
 ### 5.2 Configure the New Workflow
 
-1. Click on the duplicated workflow `Copy(1) <your_name>-unshut-int` to open it
-2. In the **General** tab, rename the workflow to `<your_name>-ai-fix-shut-interface`
-3. Delete the **Terminal** activity (the static remediation commands)
-4. Delete the existing **sub workflow** activity
+1. Click on the duplicated workflow <em class="example-input">Copy(1) &lt;your_name&gt;-unshut-int</em> to open it
+2. In the <em class="lab-warning">General</em> tab, rename the workflow to <em class="example-input">&lt;your_name&gt;-ai-fix-shut-interface</em>
+3. Delete the <em class="lab-warning">Terminal</em> activity (the static remediation commands)
+4. Delete the existing <em class="lab-warning">sub workflow</em> activity
 
 ### 5.3 Add the AI Agent Activity
 
-1. On the left side panel, click **Workflows**
-2. Search for `AI Agent`
-3. Drag the **AIAgent** workflow into the flow after the **JSON Path Query** activity
+1. On the left side panel, click <em class="button-click">Workflows</em>
+2. Search for <em class="example-input">AI Agent</em>
+3. Drag the <em class="lab-warning">AIAgent</em> workflow into the flow after the <em class="lab-warning">JSON Path Query</em> activity
 
 ### 5.4 Configure the AI Agent Task
 
-1. Click on the **AI Agent** block to select it
-2. Expand the `i_agent_task` input variable
+1. Click on the <em class="lab-warning">AI Agent</em> block to select it
+2. Expand the <em class="lab-warning">i_agent_task</em> input variable
 3. Configure it with the following text:
 
 ```
 A network event was received for device
 ```
 
-4. After "device ", add a **reference variable** pointing to the JSON Path Query output `target_device`
+4. After "device ", add a <em class="lab-warning">reference variable</em> pointing to the JSON Path Query output <em class="example-input">target_device</em>
 5. Continue the text:
 
 ```
@@ -478,7 +478,7 @@ raw event:
 
 ```
 
-6. Add another **reference variable** pointing to the **Webhook Request Body**
+6. Add another <em class="lab-warning">reference variable</em> pointing to the <em class="lab-warning">Webhook Request Body</em>
 7. Finally, add this instruction at the end:
 
 ```
@@ -490,16 +490,16 @@ You MUST proceed with investigation. If any change is required to resolve alert,
 
 ### 5.5 Validate the Workflow
 
-1. Click **Validate** in the upper right corner
+1. Click <em class="button-click">Validate</em> in the upper right corner
 2. Ensure there are no validation errors
 3. If errors appear, verify the reference variables are correctly linked
 
 ### 5.6 Update the Trigger Rule
 
-1. Go to **Automation** → **Rules**
+1. Go to <em class="button-click">Automation</em> → <em class="button-click">Rules</em>
 2. Find your rule from Lab 1
-3. **Enable** the action for the new `<your_name>-ai-fix-shut-interface` workflow
-4. **Disable** the action for the prior `<your_name>-unshut-int` workflow
+3. <em class="button-click">Enable</em> the action for the new <em class="example-input">&lt;your_name&gt;-ai-fix-shut-interface</em> workflow
+4. <em class="button-click">Disable</em> the action for the prior <em class="example-input">&lt;your_name&gt;-unshut-int</em> workflow
 
 ### 5.7 Test the AI Agent Response
 
@@ -516,9 +516,9 @@ You MUST proceed with investigation. If any change is required to resolve alert,
 
 The AI Agent may ask clarifying questions before proceeding - that's OK! It's just trying to make sure it's doing the right thing.
 
-1. Check Webex for any **clarifying questions** from the agent
-2. If the agent asks a question, click the **Cisco Workflow Run** link in the Webex message
-3. In the Cisco Workflows UI, click **View Task**
+1. Check Webex for any <em class="lab-warning">clarifying questions</em> from the agent
+2. If the agent asks a question, click the <em class="button-click">Cisco Workflow Run</em> link in the Webex message
+3. In the Cisco Workflows UI, click <em class="button-click">View Task</em>
 4. Provide as much detail as possible to help the agent understand the situation:
    - Confirm the interface should be brought back up
    - Specify that this is a loopback interface on R3
@@ -530,10 +530,10 @@ The AI Agent may ask clarifying questions before proceeding - that's OK! It's ju
 
 Once the agent has enough information, it will request your approval before making changes:
 
-1. Check Webex for a **change approval notification** from the agent
-2. Click the **Cisco Workflow Run** link in the Webex message
-3. In the Cisco Workflows UI, click **View Task**
-4. Review the agent's proposed action and click **Approve** to allow the agent to bring the interface back up
+1. Check Webex for a <em class="lab-warning">change approval notification</em> from the agent
+2. Click the <em class="button-click">Cisco Workflow Run</em> link in the Webex message
+3. In the Cisco Workflows UI, click <em class="button-click">View Task</em>
+4. Review the agent's proposed action and click <em class="button-click">Approve</em> to allow the agent to bring the interface back up
 
 > **Note:** The next lab uses a workflow with more detailed prompting for complex ThousandEyes troubleshooting scenarios.
 

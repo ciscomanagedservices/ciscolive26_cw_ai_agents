@@ -43,12 +43,12 @@ Key IP addresses for you to reference:
 
 | Purpose        | Access                   | Credentials     |
 | -------------- |--------------------------|-----------------|
-| R3-mgmt        | ssh cisco@198.18.1.103   | cisco           |
-| ThousandEyes   | https://198.18.1.202     | admin / welcome |
-| Splunk         | http://198.18.1.210:8000 | admin / cisco   |
-| wf-remote      | ssh root@198.18.1.204    | cisco           |
-| jumphost       | ssh root@198.18.1.200    | cisco           |
-| ubuntu-server  | ssh root@198.18.1.250    | cisco           |
+| R3-mgmt        | <em class="example-input">ssh cisco@198.18.1.103</em>   | <em class="example-input">cisco</em>           |
+| ThousandEyes   | <em class="example-input">https://198.18.1.202</em>     | <em class="example-input">admin / welcome</em> |
+| Splunk         | <em class="example-input">http://198.18.1.210:8000</em> | <em class="example-input">admin / cisco</em>   |
+| wf-remote      | <em class="example-input">ssh root@198.18.1.204</em>    | <em class="example-input">cisco</em>           |
+| jumphost       | <em class="example-input">ssh root@198.18.1.200</em>    | <em class="example-input">cisco</em>           |
+| ubuntu-server  | <em class="example-input">ssh root@198.18.1.250</em>    | <em class="example-input">cisco</em>           |
 
 ## Getting Started
 
