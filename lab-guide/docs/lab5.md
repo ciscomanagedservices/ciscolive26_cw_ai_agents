@@ -40,17 +40,17 @@ Before creating the workflow, we need to configure an HTTP target for the wttr.i
 
 ### 1.1 Navigate to Targets
 
-1. In Cisco Workflows, go to **Automation > Targets**
-2. Click **+ New target**
-3. Select **HTTP Endpoint** as the target type
+1. In Cisco Workflows, go to <em class="button-click">Automation > Targets</em>
+2. Click <em class="button-click">+ New target</em>
+3. Select <em class="button-click">HTTP Endpoint</em> as the target type
 
 ### 1.2 Configure the HTTP Endpoint
 
-1. Set **Display name** to `wttr.in weather api`
-2. Set **No account keys** to `True`
-3. Set **Host/IP Address** to `wttr.in`
-4. Set **Protocol** to `HTTP`
-5. Click **Save**
+1. Set <em class="lab-warning">Display name</em> to <em class="example-input">wttr.in weather api</em>
+2. Set <em class="lab-warning">No account keys</em> to <em class="example-input">True</em>
+3. Set <em class="lab-warning">Host/IP Address</em> to <em class="example-input">wttr.in</em>
+4. Set <em class="lab-warning">Protocol</em> to <em class="example-input">HTTP</em>
+5. Click <em class="button-click">Save</em>
 
 > **Note:** We use HTTP (not HTTPS) for wttr.in as the service works reliably over HTTP.
 
@@ -62,64 +62,64 @@ Now we will create the workflow that retrieves weather data for a given city.
 
 ### 2.1 Create a New Workflow
 
-1. Go to **Automation > Workspace**
-2. Click **+ Create**
-3. Select **Blank Custom Workflow** and click **Continue**
-4. Name the workflow `Tool - Get Weather`
+1. Go to <em class="button-click">Automation > Workspace</em>
+2. Click <em class="button-click">+ Create</em>
+3. Select <em class="button-click">Blank Custom Workflow</em> and click <em class="button-click">Continue</em>
+4. Name the workflow <em class="example-input">Tool - Get Weather</em>
 
 ### 2.2 Configure Workflow Description
 
-1. From the canvas screen, click the **General** tab
-2. Add a description: `Takes in a City name and gets the weather, returns results in JSON`
+1. From the canvas screen, click the <em class="button-click">General</em> tab
+2. Add a description: <em class="example-input">Takes in a City name and gets the weather, returns results in JSON</em>
 
 ### 2.3 Configure Variables
 
 Expand the **Variables** tab and create two variables:
 
 **Input Variable - i_city_name:**
-1. Click **+ Add variable**
-2. Set **Name** to `i_city_name`
-3. Set **Type** to `String`
-4. Set **Scope** to `Input`
-5. Set **String type** to `Text`
-6. Add **Description**: `Name of city for weather retrieval`
-7. Click **Save**
+1. Click <em class="button-click">+ Add variable</em>
+2. Set <em class="lab-warning">Name</em> to <em class="example-input">i_city_name</em>
+3. Set <em class="lab-warning">Type</em> to <em class="example-input">String</em>
+4. Set <em class="lab-warning">Scope</em> to <em class="example-input">Input</em>
+5. Set <em class="lab-warning">String type</em> to <em class="example-input">Text</em>
+6. Add <em class="lab-warning">Description</em>: <em class="example-input">Name of city for weather retrieval</em>
+7. Click <em class="button-click">Save</em>
 
 **Output Variable - o_message_content:**
-1. Click **+ Add variable**
-2. Set **Name** to `o_message_content`
-3. Set **Type** to `String`
-4. Set **Scope** to `Output`
-5. Set **String type** to `JSON`
-6. Add **Description**: `Weather results in JSON`
-7. Click **Save**
+1. Click <em class="button-click">+ Add variable</em>
+2. Set <em class="lab-warning">Name</em> to <em class="example-input">o_message_content</em>
+3. Set <em class="lab-warning">Type</em> to <em class="example-input">String</em>
+4. Set <em class="lab-warning">Scope</em> to <em class="example-input">Output</em>
+5. Set <em class="lab-warning">String type</em> to <em class="example-input">JSON</em>
+6. Add <em class="lab-warning">Description</em>: <em class="example-input">Weather results in JSON</em>
+7. Click <em class="button-click">Save</em>
 
 ### 2.4 Add HTTP Request Activity
 
-1. From the left pane, expand **Activities > Web Service**
-2. Drag the **HTTP Request** activity to the canvas below **Start**
+1. From the left pane, expand <em class="button-click">Activities > Web Service</em>
+2. Drag the <em class="lab-warning">HTTP Request</em> activity to the canvas below <em class="lab-warning">Start</em>
 3. Click on the HTTP Request block and configure:
-   - **Display Name**: `get weather from wttr.in`
-   - **Relative URL**: Click the text field, then click the variable icon and select `i_city_name`. Add `?format=j1` after the variable so the full URL looks like: `/{i_city_name}?format=j1`
-   - **Activity Timeout**: `60`
-   - **Target**: Select **Override workflow target** and choose `wttr.in weather api`
+   - <em class="lab-warning">Display Name</em>: <em class="example-input">get weather from wttr.in</em>
+   - <em class="lab-warning">Relative URL</em>: Click the text field, then click the variable icon and select <em class="example-input">i_city_name</em>. Add <em class="example-input">?format=j1</em> after the variable so the full URL looks like: <em class="example-input">/{i_city_name}?format=j1</em>
+   - <em class="lab-warning">Activity Timeout</em>: <em class="example-input">60</em>
+   - <em class="lab-warning">Target</em>: Select <em class="button-click">Override workflow target</em> and choose <em class="example-input">wttr.in weather api</em>
 
 ### 2.5 Add Set Variables Activity
 
-1. From the left pane, drag a **Set Variables** activity below the HTTP Request
+1. From the left pane, drag a <em class="lab-warning">Set Variables</em> activity below the HTTP Request
 2. Click on the Set Variables block
 3. Add a variable assignment:
-   - **Variable to update**: `o_message_content`
-   - **Value**: Click the variable icon and select **Activities > HTTP Request > Response Body**
+   - <em class="lab-warning">Variable to update</em>: <em class="example-input">o_message_content</em>
+   - <em class="lab-warning">Value</em>: Click the variable icon and select <em class="button-click">Activities > HTTP Request > Response Body</em>
 
 ### 2.6 Test the Workflow
 
-1. Click **Validate** in the upper right corner
-2. Click **Run**
-3. When prompted, enter `amsterdam` for `i_city_name`
-4. Click **Run** to execute
+1. Click <em class="button-click">Validate</em> in the upper right corner
+2. Click <em class="button-click">Run</em>
+3. When prompted, enter <em class="example-input">amsterdam</em> for <em class="lab-warning">i_city_name</em>
+4. Click <em class="button-click">Run</em> to execute
 5. Verify the workflow completes successfully
-6. Check that `o_message_content` contains a detailed JSON blob with weather data for Amsterdam
+6. Check that <em class="lab-warning">o_message_content</em> contains a detailed JSON blob with weather data for Amsterdam
 
 > **Tip:** If the test fails, verify your HTTP target configuration and ensure wttr.in is accessible from the internet.
 
@@ -131,50 +131,50 @@ The wttr.in API is free and not always reliable. Let's add retry logic to handle
 
 ### 3.1 Add Condition Block
 
-1. Click **Modify** to edit the workflow
-2. From the left pane, drag a **Condition Block** below the HTTP Request activity
+1. Click <em class="button-click">Modify</em> to edit the workflow
+2. From the left pane, drag a <em class="lab-warning">Condition Block</em> below the HTTP Request activity
 3. You now have two condition branches to configure
 
 ### 3.2 Configure Success Path (HTTP 200)
 
 1. Click on the left condition branch
-2. Set **Display Name** to `http code == 200`
+2. Set <em class="lab-warning">Display Name</em> to <em class="example-input">http code == 200</em>
 3. Configure the condition:
-   - **Property**: Select **Activities > HTTP Request > Status Code**
-   - **Comparison**: `Equals`
-   - **Value**: `200`
+   - <em class="lab-warning">Property</em>: Select <em class="button-click">Activities > HTTP Request > Status Code</em>
+   - <em class="lab-warning">Comparison</em>: <em class="example-input">Equals</em>
+   - <em class="lab-warning">Value</em>: <em class="example-input">200</em>
 
 ### 3.3 Configure Retry Path (HTTP != 200)
 
 1. Click on the right condition branch
-2. Set **Display Name** to `http code != 200`
+2. Set <em class="lab-warning">Display Name</em> to <em class="example-input">http code != 200</em>
 3. Configure the condition:
-   - **Property**: Select **Activities > HTTP Request > Status Code**
-   - **Comparison**: `Not equals`
-   - **Value**: `200`
+   - <em class="lab-warning">Property</em>: Select <em class="button-click">Activities > HTTP Request > Status Code</em>
+   - <em class="lab-warning">Comparison</em>: <em class="example-input">Not equals</em>
+   - <em class="lab-warning">Value</em>: <em class="example-input">200</em>
 
 ### 3.4 Add Sleep Block for Retry
 
-1. From the left pane, drag a **Sleep** activity as the first activity in the `http code != 200` branch
-2. Set the sleep duration to `10` seconds
+1. From the left pane, drag a <em class="lab-warning">Sleep</em> activity as the first activity in the <em class="example-input">http code != 200</em> branch
+2. Set the sleep duration to <em class="example-input">10</em> seconds
 
 ### 3.5 Duplicate Activities for Each Path
 
 **For the Success Path (== 200):**
-1. Move or add a **Set Variables** activity in the success branch
-2. Configure it to set `o_message_content` from the original HTTP Request's Response Body
+1. Move or add a <em class="lab-warning">Set Variables</em> activity in the success branch
+2. Configure it to set <em class="lab-warning">o_message_content</em> from the original HTTP Request's Response Body
 
 **For the Retry Path (!= 200):**
-1. Duplicate the **HTTP Request** block and add it after the Sleep activity
-2. Duplicate the **Set Variables** block and add it after the retry HTTP Request
-3. Ensure the Set Variables block references the **retry HTTP Request's Response Body** (not the original)
+1. Duplicate the <em class="lab-warning">HTTP Request</em> block and add it after the Sleep activity
+2. Duplicate the <em class="lab-warning">Set Variables</em> block and add it after the retry HTTP Request
+3. Ensure the Set Variables block references the <em class="lab-warning">retry HTTP Request's Response Body</em> (not the original)
 
 > **Important:** Make sure each Set Variables block references the correct HTTP Request activity above it in the flow.
 
 ### 3.6 Validate and Test
 
-1. Click **Validate** to ensure no errors
-2. Click **Run** and test with `amsterdam` again
+1. Click <em class="button-click">Validate</em> to ensure no errors
+2. Click <em class="button-click">Run</em> and test with <em class="example-input">amsterdam</em> again
 3. Verify the workflow still completes successfully
 
 ---
@@ -185,51 +185,51 @@ Now we need to add our new tool to the ToolBox workflow so the AI Agent can use 
 
 ### 4.1 Open the ToolBox Workflow
 
-1. Go to **Automation > Workspace**
-2. Click on the **ToolBox** workflow to open it
-3. Click **Modify** to edit
+1. Go to <em class="button-click">Automation > Workspace</em>
+2. Click on the <em class="button-click">ToolBox</em> workflow to open it
+3. Click <em class="button-click">Modify</em> to edit
 
 ### 4.2 Duplicate an Existing Tool Block
 
-1. Find the **Tool - Send Webex Notification** condition block
-2. Right-click and select **Duplicate** (or use the duplicate option in the menu)
+1. Find the <em class="lab-warning">Tool - Send Webex Notification</em> condition block
+2. Right-click and select <em class="button-click">Duplicate</em> (or use the duplicate option in the menu)
 3. Position the duplicated block in the workflow
 
 ### 4.3 Configure the Tool Condition
 
 1. Click on the duplicated condition block
-2. Change the **Display Name** to `Get Weather`
-3. Modify the condition so `i_tool_call_name` equals `get_weather`
+2. Change the <em class="lab-warning">Display Name</em> to <em class="example-input">Get Weather</em>
+3. Modify the condition so <em class="lab-warning">i_tool_call_name</em> equals <em class="example-input">get_weather</em>
 
-> **Note:** The value `get_weather` will be the tool name as seen by the LLM.
+> **Note:** The value <em class="example-input">get_weather</em> will be the tool name as seen by the LLM.
 
 ### 4.4 Update the JSONPath Query
 
-1. Click on the **JSONPath Query** block within your new tool section
-2. Change the property name from `i_instance_id` to `i_city_name`
-3. Update the JSONPath expression to extract city name: `$.i_city_name`
-4. Delete the `$.i_message` query as it's not needed for this tool
+1. Click on the <em class="lab-warning">JSONPath Query</em> block within your new tool section
+2. Change the property name from <em class="lab-warning">i_instance_id</em> to <em class="example-input">i_city_name</em>
+3. Update the JSONPath expression to extract city name: <em class="example-input">$.i_city_name</em>
+4. Delete the <em class="lab-warning">$.i_message</em> query as it's not needed for this tool
 
 ### 4.5 Replace the Subworkflow
 
-1. Delete the **Tool - Send Webex Notification** subworkflow block
-2. From the left pane under **Workflows**, search for `Tool - Get Weather`
+1. Delete the <em class="lab-warning">Tool - Send Webex Notification</em> subworkflow block
+2. From the left pane under <em class="button-click">Workflows</em>, search for <em class="example-input">Tool - Get Weather</em>
 3. Drag it into the workflow in place of the deleted block
 
 ### 4.6 Wire Up Variables
 
-1. Click on the **Tool - Get Weather** block
-2. Set the input **city_name** to reference the JSONPath Query output `i_city_name`
-3. Click on the **Set o_message_content** block below
-4. Update the reference value to use the output variable from **Tool - Get Weather**
+1. Click on the <em class="lab-warning">Tool - Get Weather</em> block
+2. Set the input <em class="lab-warning">city_name</em> to reference the JSONPath Query output <em class="example-input">i_city_name</em>
+3. Click on the <em class="lab-warning">Set o_message_content</em> block below
+4. Update the reference value to use the output variable from <em class="lab-warning">Tool - Get Weather</em>
 
 ### 4.7 Test the ToolBox
 
-1. Click **Validate**
-2. Click **Run** to test
+1. Click <em class="button-click">Validate</em>
+2. Click <em class="button-click">Run</em> to test
 3. Set the input variables:
-   - **i_tool_call_name**: `get_weather`
-   - **i_tool_call_arguments**:
+   - <em class="lab-warning">i_tool_call_name</em>: <em class="example-input">get_weather</em>
+   - <em class="lab-warning">i_tool_call_arguments</em>:
    ```json
    {"i_city_name": "Amsterdam"}
    ```
@@ -243,14 +243,14 @@ The AI Agent needs to know about the new tool through its function specification
 
 ### 5.1 Open the AI Agent Workflow
 
-1. Go to **Automation > Workspace**
-2. Click on the **AIAgent** workflow
-3. Click **Modify** to edit
+1. Go to <em class="button-click">Automation > Workspace</em>
+2. Click on the <em class="button-click">AIAgent</em> workflow
+3. Click <em class="button-click">Modify</em> to edit
 
 ### 5.2 Edit the Tools Variable
 
-1. In the right panel, expand **Variables**
-2. Find and click on `i_tools_json`
+1. In the right panel, expand <em class="lab-warning">Variables</em>
+2. Find and click on <em class="lab-warning">i_tools_json</em>
 3. Edit the JSON array to add the new tool specification
 
 ### 5.3 Add the Function Specification
@@ -283,7 +283,7 @@ Add the following JSON object after line 1 (after the opening `[`):
 
 ### 5.4 Validate JSON Syntax
 
-1. Copy the entire `i_tools_json` content
+1. Copy the entire <em class="lab-warning">i_tools_json</em> content
 2. Paste it into [JSONLint](https://jsonlint.com) to validate
 3. Ignore any warnings about duplicate keys for "type" - this is expected
 4. Fix any syntax errors if found
@@ -294,22 +294,22 @@ Add the following JSON object after line 1 (after the opening `[`):
 
 ### 6.1 Validate All Workflows
 
-1. Go to **Automation > Workspace**
-2. Open each of these workflows and click **Validate**:
+1. Go to <em class="button-click">Automation > Workspace</em>
+2. Open each of these workflows and click <em class="button-click">Validate</em>:
    - Tool - Get Weather
    - ToolBox
    - AIAgent
 
 ### 6.2 Run the AI Agent Test
 
-1. Click on the **AIAgent** workflow
-2. Click **Run**
-3. Set `i_agent_task` to:
+1. Click on the <em class="button-click">AIAgent</em> workflow
+2. Click <em class="button-click">Run</em>
+3. Set <em class="lab-warning">i_agent_task</em> to:
    ```
    1. Find out the weather in Amsterdam
    2. Send me a webex notification about the weather
    ```
-4. Click **Run** to execute
+4. Click <em class="button-click">Run</em> to execute
 
 ### 6.3 Verify Results
 
@@ -318,8 +318,8 @@ Add the following JSON object after line 1 (after the opening `[`):
 3. You should receive a message containing weather information for Amsterdam
 
 > **Troubleshooting:** If the workflow fails:
-> - Verify the tool name `get_weather` matches in both ToolBox and i_tools_json
-> - Check that the JSONPath query correctly extracts `i_city_name`
+> - Verify the tool name <em class="example-input">get_weather</em> matches in both ToolBox and i_tools_json
+> - Check that the JSONPath query correctly extracts <em class="lab-warning">i_city_name</em>
 > - Ensure the HTTP target is properly configured
 > - Review the workflow run details for specific error messages
 
