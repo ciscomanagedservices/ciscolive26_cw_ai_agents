@@ -31,15 +31,18 @@ jobs:
       
       - name: Sync docs directory
         run: |
-          # Remove existing docs in target
-          rm -rf target-repo/docs/*
-          
-          # Copy new docs from source
-          cp -r lab-guide/docs/* target-repo/docs/
-          
+          # Use rsync to sync docs, preserving any files in target that don't exist in source
+          # This ensures overrides and other ciscodocs-specific files are preserved
+          rsync -av --delete \
+            --exclude='.git' \
+            lab-guide/docs/ target-repo/docs/
+
+          # Ensure overrides directory exists (required by ciscodocs mkdocs.yml)
+          mkdir -p target-repo/docs/overrides
+
           # Navigate to target repo
           cd target-repo
-          
+
           # Check if there are changes
           if [[ -n $(git status -s) ]]; then
             echo "Changes detected, committing..."
