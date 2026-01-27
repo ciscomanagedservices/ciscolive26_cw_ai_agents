@@ -31,14 +31,19 @@ jobs:
       
       - name: Sync docs directory
         run: |
-          # Use rsync to sync docs, preserving any files in target that don't exist in source
-          # This ensures overrides and other ciscodocs-specific files are preserved
+          # Use rsync to sync docs content only
+          # Exclude ciscodocs-specific directories that are managed in their repo:
+          # - overrides: custom theme templates
+          # - template_assets: logos and branding
+          # - stylesheets: custom CSS
+          # - data: macro variables (vars_global.yaml, vars_pods.yaml)
           rsync -av --delete \
             --exclude='.git' \
+            --exclude='overrides' \
+            --exclude='template_assets' \
+            --exclude='stylesheets' \
+            --exclude='data' \
             lab-guide/docs/ target-repo/docs/
-
-          # Ensure overrides directory exists (required by ciscodocs mkdocs.yml)
-          mkdir -p target-repo/docs/overrides
 
           # Navigate to target repo
           cd target-repo
