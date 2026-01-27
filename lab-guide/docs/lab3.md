@@ -88,6 +88,7 @@ RADKit (Remote Access and Diagnostic Kit) provides secure remote access to netwo
    ```
 
 The script will:
+
 - Load the RADKit Docker image
 - Create a data directory at `/tmp/radkit`
 - Bootstrap the RADKit service
@@ -106,7 +107,7 @@ Now we'll configure RADKit through its web interface to enroll with Cisco Cloud,
 
 ### 2.1 Login to RADKit WebUI
 
-1. Open a browser and navigate to: <em class="example-input">https://198.18.1.250:8081/</em>
+1. Open a browser and navigate to: [https://198.18.1.250:8081/](https://198.18.1.250:8081/)
 2. Accept the self-signed certificate warning
 3. Login with:
    - <em class="lab-warning">Username:</em> <em class="example-input">superadmin</em>
@@ -311,40 +312,40 @@ You will now import workflows from all three Git repositories. Follow the steps 
 
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
 2. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em>, then click the <em class="button-click">Git</em> tab
-3. Select:
-   - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI</em>
-   - <em class="lab-warning">Workflow:</em> <em class="example-input">OpenAIChatCompletion</em>
-   - <em class="lab-warning">Version:</em> Latest
-4. Click <em class="button-click">Import</em>
-5. When prompted for <em class="lab-warning">i_api_key</em>:
-   - Enter your lab OpenAI API key
-   - **Ask your instructor for this key if you don't have it**
-6. Click <em class="button-click">Import</em>
+3. Select the following:
+    1. <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI</em>
+    2. <em class="lab-warning">Workflow:</em> <em class="example-input">OpenAIChatCompletion</em>
+    3. <em class="lab-warning">Version:</em> Latest
+    4. Click <em class="button-click">Import</em>
+4. When prompted for <em class="lab-warning">i_api_key</em>:
+    - Enter your lab OpenAI API key
+    - **Ask your instructor for this key if you don't have it**
+5. Click <em class="button-click">Import</em>
 
 #### 4.6.2 Import MCP Server Tools
 
 1. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em>, then click the <em class="button-click">Git</em> tab
 2. Import <em class="example-input">MCPListTools</em>:
-   - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - MCP</em>
-   - <em class="lab-warning">Workflow:</em> <em class="example-input">MCPListTools</em>
-   - <em class="lab-warning">Version:</em> Latest
-   - Click <em class="button-click">Import</em>
+    1. <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - MCP</em>
+    2. <em class="lab-warning">Workflow:</em> <em class="example-input">MCPListTools</em>
+    3. <em class="lab-warning">Version:</em> Latest
+    4. Click <em class="button-click">Import</em>
 3. Import <em class="example-input">MCPRunTool</em>:
-   - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - MCP</em>
-   - <em class="lab-warning">Workflow:</em> <em class="example-input">MCPRunTool</em>
-   - <em class="lab-warning">Version:</em> Latest
-   - Click <em class="button-click">Import</em>
+    1. <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - MCP</em>
+    2. <em class="lab-warning">Workflow:</em> <em class="example-input">MCPRunTool</em>
+    3. <em class="lab-warning">Version:</em> Latest
+    4. Click <em class="button-click">Import</em>
 
 #### 4.6.3 Import ToolBox
 
 The ToolBox workflow includes all tool subworkflows as embedded components, so you only need to import this single workflow to get all the tools.
 
 1. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em> -> <em class="button-click">Git</em> tab
-2. Select:
-   - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
-   - <em class="lab-warning">Workflow:</em> <em class="example-input">ToolBox</em>
-   - <em class="lab-warning">Version:</em> Latest
-3. Click <em class="button-click">Import</em>
+2. Select the following:
+    1. <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+    2. <em class="lab-warning">Workflow:</em> <em class="example-input">ToolBox</em>
+    3. <em class="lab-warning">Version:</em> Latest
+    4. Click <em class="button-click">Import</em>
 
 !!! note
     The ToolBox workflow bundles all individual tools (scratchpad, Webex notifications, change approval, terminal commands, and RADKIT tools) as subworkflows. You do not need to import them separately.
@@ -352,13 +353,13 @@ The ToolBox workflow includes all tool subworkflows as embedded components, so y
 #### 4.6.4 Import AI Agent
 
 1. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em> -> <em class="button-click">Git</em> tab
-2. Select:
-   - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
-   - <em class="lab-warning">Workflow:</em> <em class="example-input">AIAgent</em>
-   - <em class="lab-warning">Version:</em> Latest
-3. Click <em class="button-click">Import</em>
-4. When prompted for <em class="lab-warning">OPENAI_API_KEY</em>, enter the API key found in the dCloud file
-   - **Ask your instructor if you cannot locate this key**
+2. Select the following:
+    1. <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+    2. <em class="lab-warning">Workflow:</em> <em class="example-input">AIAgent</em>
+    3. <em class="lab-warning">Version:</em> Latest
+    4. Click <em class="button-click">Import</em>
+3. When prompted for <em class="lab-warning">OPENAI_API_KEY</em>, enter the API key found in the dCloud file
+    - **Ask your instructor if you cannot locate this key**
 
 #### 4.6.5 Validate All Workflows
 

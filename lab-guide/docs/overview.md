@@ -62,7 +62,7 @@ You will encounter the following components in this lab:
 * **Cisco CSR1000v** virtual routers
 * **Splunk** for log aggregation and alerting
 * **ThousandEyes** for user experience monitoring
-* **Large Language Model** integration (Claude Opus 4.5)
+* **Large Language Model** integration (GPT 5.2 or optionally Claude Sonnet/Opus 4.5)
 
 ### Event Flow
 

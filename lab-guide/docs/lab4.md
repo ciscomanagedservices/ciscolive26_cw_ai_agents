@@ -12,6 +12,7 @@ Before starting this lab, ensure you have completed:
 ## Recap
 
 So far you have:
+
 * Integrated a network topology's events into Cisco Workflows
 * Configured deterministic automated response in Workflows
 * Configured agentic operational response into Workflows
@@ -39,7 +40,7 @@ ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(
 
 ### 1.1 Register the agent appliance
 
-1. Go to <em class="example-input">https://198.18.1.202</em> and login with <em class="example-input">admin / welcome</em>.
+1. Go to [https://198.18.1.202](https://198.18.1.202) and login with <em class="example-input">admin / welcome</em>.
 2. Set the new password and click <em class="button-click">change password</em>. <em class="example-input">Cisco123!</em> will work for the password policy.
 3. Add account <em class="example-input">pl4okteoylmox9t60vi1ghz456ixeoa7</em> and click <em class="button-click">continue</em>.
 4. Click <em class="button-click">Complete</em>. Don't worry about the Gateway not pingable and NTP server errors. They will resolve.
@@ -47,14 +48,14 @@ ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(
 
 ### 1.2 Validate registration
 
-1. Login to https://www.thousandeyes.com and go to <em class="button-click">Network & App Synthetics > Agent Settings</em>.
+1. Login to [https://www.thousandeyes.com](https://www.thousandeyes.com) and go to <em class="button-click">Network & App Synthetics > Agent Settings</em>.
 2. You should see your agent in the list, under the hostname field.
 3. Notice how the agent name has a random ID suffix created during registration due to everyone participating in the lab having the same OS hostname. Let's rename this agent name as well for better identification. Click the agent and change <em class="lab-warning">Agent Name</em> to be <em class="example-input">&lt;your_name&gt;-thousandeyes</em> and <em class="button-click">Save Changes</em>.
 
 ## Step 2: Configuring ThousandEyes Testing
 
 ### 2.1 Configure the HTTP Server test
-1. Login to https://www.thousandeyes.com and go to <em class="button-click">Network & App Synthetics > Test Settings > Add New Test > HTTP Server</em>.
+1. Login to [https://www.thousandeyes.com](https://www.thousandeyes.com) and go to <em class="button-click">Network & App Synthetics > Test Settings > Add New Test > HTTP Server</em>.
 2. Configure URL of <em class="example-input">https://cisco.webex.com</em>
 3. Run the test every <em class="example-input">1 minute</em>
 4. <em class="button-click">Select Agents</em>. Select your Agent name <em class="example-input">&lt;your_name&gt;-thousandeyes</em>. Make sure you change the <em class="lab-warning">Default interface selection</em> to <em class="example-input">eth1 198.18.13.202</em> so the test runs out the access network across R3-R2-R1 instead of across the mgmt network. Click <em class="button-click">Close</em>.
@@ -63,10 +64,10 @@ ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(
 ### 2.2 Configure an alert for the test
 1. <em class="button-click">Manage > Alert Rules > Add New Alert Rule</em>
 2. Set these parameters:
-* <em class="lab-warning">Alert Type:</em> <em class="example-input">Web > HTTP Server</em>
-* <em class="lab-warning">Alert Rule Name</em>: <em class="example-input">Congestion Alert</em>
-* <em class="lab-warning">Tests</em>: <em class="example-input">&lt;Select your test name from 2.1&gt;</em>
-* <em class="lab-warning">Agents</em>: <em class="example-input">&lt;Select your agent&gt;</em>
+    1. <em class="lab-warning">Alert Type:</em> <em class="example-input">Web > HTTP Server</em>
+    2. <em class="lab-warning">Alert Rule Name</em>: <em class="example-input">Congestion Alert</em>
+    3. <em class="lab-warning">Tests</em>: <em class="example-input">&lt;Select your test name from 2.1&gt;</em>
+    4. <em class="lab-warning">Agents</em>: <em class="example-input">&lt;Select your agent&gt;</em>
 3. Change <em class="lab-warning">Alert Detection</em> to <em class="example-input">Manual</em>
 
 !!! tip
@@ -130,7 +131,7 @@ ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(
 ### 3.2 Validating the troubleshooting run
 1. It will take a few minutes for ThousandEyes to see the result, since we have a 2 minute alert. Any one have any good stories or jokes? If not, Steve is going to play music he likes which may not be to your favor.
 2. If you signed up for an email alert, you should receive it soon. Otherwise, check the <em class="lab-warning">workflow run</em> section in Cisco Workflows to validate that the workflow has started to run.
-3. It should now be troubleshooting the network. This takes some time to analyze output and determine the action to take for remediation--roughly 20 minutes with current early 2026 models. To watch for progress as it troubleshoots you can click <em class="button-click">...</em> on the <em class="lab-warning">AI Agent</em> subworkflow in the webhook workflow run, and then click <em class="button-click">Update I_messages variable</em> to watch for the latest updates in realtime. You will want to change the iteration in the main <em class="lab-warning">Agent Iteration Loop</em> to the last or second to last iteration (sometimes the last iteration is still processing and won't have content).
+3. It should now be troubleshooting the network. This takes some time to analyze output and determine the action to take for remediation--roughly 5 minutes with current early 2026 models. To watch for progress as it troubleshoots you can click <em class="button-click">...</em> on the <em class="lab-warning">AI Agent</em> subworkflow in the webhook workflow run, and then click <em class="button-click">Update I_messages variable</em> to watch for the latest updates in realtime. You will want to change the iteration in the main <em class="lab-warning">Agent Iteration Loop</em> to the last or second to last iteration (sometimes the last iteration is still processing and won't have content).
 4. Alternatively, you can just wait for Webex Teams summary messages at milestones.
 5. Eventually you should see it request a task to be approved. Go to <em class="button-click">Automation > User Tasks</em> to see if it is requesting a task approval. If it needs more info from you, it may also request something in <em class="lab-warning">Prompts</em> but for this use case we don't expect it to need a prompt as it should have all the info it needs from ThousandEyes + RADKit to identify what it needs to solve the issue.
 6. Once you see the change request, take a look at it. You should see a well curated explanation of the symptom, isolation to the root cause, and suggested fix if the change is approved. It even qualifies the risk of the change.
@@ -158,6 +159,7 @@ Now--imagine the power of it having the ThousandEyes alert, network path, and ac
 ## Take home ideas
 
 We encourage you to continue to test and enhance the power of agentic troubleshooting at home. Some other things to consider trying are:
+
 * What tool would you build? Try to build another tool and integrate it into the AI agent. See the `scripts/tools/convert_toolbox_to_openai_tools.py`
 * Integrating both device event/log data and observability event data from ThousandEyes, Splunk, AppDynamics, or other tools
 * Integrate your knowledge base to augment and refine specific policies or processes

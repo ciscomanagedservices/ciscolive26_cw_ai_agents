@@ -106,7 +106,7 @@ We must create a place for the syslog messages to be stored within Splunk, so le
 
 ### 3.1 Create a syslog index
 
-1. In a web browser, login to <em class="example-input">http://198.18.1.210:8000</em> with <em class="example-input">admin / cisco</em>
+1. In a web browser, login to [http://198.18.1.210:8000](http://198.18.1.210:8000) with <em class="example-input">admin / cisco</em>
 2. Setup an index by going to: <em class="button-click">Settings > Data > Indexes</em>. Click the <em class="button-click">New</em> index button in the upper right corner.
 3. Set the index <em class="lab-warning">name</em> to <em class="example-input">syslog</em> and the <em class="lab-warning">App</em> to <em class="example-input">Cisco Networks</em>
 4. Click <em class="button-click">Submit</em>.
@@ -148,7 +148,7 @@ Here we will first build a basic workflow to acknowledge that we can get an even
 ### 5.1 Creating a new Workflow
 1. Click on <em class="button-click">Automation > Workspace > New Workflow</em>. Click the <em class="button-click">+ Create</em> button in the upper right, and choose <em class="example-input">Workflow with Automation Rule</em> since we will be attaching a webhook rule to this workflow.
 2. Name it <em class="example-input">&lt;your_name&gt;-int-notify</em> and set the <em class="lab-warning">rule type</em> to <em class="example-input">webhook rule</em>.
-3. In the left are prebuilt modules you can use to call functions. Let's send a Webex message when we trigger an alert. Under <em class="button-click">Activities > Cisco Webex > Webex - Send Message to Person</em> and drag this box into the workspace canvas.
+3. In the left panel are prebuilt modules you can use to call functions. Let's send a Webex message when we trigger an alert. In the left panel, navigate to <em class="button-click">Activities > Cisco Webex > Webex - Send Message to Person</em> and drag this activity box into the middle panel workspace canvas.
 4. Open a new tab. We will come back to this in a minute, but need to register for a Webex API key now.
 
 ### 5.2 Setting up a Webex API account
@@ -176,9 +176,21 @@ Create a Webex space where the bot will send notifications. You will use this sp
 1. Go to <em class="button-click">Automation > Variables</em> and click the <em class="button-click">+ Create</em> button in the upper right.
 2. Name the key <em class="example-input">&lt;yourName&gt;-webex</em>, set <em class="lab-warning">String Type</em> to <em class="example-input">Secure String</em> and put the webex bearer token in the value. Click <em class="button-click">Save</em>.
 3. Go back to our workflow in <em class="button-click">Automation > Workspace > *your_workflow_name*</em>. Click the name of the workflow and Click <em class="button-click">View Workflow</em> on the lower right hand corner.
-4. Click on the <em class="lab-warning">Webex Send Message</em> activity box, then in <em class="lab-warning">Access Token</em> click the 'variable icon' on the right of the text box and select <em class="button-click">Global > *your_access_token*</em>.
-5. Put your webex account email address in the <em class="lab-warning">Recipient Email</em> box, and put <em class="example-input"># It worked!</em> in the <em class="lab-warning">Markdown Message</em> box. Hit enter for a new line and then click the variable icon to the right and also add the variable <em class="button-click">Rule > Webhook Rule > Output > Request Headers</em>. This will take the JSON from the webhook and send it in a Webex Teams message.
-6. Under <em class="lab-warning">Target</em>, choose <em class="button-click">Override workflow target</em> and click the <em class="button-click">+</em> to add a new target. Create an <em class="example-input">HTTP endpoint</em> with protocol of <em class="example-input">HTTPS</em> and <em class="lab-warning">host address</em> for <em class="example-input">webexapis.com</em>. Set the <em class="lab-warning">No account keys</em> to <em class="example-input">True</em> and check <em class="lab-warning">Disable server certification validation</em> and click <em class="button-click">Save</em>.
+4. Click on the <em class="lab-warning">Webex Send Message</em> activity box, then in <em class="lab-warning">Access Token</em> click the 'variable icon' (puzzle piece) on the right of the text box and select <em class="button-click">Global > *your_access_token*</em>.
+5. Configure the message settings:
+    - Put your Webex account email address in the <em class="lab-warning">Recipient Email</em> box
+    - In the <em class="lab-warning">Markdown Message</em> box, type <em class="example-input"># It worked!</em>
+    - Press Enter for a new line
+    - Click the variable icon (puzzle piece) on the right and add the variable <em class="button-click">Rule > Webhook Rule > Output > Request Headers</em>
+    - This will take the JSON from the webhook and send it in a Webex Teams message
+6. Configure the target:
+    - Under <em class="lab-warning">Target</em>, choose <em class="button-click">Override workflow target</em>
+    - Click the <em class="button-click">+</em> to add a new target
+    - Create an <em class="example-input">HTTP endpoint</em> with protocol of <em class="example-input">HTTPS</em>
+    - Set <em class="lab-warning">host address</em> to <em class="example-input">webexapis.com</em>
+    - Set <em class="lab-warning">No account keys</em> to <em class="example-input">True</em>
+    - Check <em class="lab-warning">Disable server certification validation</em>
+    - Click <em class="button-click">Save</em>
 7. You should now be able to click <em class="button-click">Validate</em>, and <em class="button-click">Run</em> in the upper right and receive a message in your Webex Teams.
 
 Yay, your first workflow has been created and tested!
@@ -218,13 +230,15 @@ We do this with a saved search that triggers a webhook. Splunk doesn't have flex
     - <em class="lab-warning">Trigger Actions:</em> <em class="example-input">Better Webhook</em>
 
 !!! tip "Troubleshooting Tip"
-    You may want to also add a <em class="lab-warning">Trigger action</em> for <em class="example-input">Add to Triggered Alerts</em> so that you can troubleshoot that the alert generates by looking in <em class="button-click">Activity > Triggered Alerts</em>. It will not log to there unless this is configured.
+    You may want to also add a <em class="lab-warning">Trigger action</em> for <em class="example-input">Add to Triggered Alerts</em> so that you can verify the alert is triggering correctly by checking <em class="button-click">Activity > Triggered Alerts</em>. Alerts will not appear there unless this action is configured.
 
 ---
 
 ## Step 7: Testing the event triggering workflow
 
 ### 7.1 Shutdown an interface
+
+We will test on R3 since that is the router where we configured syslog forwarding in Step 2.
 
 1. You can generate a test syslog message by shutting down the loopback0
 
@@ -241,17 +255,30 @@ This should produce a new log as seen in `show logging` with contents of `%LINEP
 
 ### 7.2 Validation
 
-1. View the results of the <em class="example-input">index=syslog "%LINEPROTO-5-UPDOWN"</em> saved search from the <em class="button-click">Searches, Reports, and Alerts</em> page, by clicking <em class="button-click">Run</em>. Be sure to change the search scope (right of search bar) from <em class="example-input">Real-time</em> to <em class="example-input">All-time</em> to see historical results. You may need to wait a couple minutes for the event to get picked up and indexed. We generally see end-to-end processing for this lab in about 60 seconds from device syslog generation.
-2. If you see interface results in the saved search, now let's see if the webhook triggered a workflow in Cisco Workflows. In Meraki, go to <em class="button-click">Automation > Run Monitoring</em> and see if you see your workflow run. You can click it and go to <em class="button-click">View run details</em> in the lower right. Click the <em class="lab-warning">Webex activity box</em> and you will be able to see the payload of the syslog message that was sent to Webex.
-3. Hopefully by now you also received a webex message with JSON payload of the syslog event. Notice some extra info in here, that the Cisco Networks app is doing some parsing magic on, since it can recognize and parse the syslog format.
+1. **Check Splunk for the syslog event:**
+    - View the results of the <em class="example-input">index=syslog "%LINEPROTO-5-UPDOWN"</em> saved search from the <em class="button-click">Searches, Reports, and Alerts</em> page
+    - Click <em class="button-click">Run</em> to execute the search
+    - Change the search scope (right of search bar) from <em class="example-input">Real-time</em> to <em class="example-input">All-time</em> to see historical results
+    - You may need to wait a couple minutes for the event to get picked up and indexed (typically ~60 seconds end-to-end)
 
-If you aren't seeing end to end notification, try and isolate where the messaging is not making it. We find it useful to first start at Splunk, and then decide if you need to troubleshoot within these logical areas of the flow:
+2. **Check Cisco Workflows for the triggered workflow:**
+    - If you see interface results in the saved search, go to Meraki Dashboard
+    - Navigate to <em class="button-click">Automation > Run Monitoring</em> to see if your workflow ran
+    - Click on the workflow run and select <em class="button-click">View run details</em> in the lower right
+    - Click the <em class="lab-warning">Webex activity box</em> to see the payload of the syslog message that was sent to Webex
 
-* IOS syslog logging or Splunk data ingestion, or
-* Search/reporting/webhook in Splunk, or
-* Workflows webhook & automation rule.
+3. **Check Webex for the notification:**
+    - You should have received a Webex message with JSON payload of the syslog event
+    - Notice the extra info that the Cisco Networks app parses from the syslog format
 
-To help isolate, you can look at Splunks saved search to see if the syslog is picked up by Splunk, and the <em class="button-click">Activity > Triggered Alerts</em> page to see if the webhook went out to Cisco Workflows.
+!!! warning "Troubleshooting"
+    If you aren't seeing end-to-end notification, isolate where the messaging is not making it. Start at Splunk and troubleshoot within these logical areas:
+
+    * **IOS syslog logging or Splunk data ingestion** - Is the syslog reaching Splunk?
+    * **Search/reporting/webhook in Splunk** - Is the alert triggering?
+    * **Workflows webhook & automation rule** - Is the workflow being triggered?
+
+    To help isolate, check Splunk's saved search to see if the syslog is picked up, and the <em class="button-click">Activity > Triggered Alerts</em> page to see if the webhook went out to Cisco Workflows.
 
 ---
 
