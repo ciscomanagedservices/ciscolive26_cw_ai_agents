@@ -2,9 +2,6 @@
 
 Welcome to the **Agentic Operations with Cisco Workflows** lab for Cisco Live.
 
-!!! info "Web Guide"
-    This lab guide is also available online at: **[https://cl-ltr.ciscolabs.com/0361f55971/](https://cl-ltr.ciscolabs.com/0361f55971/)**
-
 ## Introduction
 
 We will be using a virtual network topology in Cisco dCloud that generates events from Cisco infrastructure devices, through Splunk, and into Cisco Workflows. We'll also look at how we can use agents to troubleshoot from alerts from user experience tests such as with ThousandEyes.
