@@ -31,15 +31,23 @@ jobs:
       
       - name: Sync docs directory
         run: |
-          # Remove existing docs in target
-          rm -rf target-repo/docs/*
-          
-          # Copy new docs from source
-          cp -r lab-guide/docs/* target-repo/docs/
-          
+          # Use rsync to sync docs content only
+          # Exclude ciscodocs-specific directories that are managed in their repo:
+          # - overrides: custom theme templates
+          # - template_assets: logos and branding
+          # - stylesheets: custom CSS
+          # - data: macro variables (vars_global.yaml, vars_pods.yaml)
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='overrides' \
+            --exclude='template_assets' \
+            --exclude='stylesheets' \
+            --exclude='data' \
+            lab-guide/docs/ target-repo/docs/
+
           # Navigate to target repo
           cd target-repo
-          
+
           # Check if there are changes
           if [[ -n $(git status -s) ]]; then
             echo "Changes detected, committing..."
