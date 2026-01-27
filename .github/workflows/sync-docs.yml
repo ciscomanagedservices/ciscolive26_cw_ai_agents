@@ -31,11 +31,14 @@ jobs:
       
       - name: Sync docs directory
         run: |
-          # Copy our lab guide markdown files and images to target
+          # Copy our lab guide content to target
           # We do NOT use --delete to preserve ciscodocs-specific files
 
           # Copy markdown files (overwrite existing, add new)
           cp lab-guide/docs/*.md target-repo/docs/
+
+          # Copy .nav.yml for navigation structure
+          cp lab-guide/docs/.nav.yml target-repo/docs/
 
           # Copy img directory
           mkdir -p target-repo/docs/img

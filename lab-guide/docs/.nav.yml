@@ -1,0 +1,12 @@
+nav:
+  - Home: index.md
+  - Lab:
+      - Overview: overview.md
+      - Lab 1 - Splunk Alerts to Cisco Workflows: lab1.md
+      - Lab 2 - Automated Response: lab2.md
+      - Lab 3 - Cognitive Agentic Response: lab3.md
+      - Lab 4 - ThousandEyes Integration: lab4.md
+      - Lab 5 - Custom Tool Integration: lab5.md
+      - Conclusion: conclusion.md
+  - Network Diagram: topologies.md
+
