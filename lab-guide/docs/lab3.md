@@ -69,9 +69,11 @@ RADKit (Remote Access and Diagnostic Kit) provides secure remote access to netwo
    cd ciscolive26_cw_ai_agents/scripts/radkit
    ```
 
-> **Pre-loaded Files:** The following files are pre-loaded on the ubuntu-server in `/home/cisco/`:
-> - `radkit-service.tar` - RADKit Docker image
-> - `radkit-mcp-server-community/` - MCP server source code repository
+!!! note "Pre-loaded Files"
+    The following files are pre-loaded on the ubuntu-server in `/home/cisco/`:
+
+    - `radkit-service.tar` - RADKit Docker image
+    - `radkit-mcp-server-community/` - MCP server source code repository
 
 ### 1.3 Run the RADKit Installation Script
 
@@ -119,7 +121,8 @@ Now we'll configure RADKit through its web interface to enroll with Cisco Cloud,
 5. Click the <em class="button-click">CLICK HERE</em> link to complete SSO authentication
 6. After SSO completes, close the SSO tab and return to the RADKit WebUI
 
-> **Important:** Note the <em class="lab-warning">Service ID</em> displayed at the top center of the screen (e.g., <em class="example-input">xxxx-yyyy-zzzz</em>). You will need this for MCP server setup in Step 3.
+!!! warning "Important"
+    Note the <em class="lab-warning">Service ID</em> displayed at the top center of the screen (e.g., <em class="example-input">xxxx-yyyy-zzzz</em>). You will need this for MCP server setup in Step 3.
 
 ### 2.3 Add Network Devices
 
@@ -134,6 +137,7 @@ Now we'll configure RADKit through its web interface to enroll with Cisco Cloud,
 | r3 | 198.18.1.103 | IOS XE |
 
 For each device:
+
 1. Enter the <em class="lab-warning">Name</em> and <em class="lab-warning">IP Address</em>
 2. Select <em class="example-input">IOS XE</em> as the device type
 3. Check <em class="lab-warning">Active (remotely manageable)</em>
@@ -212,7 +216,8 @@ The script will:
    - Test 2: List Available Tools
    - Test 3: Call Tool
 
-> **Success Criteria:** All three tests should pass. The MCP endpoint is now available at: `http://198.18.1.250:8000/mcp`
+!!! success "Success Criteria"
+    All three tests should pass. The MCP endpoint is now available at: `http://198.18.1.250:8000/mcp`
 
 ---
 
@@ -220,7 +225,8 @@ The script will:
 
 We will need to import the cognitive response workflow definitions from GitHub into your Cisco Workflows instance.
 
-> **Important:** You will create **3 separate Git repositories** in Cisco Workflows, each pointing to a different code path in the same GitHub repo. This organizes the workflows into logical groups.
+!!! warning "Important"
+    You will create **3 separate Git repositories** in Cisco Workflows, each pointing to a different code path in the same GitHub repo. This organizes the workflows into logical groups.
 
 ```txt
 ┌─────────────────────────────────────────────────────────────────┐
@@ -289,7 +295,8 @@ Confirm that you have 3 Git repositories configured in Cisco Workflows:
 
 You will now import workflows from all three Git repositories. Follow the steps below in order, as some workflows depend on others.
 
-> **Note:** When importing workflows, you may be prompted for credentials or API keys. Keep your OpenAI API key and Webex access token from earlier labs handy.
+!!! note
+    When importing workflows, you may be prompted for credentials or API keys. Keep your OpenAI API key and Webex access token from earlier labs handy.
 
 #### Import Order Overview
 
@@ -339,7 +346,8 @@ The ToolBox workflow includes all tool subworkflows as embedded components, so y
    - <em class="lab-warning">Version:</em> Latest
 3. Click <em class="button-click">Import</em>
 
-> **Note:** The ToolBox workflow bundles all individual tools (scratchpad, Webex notifications, change approval, terminal commands, and RADKIT tools) as subworkflows. You do not need to import them separately.
+!!! note
+    The ToolBox workflow bundles all individual tools (scratchpad, Webex notifications, change approval, terminal commands, and RADKIT tools) as subworkflows. You do not need to import them separately.
 
 #### 4.6.4 Import AI Agent
 
@@ -364,6 +372,7 @@ After importing all workflows, validate that they are configured correctly:
 3. If you see any errors, check that all required credentials were entered correctly
 
 You should have imported a total of **5 workflows**:
+
 - 1 from AI repository (OpenAIChatCompletion)
 - 2 from MCP repository (MCPListTools, MCPRunTool)
 - 2 from AI Agent repository (ToolBox + AIAgent)
@@ -393,7 +402,8 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 5. Click <em class="button-click">Run</em> to execute the workflow
 6. Verify the workflow completes successfully and returns the device output
 
-> **Success Criteria:** The workflow should complete without errors and display the `show version` output from device r1.
+!!! success "Success Criteria"
+    The workflow should complete without errors and display the `show version` output from device r1.
 
 #### 4.7.2 Test Webex Notification Tool
 
@@ -408,7 +418,8 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 7. Click <em class="button-click">Run</em> to execute the workflow
 8. Check your Webex space to verify you received the message
 
-> **Success Criteria:** You should see your test message appear in your Webex space from Lab 1.
+!!! success "Success Criteria"
+    You should see your test message appear in your Webex space from Lab 1.
 
 ### 4.8 Test the AI Agent
 
@@ -423,13 +434,16 @@ Now let's verify the full AI Agent workflow runs correctly.
 6. Monitor the workflow execution and verify it completes without errors
 7. Check your Webex space to confirm the agent sent the results
 
-> **Success Criteria:** The workflow should complete successfully, and you should receive a Webex message containing the device time, interface status, and a summary from the AI Agent.
+!!! success "Success Criteria"
+    The workflow should complete successfully, and you should receive a Webex message containing the device time, interface status, and a summary from the AI Agent.
 
-> **Troubleshooting:** If the workflow fails:
-> - Verify the OPENAI_API_KEY is set correctly
-> - Check that the OPENAI_ENDPOINT target is configured properly
-> - Ensure your Webex access token is valid
-> - Re-run the individual tool tests (4.7.1 and 4.7.2) to isolate the issue
+!!! bug "Troubleshooting"
+    If the workflow fails:
+
+    - Verify the OPENAI_API_KEY is set correctly
+    - Check that the OPENAI_ENDPOINT target is configured properly
+    - Ensure your Webex access token is valid
+    - Re-run the individual tool tests (4.7.1 and 4.7.2) to isolate the issue
 
 ---
 
@@ -486,7 +500,8 @@ raw event:
 You MUST proceed with investigation. If any change is required to resolve alert, you MUST call tool to request change approval.
 ```
 
-> **Note:** We're keeping it simple - giving the agent minimal parsing and letting it analyze the raw event. The final instruction ensures the agent requests your approval before making any changes.
+!!! note
+    We're keeping it simple - giving the agent minimal parsing and letting it analyze the raw event. The final instruction ensures the agent requests your approval before making any changes.
 
 ### 5.5 Validate the Workflow
 
@@ -524,7 +539,8 @@ The AI Agent may ask clarifying questions before proceeding - that's OK! It's ju
    - Specify that this is a loopback interface on R3
    - Indicate that the interface was administratively shut down and needs to be restored
 
-> **Tip:** The more context you provide, the better the agent can proceed with confidence and open a change request!
+!!! tip
+    The more context you provide, the better the agent can proceed with confidence and open a change request!
 
 ### 5.9 Approve the Change Request
 
@@ -535,7 +551,8 @@ Once the agent has enough information, it will request your approval before maki
 3. In the Cisco Workflows UI, click <em class="button-click">View Task</em>
 4. Review the agent's proposed action and click <em class="button-click">Approve</em> to allow the agent to bring the interface back up
 
-> **Note:** The next lab uses a workflow with more detailed prompting for complex ThousandEyes troubleshooting scenarios.
+!!! note
+    The next lab uses a workflow with more detailed prompting for complex ThousandEyes troubleshooting scenarios.
 
 ### 5.10 Validation
 

@@ -30,7 +30,8 @@ AI Agent -> [tool_call: get_weather] -> ToolBox -> Tool - Get Weather -> wttr.in
 AI Agent <- [weather JSON response] <- ToolBox <-----------------------------+
 ```
 
-> **Note:** The wttr.in API is a free public service that may occasionally experience outages. If you encounter issues, your instructor can provide an alternative approach using Tavily web search.
+!!! note
+    The wttr.in API is a free public service that may occasionally experience outages. If you encounter issues, your instructor can provide an alternative approach using Tavily web search.
 
 ---
 
@@ -52,7 +53,8 @@ Before creating the workflow, we need to configure an HTTP target for the wttr.i
 4. Set <em class="lab-warning">Protocol</em> to <em class="example-input">HTTP</em>
 5. Click <em class="button-click">Save</em>
 
-> **Note:** We use HTTP (not HTTPS) for wttr.in as the service works reliably over HTTP.
+!!! note
+    We use HTTP (not HTTPS) for wttr.in as the service works reliably over HTTP.
 
 ---
 
@@ -76,7 +78,8 @@ Now we will create the workflow that retrieves weather data for a given city.
 
 Expand the **Variables** tab and create two variables:
 
-**Input Variable - i_city_name:**
+#### Input Variable - i_city_name
+
 1. Click <em class="button-click">+ Add variable</em>
 2. Set <em class="lab-warning">Name</em> to <em class="example-input">i_city_name</em>
 3. Set <em class="lab-warning">Type</em> to <em class="example-input">String</em>
@@ -85,7 +88,8 @@ Expand the **Variables** tab and create two variables:
 6. Add <em class="lab-warning">Description</em>: <em class="example-input">Name of city for weather retrieval</em>
 7. Click <em class="button-click">Save</em>
 
-**Output Variable - o_message_content:**
+#### Output Variable - o_message_content
+
 1. Click <em class="button-click">+ Add variable</em>
 2. Set <em class="lab-warning">Name</em> to <em class="example-input">o_message_content</em>
 3. Set <em class="lab-warning">Type</em> to <em class="example-input">String</em>
@@ -121,7 +125,8 @@ Expand the **Variables** tab and create two variables:
 5. Verify the workflow completes successfully
 6. Check that <em class="lab-warning">o_message_content</em> contains a detailed JSON blob with weather data for Amsterdam
 
-> **Tip:** If the test fails, verify your HTTP target configuration and ensure wttr.in is accessible from the internet.
+!!! tip
+    If the test fails, verify your HTTP target configuration and ensure wttr.in is accessible from the internet.
 
 ---
 
@@ -160,16 +165,19 @@ The wttr.in API is free and not always reliable. Let's add retry logic to handle
 
 ### 3.5 Duplicate Activities for Each Path
 
-**For the Success Path (== 200):**
+#### For the Success Path (== 200)
+
 1. Move or add a <em class="lab-warning">Set Variables</em> activity in the success branch
 2. Configure it to set <em class="lab-warning">o_message_content</em> from the original HTTP Request's Response Body
 
-**For the Retry Path (!= 200):**
+#### For the Retry Path (!= 200)
+
 1. Duplicate the <em class="lab-warning">HTTP Request</em> block and add it after the Sleep activity
 2. Duplicate the <em class="lab-warning">Set Variables</em> block and add it after the retry HTTP Request
 3. Ensure the Set Variables block references the <em class="lab-warning">retry HTTP Request's Response Body</em> (not the original)
 
-> **Important:** Make sure each Set Variables block references the correct HTTP Request activity above it in the flow.
+!!! warning "Important"
+    Make sure each Set Variables block references the correct HTTP Request activity above it in the flow.
 
 ### 3.6 Validate and Test
 
@@ -201,7 +209,8 @@ Now we need to add our new tool to the ToolBox workflow so the AI Agent can use 
 2. Change the <em class="lab-warning">Display Name</em> to <em class="example-input">Get Weather</em>
 3. Modify the condition so <em class="lab-warning">i_tool_call_name</em> equals <em class="example-input">get_weather</em>
 
-> **Note:** The value <em class="example-input">get_weather</em> will be the tool name as seen by the LLM.
+!!! note
+    The value <em class="example-input">get_weather</em> will be the tool name as seen by the LLM.
 
 ### 4.4 Update the JSONPath Query
 
@@ -276,10 +285,11 @@ Add the following JSON object after line 1 (after the opening `[`):
   },
 ```
 
-> **Tip:** For future tools, you can use the helper script in the repository to generate the OpenAI function specification from a workflow JSON:
-> ```bash
-> cat workflow.json | python3 scripts/tools/convert_toolbox_to_openai_tools.py --stdin --function-name get_weather
-> ```
+!!! tip
+    For future tools, you can use the helper script in the repository to generate the OpenAI function specification from a workflow JSON:
+    ```bash
+    cat workflow.json | python3 scripts/tools/convert_toolbox_to_openai_tools.py --stdin --function-name get_weather
+    ```
 
 ### 5.4 Validate JSON Syntax
 
@@ -317,11 +327,13 @@ Add the following JSON object after line 1 (after the opening `[`):
 2. Check your Webex space for a notification
 3. You should receive a message containing weather information for Amsterdam
 
-> **Troubleshooting:** If the workflow fails:
-> - Verify the tool name <em class="example-input">get_weather</em> matches in both ToolBox and i_tools_json
-> - Check that the JSONPath query correctly extracts <em class="lab-warning">i_city_name</em>
-> - Ensure the HTTP target is properly configured
-> - Review the workflow run details for specific error messages
+!!! bug "Troubleshooting"
+    If the workflow fails:
+
+    - Verify the tool name <em class="example-input">get_weather</em> matches in both ToolBox and i_tools_json
+    - Check that the JSONPath query correctly extracts <em class="lab-warning">i_city_name</em>
+    - Ensure the HTTP target is properly configured
+    - Review the workflow run details for specific error messages
 
 ---
 
@@ -351,4 +363,5 @@ Consider extending your AI Agent with additional tools:
 - Database lookups for configuration management
 - Additional monitoring integrations (AppDynamics, Datadog)
 
-> **Note:** As Cisco Workflows API becomes more open, tool creation and integration may become more streamlined in the future.
+!!! note
+    As Cisco Workflows API becomes more open, tool creation and integration may become more streamlined in the future.
