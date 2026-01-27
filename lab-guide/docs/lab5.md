@@ -54,6 +54,10 @@ Before creating the workflow, we need to configure an HTTP target for the wttr.i
 4. Set <em class="lab-warning">Protocol</em> to <em class="example-input">HTTP</em>
 5. Click <em class="button-click">Save</em>
 
+<figure markdown>
+  ![HTTP Target configuration for wttr.in weather API](./img/lab5/lab5_1.2.jpg){ width="500" }
+</figure>
+
 !!! note
     We use HTTP (not HTTPS) for wttr.in as the service works reliably over HTTP.
 
@@ -108,6 +112,10 @@ Expand the **Variables** tab and create two variables:
    - <em class="lab-warning">Relative URL</em>: Click the text field, then click the variable reference icon ![variable reference icon](https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg) to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) and select <em class="example-input">i_city_name</em>. Add <em class="example-input">?format=j1</em> after the variable so the full URL looks like: <em class="example-input">/{i_city_name}?format=j1</em>
    - <em class="lab-warning">Activity Timeout</em>: <em class="example-input">60</em>
    - <em class="lab-warning">Target</em>: Select <em class="button-click">Override workflow target</em> and choose <em class="example-input">wttr.in weather api</em>
+
+<figure markdown>
+  ![HTTP Request activity with relative URL configuration](./img/lab5/lab5_2.4.jpg){ width="600" }
+</figure>
 
 ### 2.5 Add Set Variables Activity
 
@@ -186,6 +194,10 @@ The wttr.in API is free and not always reliable. Let's add retry logic to handle
 2. Click <em class="button-click">Run</em> and test with <em class="example-input">amsterdam</em> again
 3. Verify the workflow still completes successfully
 
+<figure markdown>
+  ![Complete retry logic with condition branches for HTTP status codes](./img/lab5/lab5_3.5.jpg){ width="700" }
+</figure>
+
 ---
 
 ## Step 4: Integrate Tool into ToolBox
@@ -245,6 +257,10 @@ Now we need to add our new tool to the ToolBox workflow so the AI Agent can use 
    ```
 4. Verify the workflow completes and returns weather data
 
+<figure markdown>
+  ![ToolBox workflow with Get Weather condition branch integrated](./img/lab5/lab5_4.7.jpg){ width="700" }
+</figure>
+
 ---
 
 ## Step 5: Add Tool to AI Agent Specification
@@ -299,6 +315,10 @@ Add the following JSON object after line 1 (after the opening `[`):
 3. Ignore any warnings about duplicate keys for "type" - this is expected
 4. Fix any syntax errors if found
 
+<figure markdown>
+  ![AI Agent i_tools_json variable with get_weather function specification](./img/lab5/lab5_5.3.jpg){ width="500" }
+</figure>
+
 ---
 
 ## Step 6: Test the Complete Integration
@@ -321,6 +341,10 @@ Add the following JSON object after line 1 (after the opening `[`):
    2. Send me a webex notification about the weather
    ```
 4. Click <em class="button-click">Run</em> to execute
+
+<figure markdown>
+  ![Run AI Agent dialog with weather task and tool specification](./img/lab5/lab5_6.2.jpg){ width="500" }
+</figure>
 
 ### 6.3 Verify Results
 
