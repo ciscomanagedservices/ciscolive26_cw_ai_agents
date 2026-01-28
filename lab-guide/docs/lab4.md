@@ -106,11 +106,11 @@ flowchart LR
 ### 2.5 Importing a workflow for ThousandEyes event handling
 1. In Cisco Workflows, go to the Automation Workspace where the workflows are listed.
 2. Add the git repo for ThousandEyes workflows like you did in Lab 3:
-   - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - ThousandEyes</em>
-   - Use the same Account Keys from Lab 3
-   - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
-   - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
-   - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ThousandEyes</em>
+    - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - ThousandEyes</em>
+    - Use the same Account Keys from Lab 3
+    - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
+    - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
+    - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ThousandEyes</em>
 3. Click <em class="button-click">Actions > Import Workflow > From Git</em> and import the <em class="example-input">get_te_path_info</em> workflow first, and then <em class="example-input">te_alert_webhook</em> workflow.
 
 
@@ -119,10 +119,10 @@ flowchart LR
 1. In Cisco Workflows, go to <em class="button-click">Automation > Rules</em>
 2. Click the <em class="button-click">Automation rules</em> tab, then click <em class="button-click">+ Add automation rule</em>
 3. Configure the rule:
-   - <em class="lab-warning">Type:</em> <em class="example-input">Webhook rule</em>
-   - <em class="lab-warning">Title:</em> <em class="example-input">&lt;your_name&gt;-te-alert</em>
-   - <em class="lab-warning">Webhook:</em> Select your webhook (<em class="example-input">&lt;your_name&gt;-te</em>)
-   - <em class="lab-warning">Workflow:</em> Select <em class="example-input">te_alert_webhook</em>
+    - <em class="lab-warning">Type:</em> <em class="example-input">Webhook rule</em>
+    - <em class="lab-warning">Title:</em> <em class="example-input">&lt;your_name&gt;-te-alert</em>
+    - <em class="lab-warning">Webhook:</em> Select your webhook (<em class="example-input">&lt;your_name&gt;-te</em>)
+    - <em class="lab-warning">Workflow:</em> Select <em class="example-input">te_alert_webhook</em>
 4. Click <em class="button-click">Save</em>
 
 ## Step 3: Create congestion on the network to generate an incident

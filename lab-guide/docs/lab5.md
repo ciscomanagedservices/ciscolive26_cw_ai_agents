@@ -111,10 +111,10 @@ Expand the **Variables** tab and create two variables:
 1. From the left pane, expand <em class="button-click">Activities > Web Service</em>
 2. Drag the <em class="lab-warning">HTTP Request</em> activity to the canvas below <em class="lab-warning">Start</em>
 3. Click on the HTTP Request block and configure:
-   - <em class="lab-warning">Display Name</em>: <em class="example-input">get weather from wttr.in</em>
-   - <em class="lab-warning">Relative URL</em>: Click the text field, then click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) and select <em class="example-input">i_city_name</em>. Add <em class="example-input">?format=j1</em> after the variable so the full URL looks like: <em class="example-input">/{i_city_name}?format=j1</em>
-   - <em class="lab-warning">Activity Timeout</em>: <em class="example-input">60</em>
-   - <em class="lab-warning">Target</em>: Select <em class="button-click">Override workflow target</em> and choose <em class="example-input">wttr.in weather api</em>
+    - <em class="lab-warning">Display Name</em>: <em class="example-input">get weather from wttr.in</em>
+    - <em class="lab-warning">Relative URL</em>: Click the text field, then click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) and select <em class="example-input">i_city_name</em>. Add <em class="example-input">?format=j1</em> after the variable so the full URL looks like: <em class="example-input">/{i_city_name}?format=j1</em>
+    - <em class="lab-warning">Activity Timeout</em>: <em class="example-input">60</em>
+    - <em class="lab-warning">Target</em>: Select <em class="button-click">Override workflow target</em> and choose <em class="example-input">wttr.in weather api</em>
 
 <figure markdown>
   ![HTTP Request activity with relative URL configuration](./img/lab5/lab5_2.4.jpg){ width="600" }
@@ -125,8 +125,8 @@ Expand the **Variables** tab and create two variables:
 1. From the left pane, drag a <em class="lab-warning">Set Variables</em> activity below the HTTP Request
 2. Click on the Set Variables block
 3. Add a variable assignment:
-   - <em class="lab-warning">Variable to update</em>: <em class="example-input">o_message_content</em>
-   - <em class="lab-warning">Value</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) and select <em class="button-click">Activities > HTTP Request > Response Body</em>
+    - <em class="lab-warning">Variable to update</em>: <em class="example-input">o_message_content</em>
+    - <em class="lab-warning">Value</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) and select <em class="button-click">Activities > HTTP Request > Response Body</em>
 
 ### 2.6 Test the Workflow
 
@@ -157,18 +157,18 @@ The wttr.in API is free and not always reliable. Let's add retry logic to handle
 1. Click on the left condition branch
 2. Set <em class="lab-warning">Display Name</em> to <em class="example-input">http code == 200</em>
 3. Configure the condition:
-   - <em class="lab-warning">Property</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Activities > HTTP Request > Status Code</em>
-   - <em class="lab-warning">Comparison</em>: <em class="example-input">Equals</em>
-   - <em class="lab-warning">Value</em>: <em class="example-input">200</em>
+    - <em class="lab-warning">Property</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Activities > HTTP Request > Status Code</em>
+    - <em class="lab-warning">Comparison</em>: <em class="example-input">Equals</em>
+    - <em class="lab-warning">Value</em>: <em class="example-input">200</em>
 
 ### 3.3 Configure Retry Path (HTTP != 200)
 
 1. Click on the right condition branch
 2. Set <em class="lab-warning">Display Name</em> to <em class="example-input">http code != 200</em>
 3. Configure the condition:
-   - <em class="lab-warning">Property</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Activities > HTTP Request > Status Code</em>
-   - <em class="lab-warning">Comparison</em>: <em class="example-input">Not equals</em>
-   - <em class="lab-warning">Value</em>: <em class="example-input">200</em>
+    - <em class="lab-warning">Property</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Activities > HTTP Request > Status Code</em>
+    - <em class="lab-warning">Comparison</em>: <em class="example-input">Not equals</em>
+    - <em class="lab-warning">Value</em>: <em class="example-input">200</em>
 
 ### 3.4 Add Sleep Block for Retry
 
@@ -327,9 +327,9 @@ Add the following JSON object after line 1 (after the opening `[`):
 
 1. Go to <em class="button-click">Automation > Workspace</em>
 2. Open each of these workflows and click <em class="button-click">Validate</em>:
-   - Tool - Get Weather
-   - ToolBox
-   - AIAgent
+    - Tool - Get Weather
+    - ToolBox
+    - AIAgent
 
 ### 6.2 Run the AI Agent Test
 
