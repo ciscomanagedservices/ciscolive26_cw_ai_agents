@@ -30,8 +30,11 @@ By the end of this lab, you will:
 
 The following diagram illustrates the event flow we are building:
 
-```txt
-ThousandEyes agent -> [webhook] -> Cisco Workflows -> [MCP] -> RadKit -> device(s)
+```mermaid
+flowchart LR
+    A[ThousandEyes Agent] -->|webhook| B[Cisco Workflows]
+    B -->|MCP| C[RADKit]
+    C --> D[Device]
 ```
 
 ---

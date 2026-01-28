@@ -24,11 +24,14 @@ By the end of this lab, you will have:
 
 The following diagram illustrates the tool integration:
 
-```txt
-AI Agent -> [tool_call: get_weather] -> ToolBox -> Tool - Get Weather -> wttr.in API
-    ^                                                                         |
-    |                                                                         v
-AI Agent <- [weather JSON response] <- ToolBox <------------------------------+
+```mermaid
+flowchart LR
+    A[AI Agent] -->|tool_call: get_weather| B[ToolBox]
+    B --> C[Tool - Get Weather]
+    C --> D[wttr.in API]
+    D -->|weather JSON response| C
+    C --> B
+    B --> A
 ```
 
 !!! note

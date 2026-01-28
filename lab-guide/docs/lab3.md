@@ -13,33 +13,36 @@ In this lab, you will configure Cisco Workflows to act as an AI Agent that can r
 
 The event flow remains the same as Lab 1, but now with cognitive analysis:
 
-```txt
-device -> [syslog] -> splunk -> [webhook] -> Cisco Workflows -> [agentic analysis] -> device
+```mermaid
+flowchart LR
+    A[Device] -->|syslog| B[Splunk]
+    B -->|webhook| C[Cisco Workflows]
+    C -->|agentic analysis| A
 ```
 
 However, the agentic response will be a series of LLM calls which trigger tools (sub workflows) until work is completed.
 
-```txt
-┌─────────────────────────────────────────────────────────────────┐
-│                        AI Agent Workflow                        │
-│                                                                 │
-│   ┌─────────────────┐      ┌─────────────────────────────────┐  │
-│   │  OpenAI Chat    │      │            ToolBox              │  │
-│   │  Completion     │      │  ┌─────────────────────────┐    │  │
-│   │                 │      │  │ execute_terminal_command│    │  │
-│   │  - system prompt│      │  │ scratchpad_read/write   │    │  │
-│   │  - tools JSON   │ ───▶ │  │ request_change_approval │    │  │
-│   │  - messages     │ ◀─── │  │ webex_notification      │    │  │
-│   │                 │      │  │ ask_clarifying_question │    │  │
-│   └─────────────────┘      │  └─────────────────────────┘    │  │
-│          │                 └─────────────────────────────────┘  │
-│          │                                                      │
-│          ▼                                                      │
-│   ┌──────────────┐                                              │
-│   │ Loop until   │                                              │
-│   │ final answer │                                              │
-│   └──────────────┘                                              │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph agent["AI Agent Workflow"]
+        direction TB
+        subgraph llm["OpenAI Chat Completion"]
+            L1[system prompt]
+            L2[tools JSON]
+            L3[messages]
+        end
+
+        subgraph toolbox["ToolBox"]
+            T1[execute_terminal_command]
+            T2[scratchpad_read/write]
+            T3[request_change_approval]
+            T4[webex_notification]
+            T5[ask_clarifying_question]
+        end
+
+        llm <-->|tool calls| toolbox
+        llm --> loop["Loop until<br/>final answer"]
+    end
 ```
 
 ---
@@ -229,16 +232,13 @@ We will need to import the cognitive response workflow definitions from GitHub i
 !!! warning "Important"
     You will create **3 separate Git repositories** in Cisco Workflows, each pointing to a different code path in the same GitHub repo. This organizes the workflows into logical groups.
 
-```txt
-┌─────────────────────────────────────────────────────────────────┐
-│                    GitHub Repository Structure                   │
-│                                                                  │
-│   ciscolive26_cw_ai_agents/                                      │
-│   └── workflows/                                                 │
-│       ├── ai/              ◀── Repo 1: OpenAI Chat Completion   │
-│       ├── ai_agent/        ◀── Repo 2: AI Agent + Tools         │
-│       └── mcp/             ◀── Repo 3: MCP Server Integration   │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph repo["ciscolive26_cw_ai_agents/workflows/"]
+        A["ai/<br/>Repo 1: OpenAI Chat Completion"]
+        B["ai_agent/<br/>Repo 2: AI Agent + Tools"]
+        C["mcp/<br/>Repo 3: MCP Server Integration"]
+    end
 ```
 
 ### 4.1 Add Git Repositories to Cisco Workflows
@@ -301,11 +301,11 @@ You will now import workflows from all three Git repositories. Follow the steps 
 
 #### Import Order Overview
 
-```txt
-1. OpenAI Chat Completion (AI repo)          ← Core LLM interface
-2. MCP Server Tools (MCP repo)               ← Tool execution layer
-3. ToolBox (AI Agent repo)                   ← Tool registry (includes all tool subworkflows)
-4. AI Agent (AI Agent repo)                  ← Main orchestrator
+```mermaid
+flowchart LR
+    A["1. OpenAI Chat Completion<br/>(AI repo)"] -->|Core LLM interface| B["2. MCP Server Tools<br/>(MCP repo)"]
+    B -->|Tool execution layer| C["3. ToolBox<br/>(AI Agent repo)"]
+    C -->|Tool registry| D["4. AI Agent<br/>(AI Agent repo)"]
 ```
 
 #### 4.6.1 Import OpenAI Chat Completion
