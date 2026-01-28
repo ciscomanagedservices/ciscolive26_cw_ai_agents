@@ -453,8 +453,8 @@ You MUST proceed with investigation. If any change is required to resolve alert,
 
 Replace the placeholders as follows:
 
-- <em class="example-input">{target_device}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Activities > get_device_ip > JSONPath Queries > target_device</em>
-- <em class="example-input">{webhook_request_body}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Rule > Webhook Rule > Output > Request Body</em>
+- <em class="example-input">{target_device}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Activities > get_device_ip > JSONPath Queries > target_device</em>
+- <em class="example-input">{webhook_request_body}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Rule > Webhook Rule > Output > Request Body</em>
 
 !!! note
     We're keeping it simple - giving the agent minimal parsing and letting it analyze the raw event. The final instruction ensures the agent requests your approval before making any changes.

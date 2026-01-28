@@ -179,12 +179,12 @@ Create a Webex space where the bot will send notifications. You will use this sp
 1. Go to <em class="button-click">Automation > Variables</em> and click the <em class="button-click">+ Create</em> button in the upper right.
 2. Name the key <em class="example-input">&lt;yourName&gt;-webex</em>, set <em class="lab-warning">String Type</em> to <em class="example-input">Secure String</em> and put the webex bearer token in the value. Click <em class="button-click">Save</em>.
 3. Go back to our workflow in <em class="button-click">Automation > Workspace > *your_workflow_name*</em>. Click the name of the workflow and Click <em class="button-click">View Workflow</em> on the lower right hand corner.
-4. Click on the <em class="lab-warning">Webex Send Message</em> activity box, then in <em class="lab-warning">Access Token</em> click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> on the right of the text box and select <em class="button-click">Global > *your_access_token*</em>.
+4. Click on the <em class="lab-warning">Webex Send Message</em> activity box, then in <em class="lab-warning">Access Token</em> click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right of the text box and select <em class="button-click">Global > *your_access_token*</em>.
 5. Configure the message settings:
     - Put your Webex account email address in the <em class="lab-warning">Recipient Email</em> box
     - In the <em class="lab-warning">Markdown Message</em> box, type <em class="example-input"># It worked!</em>
     - Press Enter for a new line
-    - Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> on the right and add the variable <em class="button-click">Rule > Webhook Rule > Output > Request Headers</em>
+    - Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right and add the variable <em class="button-click">Rule > Webhook Rule > Output > Request Headers</em>
     - This will take the JSON from the webhook and send it in a Webex Teams message
 6. Configure the target:
     - Under <em class="lab-warning">Target</em>, choose <em class="button-click">Override workflow target</em>

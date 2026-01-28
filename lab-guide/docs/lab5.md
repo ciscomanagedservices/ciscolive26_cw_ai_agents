@@ -112,7 +112,7 @@ Expand the **Variables** tab and create two variables:
 2. Drag the <em class="lab-warning">HTTP Request</em> activity to the canvas below <em class="lab-warning">Start</em>
 3. Click on the HTTP Request block and configure:
     - <em class="lab-warning">Display Name</em>: <em class="example-input">get weather from wttr.in</em>
-    - <em class="lab-warning">Relative URL</em>: Click the text field, then click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) and select <em class="example-input">i_city_name</em>. Add <em class="example-input">?format=j1</em> after the variable so the full URL looks like: <em class="example-input">/{i_city_name}?format=j1</em>
+    - <em class="lab-warning">Relative URL</em>: Click the text field, then click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) and select <em class="example-input">i_city_name</em>. Add <em class="example-input">?format=j1</em> after the variable so the full URL looks like: <em class="example-input">/{i_city_name}?format=j1</em>
     - <em class="lab-warning">Activity Timeout</em>: <em class="example-input">60</em>
     - <em class="lab-warning">Target</em>: Select <em class="button-click">Override workflow target</em> and choose <em class="example-input">wttr.in weather api</em>
 
@@ -126,7 +126,7 @@ Expand the **Variables** tab and create two variables:
 2. Click on the Set Variables block
 3. Add a variable assignment:
     - <em class="lab-warning">Variable to update</em>: <em class="example-input">o_message_content</em>
-    - <em class="lab-warning">Value</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) and select <em class="button-click">Activities > HTTP Request > Response Body</em>
+    - <em class="lab-warning">Value</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) and select <em class="button-click">Activities > HTTP Request > Response Body</em>
 
 ### 2.6 Test the Workflow
 
@@ -158,7 +158,7 @@ The wttr.in API is free and not always reliable. Let's add retry logic to handle
 1. Click on the left condition branch
 2. Set <em class="lab-warning">Display Name</em> to <em class="example-input">http code == 200</em>
 3. Configure the condition:
-    - <em class="lab-warning">Property</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Activities > HTTP Request > Status Code</em>
+    - <em class="lab-warning">Property</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Activities > HTTP Request > Status Code</em>
     - <em class="lab-warning">Comparison</em>: <em class="example-input">Equals</em>
     - <em class="lab-warning">Value</em>: <em class="example-input">200</em>
 
@@ -167,7 +167,7 @@ The wttr.in API is free and not always reliable. Let's add retry logic to handle
 1. Click on the right condition branch
 2. Set <em class="lab-warning">Display Name</em> to <em class="example-input">http code != 200</em>
 3. Configure the condition:
-    - <em class="lab-warning">Property</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Activities > HTTP Request > Status Code</em>
+    - <em class="lab-warning">Property</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Activities > HTTP Request > Status Code</em>
     - <em class="lab-warning">Comparison</em>: <em class="example-input">Not equals</em>
     - <em class="lab-warning">Value</em>: <em class="example-input">200</em>
 
@@ -245,9 +245,9 @@ Now we need to add our new tool to the ToolBox workflow so the AI Agent can use 
 ### 4.6 Wire Up Variables
 
 1. Click on the <em class="lab-warning">Tool - Get Weather</em> block
-2. Set the input <em class="lab-warning">city_name</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) and select the JSONPath Query output <em class="example-input">i_city_name</em>
+2. Set the input <em class="lab-warning">city_name</em>: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) and select the JSONPath Query output <em class="example-input">i_city_name</em>
 3. Click on the <em class="lab-warning">Set o_message_content</em> block below
-4. Update the reference value: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select the output variable from <em class="lab-warning">Tool - Get Weather</em>
+4. Update the reference value: Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select the output variable from <em class="lab-warning">Tool - Get Weather</em>
 
 ### 4.7 Test the ToolBox
 
