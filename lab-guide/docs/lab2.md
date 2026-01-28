@@ -15,8 +15,12 @@ This will show one way to have automated response, before we bring in cognitive 
 
 The following diagram illustrates the event flow we are building:
 
-```txt
-device -> [syslog] -> splunk -> [webhook] -> Cisco Workflows -> [commands] -> Workflow's Remote Server -> device
+```mermaid
+flowchart LR
+    A[Device] -->|syslog| B[Splunk]
+    B -->|webhook| C[Cisco Workflows]
+    C -->|commands| D[Remote Server]
+    D --> A
 ```
 
 ---
@@ -85,33 +89,22 @@ Target groups contain the sets of devices that you can run the automation on. We
 
 In this step, you will convert your Lab 1 notification workflow into a reusable standalone workflow that can be called from other workflows. This is necessary because of the target group limitation described in Step 2.2.
 
-```txt
-┌─────────────────────────────────────────────────────────────────┐
-│                    Workflow Architecture                         │
-│                                                                  │
-│   ┌─────────────────────────────────────────────────────────┐   │
-│   │          <your_name>-unshut-int (main workflow)         │   │
-│   │                                                         │   │
-│   │   ┌───────────┐    ┌───────────┐    ┌───────────────┐   │   │
-│   │   │ JSONPath  │───▶│ Terminal  │───▶│ Sub-workflow  │   │   │
-│   │   │  Query    │    │ Commands  │    │    Call       │   │   │
-│   │   └───────────┘    └───────────┘    └───────┬───────┘   │   │
-│   │                                             │           │   │
-│   │   Target Group: <your_name>-routers         │           │   │
-│   └─────────────────────────────────────────────┼───────────┘   │
-│                                                 │               │
-│                                                 ▼               │
-│   ┌─────────────────────────────────────────────────────────┐   │
-│   │          <your_name>-notify2 (sub-workflow)             │   │
-│   │                                                         │   │
-│   │   ┌───────────────┐                                     │   │
-│   │   │ Webex Send    │                                     │   │
-│   │   │ Message       │                                     │   │
-│   │   └───────────────┘                                     │   │
-│   │                                                         │   │
-│   │   Target Override: <your_name>-webex                    │   │
-│   └─────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph main["&lt;your_name&gt;-unshut-int (main workflow)"]
+        direction LR
+        A[JSONPath Query] --> B[Terminal Commands]
+        B --> C[Sub-workflow Call]
+    end
+
+    subgraph sub["&lt;your_name&gt;-notify2 (sub-workflow)"]
+        D[Webex Send Message]
+    end
+
+    C --> D
+
+    main -.->|"Target Group: &lt;your_name&gt;-routers"| B
+    sub -.->|"Target Override: &lt;your_name&gt;-webex"| D
 ```
 
 ### 3.1 Duplicate Your Lab 1 Notification Workflow
@@ -283,11 +276,11 @@ Now we'll override the placeholder target condition with the actual device IP fr
 
 Your completed workflow should look like this:
 
-```txt
-┌─────────┐     ┌───────────────┐     ┌─────────────────┐     ┌────────────────┐
-│  Start  │────▶│ get_device_ip │────▶│ unshut interface│────▶│ notify2        │
-│         │     │ (JSONPath)    │     │ (Terminal Cmd)  │     │ (Sub-workflow) │
-└─────────┘     └───────────────┘     └─────────────────┘     └────────────────┘
+```mermaid
+flowchart LR
+    A([Start]) --> B[get_device_ip<br/>JSONPath]
+    B --> C[unshut interface<br/>Terminal Cmd]
+    C --> D[notify2<br/>Sub-workflow]
 ```
 
 ---
@@ -380,26 +373,11 @@ You have successfully configured automated remediation infrastructure:
 
 ### What You Built
 
-```txt
-                    Splunk Webhook
-                         │
-                         ▼
-              ┌──────────────────────┐
-              │  <your_name>-unshut-int  │
-              │                      │
-              │  1. Parse device IP  │
-              │  2. Send CLI commands│
-              │  3. Call notification│
-              └──────────┬───────────┘
-                         │
-              ┌──────────┴───────────┐
-              │                      │
-              ▼                      ▼
-    ┌─────────────────┐    ┌─────────────────┐
-    │ Remote Server   │    │ <your_name>-notify2 │
-    │ → R3 (SSH)      │    │ → Webex         │
-    │ → no shut       │    │ → Message       │
-    └─────────────────┘    └─────────────────┘
+```mermaid
+flowchart TB
+    A[Splunk Webhook] --> B["&lt;your_name&gt;-unshut-int<br/>1. Parse device IP<br/>2. Send CLI commands<br/>3. Call notification"]
+    B --> C[Remote Server<br/>R3 via SSH<br/>no shut]
+    B --> D["&lt;your_name&gt;-notify2<br/>Webex Message"]
 ```
 
 In the next lab, you will configure Cisco Workflows to have cognitive agentic intelligence, where it determines the next steps instead of you defining what commands to run. We will also leverage Cisco IQ's remote device connectivity (formerly known as CX RADKit) to simplify managing devices across the estate.

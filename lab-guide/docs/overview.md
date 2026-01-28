@@ -68,8 +68,11 @@ You will encounter the following components in this lab:
 
 The event chain in this lab follows this pattern:
 
-```txt
-device -> [syslog] -> splunk -> [webhook] -> Cisco Workflows -> [agentic analysis] -> device
+```mermaid
+flowchart LR
+    A[Device] -->|syslog| B[Splunk]
+    B -->|webhook| C[Cisco Workflows]
+    C -->|agentic analysis| A
 ```
 
 ## Lab Flow

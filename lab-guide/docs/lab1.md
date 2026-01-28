@@ -16,8 +16,11 @@ This will serve as the detect & notify aspects of these labs.
 
 The following diagram illustrates the event flow we are building:
 
-```txt
-device -> [syslog] -> splunk -> [webhook] -> Cisco Workflows -> [notification] -> Webex Teams
+```mermaid
+flowchart LR
+    A[Device] -->|syslog| B[Splunk]
+    B -->|webhook| C[Cisco Workflows]
+    C -->|notification| D[Webex Teams]
 ```
 
 ---
