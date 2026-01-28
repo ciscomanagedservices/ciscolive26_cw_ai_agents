@@ -138,7 +138,7 @@ We need to make this workflow accept a message as input so other workflows can p
 1. Click on the <em class="lab-warning">Send Webex Team Message</em> activity in the workflow canvas to select it
 2. In the activity properties panel, find the <em class="lab-warning">Markdown Message</em> field
 3. Clear the existing content
-4. Click the variable icon (puzzle piece) and navigate to: <em class="button-click">Workflow > Input > message_body</em>
+4. Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and navigate to: <em class="button-click">Workflow > Input > message_body</em>
 5. This links the message content to whatever is passed into the workflow
 
 ### 3.5 Configure Target Override
@@ -185,7 +185,7 @@ We need to set a target group condition, but the actual condition depends on par
 1. Still in the workflow properties, under <em class="lab-warning">Target Group</em>
 2. Choose <em class="lab-warning">Target Type:</em> <em class="example-input">Terminal Endpoint</em>
 3. Click <em class="button-click">+ Add Condition</em> and configure:
-    - <em class="lab-warning">Property:</em> Click the variable icon and select <em class="button-click">Terminal Endpoint > Input > Host/IPAddress</em>
+    - <em class="lab-warning">Property:</em> Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Terminal Endpoint > Input > Host/IPAddress</em>
     - <em class="lab-warning">Comparison:</em> <em class="example-input">Equals</em>
     - <em class="lab-warning">Value:</em> <em class="example-input">-2</em>
 
@@ -207,7 +207,7 @@ Now we'll add an activity to extract the device IP from the webhook payload.
 2. In the right-side panel, configure:
     - <em class="lab-warning">Display Name:</em> <em class="example-input">get_device_ip</em>
 3. In the <em class="lab-warning">Source JSON to Query</em> field:
-    - Click the variable icon (puzzle piece) to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser)
+    - Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser)
     - Navigate to: <em class="button-click">Rule > Webhook Rule > Output > Request Body</em>
 4. Under <em class="lab-warning">JSONPath Queries</em>, click <em class="button-click">+ Add</em> and configure:
     - <em class="lab-warning">JSONPath Query:</em> <em class="example-input">$.result.dvc</em>
@@ -244,9 +244,9 @@ Now we'll override the placeholder target condition with the actual device IP fr
 2. In the <em class="lab-warning">Target</em> section, click <em class="button-click">Override target group condition</em>
 3. Configure the override condition:
     - <em class="lab-warning">Target Type:</em> <em class="example-input">Terminal Endpoint</em>
-    - <em class="lab-warning">Property:</em> Click the variable icon and select <em class="button-click">Terminal Endpoint > Input > Host/IPAddress</em>
+    - <em class="lab-warning">Property:</em> Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Terminal Endpoint > Input > Host/IPAddress</em>
     - <em class="lab-warning">Comparison:</em> <em class="example-input">Equals</em>
-    - <em class="lab-warning">Value:</em> Click the variable icon and select <em class="button-click">Activities > get_device_ip > JSONPath Queries > target_device</em>
+    - <em class="lab-warning">Value:</em> Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Activities > get_device_ip > JSONPath Queries > target_device</em>
 
 !!! success
     This override tells the workflow: "Instead of using the placeholder `-2` condition, match the device whose IP address equals the `target_device` value we parsed from the webhook."
@@ -262,7 +262,7 @@ Now we'll override the placeholder target condition with the actual device IP fr
 
 1. Click on the <em class="lab-warning">&lt;your_name&gt;-notify2</em> workflow block to select it
 2. Find the <em class="lab-warning">message_body</em> input field
-3. Click the variable icon and navigate to: <em class="button-click">Activities > unshut interface > Response body</em>
+3. Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and navigate to: <em class="button-click">Activities > unshut interface > Response body</em>
 
 !!! note
     This passes the terminal command output (showing what commands ran and their results) to the Webex notification. You could add additional text before/after this variable if you want more context in your notifications.
