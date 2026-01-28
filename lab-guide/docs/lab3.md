@@ -427,7 +427,7 @@ We'll start by duplicating your Lab 2 workflow and modifying it to use the AI Ag
 1. Click on the duplicated workflow <em class="example-input">Copy(1) &lt;your_name&gt;-unshut-int</em> to open it
 2. In the <em class="lab-warning">General</em> tab, rename the workflow to <em class="example-input">&lt;your_name&gt;-ai-fix-shut-interface</em>
 3. Delete the <em class="lab-warning">Terminal</em> activity (the static remediation commands)
-4. Delete the existing <em class="lab-warning">sub workflow</em> activity
+4. Delete the <em class="lab-warning">Webex notification</em> activity that was added in Lab 2
 
 ### 5.3 Add the AI Agent Activity
 
