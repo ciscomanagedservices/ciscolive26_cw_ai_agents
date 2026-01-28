@@ -87,25 +87,7 @@ Target groups contain the sets of devices that you can run the automation on. We
 
 ## Step 3: Create Standalone Notification Workflow
 
-In this step, you will convert your Lab 1 notification workflow into a reusable standalone workflow that can be called from other workflows. This is necessary because of the target group limitation described in Step 2.2.
-
-```mermaid
-flowchart TB
-    subgraph main["&lt;your_name&gt;-unshut-int (main workflow)"]
-        direction LR
-        A[JSONPath Query] --> B[Terminal Commands]
-        B --> C[Sub-workflow Call]
-    end
-
-    subgraph sub["&lt;your_name&gt;-notify2 (sub-workflow)"]
-        D[Webex Send Message]
-    end
-
-    C --> D
-
-    main -.->|"Target Group: &lt;your_name&gt;-routers"| B
-    sub -.->|"Target Override: &lt;your_name&gt;-webex"| D
-```
+In this step, you will convert your Lab 1 notification workflow into a reusable standalone workflow that can be called from other workflows. This is necessary because of the target group limitation described in Step 2.2. The main workflow (`<your_name>-unshut-int`) will contain a JSONPath Query, Terminal Commands, and a Sub-workflow Call that invokes the notification sub-workflow (`<your_name>-notify2`). The main workflow uses the target group for router access, while the sub-workflow overrides the target to use the Webex endpoint.
 
 ### 3.1 Duplicate Your Lab 1 Notification Workflow
 
@@ -377,7 +359,7 @@ You have successfully configured automated remediation infrastructure:
 flowchart TB
     A[Splunk Webhook] --> B["&lt;your_name&gt;-unshut-int<br/>1. Parse device IP<br/>2. Send CLI commands<br/>3. Call notification"]
     B --> C[Remote Server<br/>R3 via SSH<br/>no shut]
-    B --> D["&lt;your_name&gt;-notify2<br/>Webex Message"]
+    C --> D["&lt;your_name&gt;-notify2<br/>Webex Message"]
 ```
 
 In the next lab, you will configure Cisco Workflows to have cognitive agentic intelligence, where it determines the next steps instead of you defining what commands to run. We will also leverage Cisco IQ's remote device connectivity (formerly known as CX RADKit) to simplify managing devices across the estate.

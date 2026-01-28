@@ -67,22 +67,21 @@ flowchart LR
 ### 2.2 Configure an alert for the test
 1. <em class="button-click">Manage > Alert Rules > Add New Alert Rule</em>
 2. Set these parameters:
-    1. <em class="lab-warning">Alert Type:</em> <em class="example-input">Web > HTTP Server</em>
-    2. <em class="lab-warning">Alert Rule Name</em>: <em class="example-input">Congestion Alert</em>
-    3. <em class="lab-warning">Tests</em>: <em class="example-input">&lt;Select your test name from 2.1&gt;</em>
-    4. <em class="lab-warning">Agents</em>: <em class="example-input">&lt;Select your agent&gt;</em>
+    - <em class="lab-warning">Alert Type:</em> <em class="example-input">Web > HTTP Server</em>
+    - <em class="lab-warning">Alert Rule Name</em>: <em class="example-input">Congestion Alert</em>
+    - <em class="lab-warning">Tests</em>: <em class="example-input">&lt;Select your test name from 2.1&gt;</em>
+    - <em class="lab-warning">Agents</em>: <em class="example-input">&lt;Select your agent&gt;</em>
 3. Change <em class="lab-warning">Alert Detection</em> to <em class="example-input">Manual</em>
+4. Set to <em class="example-input">Any conditions are met by the same 1 agent 2 of 2 times in a row</em>
+5. Set the rules to:
+    - <em class="lab-warning">Latency</em> >= <em class="example-input">200ms</em>
+    - <em class="lab-warning">Jitter</em> >= <em class="example-input">200ms</em>
+    - <em class="lab-warning">Packet Loss</em> >= <em class="example-input">5%</em>
+    - <em class="lab-warning">Error</em> is present
+6. Stay on this screen through the next step.
 
 !!! tip
     Adaptive alerting is a neat feature, but it requires a day to run to build normality for the anomaly detection. We don't have that much time here, so even in a world of predictive AI, we're going with old-school manual thresholds.
-
-4. Set to <em class="example-input">Any conditions are met by the same 1 agent 2 of 2 times in a row</em>
-5. Set the rules to:
-* <em class="lab-warning">Latency</em> >= <em class="example-input">200ms</em>
-* <em class="lab-warning">Jitter</em> >= <em class="example-input">200ms</em>
-* <em class="lab-warning">Packet Loss</em> >= <em class="example-input">5%</em>
-* <em class="lab-warning">Error</em> is present
-6. Stay on this screen through the next step.
 
 ### 2.3 Configuring the webhook integration in Workflows
 

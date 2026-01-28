@@ -40,8 +40,8 @@ flowchart TB
             T5[ask_clarifying_question]
         end
 
-        llm <-->|tool calls| toolbox
-        llm --> loop["Loop until<br/>final answer"]
+        llm -->|tool calls| toolbox
+        toolbox -->|process response| llm
     end
 ```
 
@@ -120,7 +120,7 @@ Now we'll configure RADKit through its web interface to enroll with Cisco Cloud,
 
 1. Click <em class="button-click">Connectivity</em> in the left menu
 2. Click <em class="button-click">Enroll with SSO</em>
-3. Enter your <em class="lab-warning">Cisco.com (CCO) email address</em>
+3. Enter your <em class="lab-warning">email for Cisco ID</em>
 4. Click <em class="button-click">Submit</em>
 5. Click the <em class="button-click">CLICK HERE</em> link to complete SSO authentication
 6. After SSO completes, close the SSO tab and return to the RADKit WebUI
@@ -165,6 +165,9 @@ For each device:
 ## Step 3: Setup RADKit MCP Server
 
 The MCP (Model Context Protocol) server allows Cisco Workflows to interact with RADKit-managed devices through a standardized API.
+
+!!! note "About MCP"
+    We will be setting up an MCP server that acts as an intermediary for Cisco Workflows to send JSON RPC requests over HTTP to the MCP server, which then runs commands in the RADKit SDK. MCP is explained in more detail here: [What is Model Context Protocol (MCP) Explained](https://composio.dev/blog/what-is-model-context-protocol-mcp-explained)
 
 ### 3.1 Update the RADKit MCP Server Repository
 
@@ -229,139 +232,96 @@ The script will:
 
 We will need to import the cognitive response workflow definitions from GitHub into your Cisco Workflows instance.
 
-!!! warning "Important"
-    You will create **3 separate Git repositories** in Cisco Workflows, each pointing to a different code path in the same GitHub repo. This organizes the workflows into logical groups.
-
-```mermaid
-flowchart TB
-    subgraph repo["ciscolive26_cw_ai_agents/workflows/"]
-        A["ai/<br/>Repo 1: OpenAI Chat Completion"]
-        B["ai_agent/<br/>Repo 2: AI Agent + Tools"]
-        C["mcp/<br/>Repo 3: MCP Server Integration"]
-    end
-```
-
-### 4.1 Add Git Repositories to Cisco Workflows
+### 4.1 Add Git Repository to Cisco Workflows
 
 1. Go to Meraki Dashboard on your workstation
 2. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
 3. On the right, click the <em class="button-click">Actions</em> button and then <em class="button-click">Manage Git Repositories</em>
-
-You will add **3 repositories** using the steps below. Each repository uses the same GitHub credentials but a different <em class="lab-warning">Code Path</em>.
-
-### 4.2 Repository 1: AI (OpenAI Chat Completion)
-
-1. Click <em class="button-click">New git repository</em>
-2. Fill the repository details:
-    - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - AI</em>
-    - Click <em class="button-click">Default Account Keys</em> -> <em class="button-click">Add New</em>
-     - <em class="lab-warning">Account Key Type:</em> <em class="example-input">Git Token-Based Credentials</em>
-     - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 GitHub</em>
-     - <em class="lab-warning">Token:</em> Use the GitHub token provided by your administrator (found in the dCloud lab details)
-    - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
-    - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
-    - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai</em>
-
-### 4.3 Repository 2: AI Agent (Agent Workflow + ToolBox)
-
-1. Click <em class="button-click">New git repository</em> again
-2. Fill the repository details:
+4. Click <em class="button-click">New git repository</em>
+5. Fill the repository details:
     - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
-    - Use the same Account Keys you created in Repository 1
+    - Click <em class="button-click">Default Account Keys</em> -> <em class="button-click">Add New</em>
+        - <em class="lab-warning">Account Key Type:</em> <em class="example-input">Git Token-Based Credentials</em>
+        - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 GitHub</em>
+        - <em class="lab-warning">Token:</em> Use the GitHub token provided by your administrator (found in the dCloud lab details)
     - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
     - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
     - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai_agent</em>
+6. Click <em class="button-click">Save</em>
 
-### 4.4 Repository 3: MCP (Model Context Protocol)
+### 4.2 Import Workflows
 
-1. Click <em class="button-click">New git repository</em> again
-2. Fill the repository details:
-    - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - MCP</em>
-    - Use the same Account Keys you created in Repository 1
-    - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
-    - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
-    - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/mcp</em>
-
-### 4.5 Verify Repository Configuration
-
-Confirm that you have 3 Git repositories configured in Cisco Workflows:
-
-| Display Name | Code Path |
-|--------------|-----------|
-| LTRAI-1487 - AI | `workflows/ai` |
-| LTRAI-1487 - AI Agent | `workflows/ai_agent` |
-| LTRAI-1487 - MCP | `workflows/mcp` |
-
-### 4.6 Import Workflows
-
-You will now import workflows from all three Git repositories. Follow the steps below in order, as some workflows depend on others.
+You will now import workflows from the Git repository. Follow the steps below in order, as some workflows depend on others.
 
 !!! note
     When importing workflows, you may be prompted for credentials or API keys. Keep your OpenAI API key and Webex access token from earlier labs handy.
+
+!!! info "About Atomic Workflows"
+    The <em class="example-input">OpenAIChatCompletion</em>, <em class="example-input">MCPListTools</em>, and <em class="example-input">MCPRunTool</em> workflows are Atomic workflows. Atomic workflows are immutable, reusable workflow components found in the Activities panel or in the 'Atomics' section of workspace. See the [Atomic Actions documentation](https://documentation.meraki.com/Platform_Management/Workflows/Workflows/Atomic_Actions) for more details.
 
 #### Import Order Overview
 
 ```mermaid
 flowchart LR
-    A["1. OpenAI Chat Completion<br/>(AI repo)"] -->|Core LLM interface| B["2. MCP Server Tools<br/>(MCP repo)"]
-    B -->|Tool execution layer| C["3. ToolBox<br/>(AI Agent repo)"]
-    C -->|Tool registry| D["4. AI Agent<br/>(AI Agent repo)"]
+    A["1. OpenAI Chat Completion"] -->|Core LLM interface| B["2. MCP Server Tools"]
+    B -->|Tool execution layer| C["3. ToolBox"]
+    C -->|Tool registry| D["4. AI Agent"]
 ```
 
-#### 4.6.1 Import OpenAI Chat Completion
+#### 4.2.1 Import OpenAI Chat Completion
 
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
 2. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em>, then click the <em class="button-click">Git</em> tab
 3. Select the following:
-    1. <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI</em>
-    2. <em class="lab-warning">Workflow:</em> <em class="example-input">OpenAIChatCompletion</em>
-    3. <em class="lab-warning">Version:</em> Latest
-    4. Click <em class="button-click">Import</em>
-4. When prompted for <em class="lab-warning">i_api_key</em>:
+    - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+    - <em class="lab-warning">Workflow:</em> <em class="example-input">OpenAIChatCompletion</em>
+    - <em class="lab-warning">Version:</em> Latest
+4. Click <em class="button-click">Import</em>
+5. When prompted for <em class="lab-warning">i_api_key</em>:
     - Enter your lab OpenAI API key
     - **Ask your instructor for this key if you don't have it**
-5. Click <em class="button-click">Import</em>
+6. Click <em class="button-click">Import</em>
 
-#### 4.6.2 Import MCP Server Tools
+#### 4.2.2 Import MCP Server Tools
 
 1. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em>, then click the <em class="button-click">Git</em> tab
 2. Import <em class="example-input">MCPListTools</em>:
-    1. <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - MCP</em>
-    2. <em class="lab-warning">Workflow:</em> <em class="example-input">MCPListTools</em>
-    3. <em class="lab-warning">Version:</em> Latest
-    4. Click <em class="button-click">Import</em>
+    - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+    - <em class="lab-warning">Workflow:</em> <em class="example-input">MCPListTools</em>
+    - <em class="lab-warning">Version:</em> Latest
+    - Click <em class="button-click">Import</em>
 3. Import <em class="example-input">MCPRunTool</em>:
-    1. <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - MCP</em>
-    2. <em class="lab-warning">Workflow:</em> <em class="example-input">MCPRunTool</em>
-    3. <em class="lab-warning">Version:</em> Latest
-    4. Click <em class="button-click">Import</em>
+    - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+    - <em class="lab-warning">Workflow:</em> <em class="example-input">MCPRunTool</em>
+    - <em class="lab-warning">Version:</em> Latest
+    - Click <em class="button-click">Import</em>
 
-#### 4.6.3 Import ToolBox
+#### 4.2.3 Import ToolBox
 
 The ToolBox workflow includes all tool subworkflows as embedded components, so you only need to import this single workflow to get all the tools.
 
 1. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em> -> <em class="button-click">Git</em> tab
 2. Select the following:
-    1. <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
-    2. <em class="lab-warning">Workflow:</em> <em class="example-input">ToolBox</em>
-    3. <em class="lab-warning">Version:</em> Latest
-    4. Click <em class="button-click">Import</em>
+    - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+    - <em class="lab-warning">Workflow:</em> <em class="example-input">ToolBox</em>
+    - <em class="lab-warning">Version:</em> Latest
+3. Click <em class="button-click">Import</em>
 
 !!! note
     The ToolBox workflow bundles all individual tools (scratchpad, Webex notifications, change approval, terminal commands, and RADKIT tools) as subworkflows. You do not need to import them separately.
 
-#### 4.6.4 Import AI Agent
+#### 4.2.4 Import AI Agent
 
 1. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em> -> <em class="button-click">Git</em> tab
 2. Select the following:
-    1. <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
-    2. <em class="lab-warning">Workflow:</em> <em class="example-input">AIAgent</em>
-    3. <em class="lab-warning">Version:</em> Latest
-    4. Click <em class="button-click">Import</em>
-3. When prompted for <em class="lab-warning">OPENAI_API_KEY</em>, enter the API key found in the dCloud file
+    - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+    - <em class="lab-warning">Workflow:</em> <em class="example-input">AIAgent</em>
+    - <em class="lab-warning">Version:</em> Latest
+3. Click <em class="button-click">Import</em>
+4. When prompted for <em class="lab-warning">OPENAI_API_KEY</em>, enter the API key found in the dCloud file
     - **Ask your instructor if you cannot locate this key**
 
-#### 4.6.5 Validate All Workflows
+#### 4.2.5 Validate All Workflows
 
 After importing all workflows, validate that they are configured correctly:
 
@@ -374,11 +334,13 @@ After importing all workflows, validate that they are configured correctly:
 
 You should have imported a total of **5 workflows**:
 
-- 1 from AI repository (OpenAIChatCompletion)
-- 2 from MCP repository (MCPListTools, MCPRunTool)
-- 2 from AI Agent repository (ToolBox + AIAgent)
+- OpenAIChatCompletion
+- MCPListTools
+- MCPRunTool
+- ToolBox
+- AIAgent
 
-#### 4.6.6 Verify OpenAI Endpoint Configuration
+#### 4.2.6 Verify OpenAI Endpoint Configuration
 
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Targets</em>
 2. Click on <em class="button-click">OPENAI_ENDPOINT</em>
@@ -388,11 +350,11 @@ You should have imported a total of **5 workflows**:
     - <em class="lab-warning">Path:</em> (leave blank)
 4. If any settings are incorrect, update them and click <em class="button-click">Save</em>
 
-### 4.7 Test Individual Tools
+### 4.3 Test Individual Tools
 
 Before testing the full AI Agent, let's verify that the individual tools work correctly.
 
-#### 4.7.1 Test RADKit Exec Command Tool
+#### 4.3.1 Test RADKit Exec Command Tool
 
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
 2. Click on <em class="button-click">Tool - RADKIT Exec Command</em> to open the workflow
@@ -406,7 +368,7 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 !!! success "Success Criteria"
     The workflow should complete without errors and display the `show version` output from device r1.
 
-#### 4.7.2 Test Webex Notification Tool
+#### 4.3.2 Test Webex Notification Tool
 
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
 2. Click on <em class="button-click">Tool - Send Webex Notification</em> to open the workflow
@@ -422,7 +384,7 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 !!! success "Success Criteria"
     You should see your test message appear in your Webex space from Lab 1.
 
-### 4.8 Test the AI Agent
+### 4.4 Test the AI Agent
 
 Now let's verify the full AI Agent workflow runs correctly.
 
@@ -444,7 +406,7 @@ Now let's verify the full AI Agent workflow runs correctly.
     - Verify the OPENAI_API_KEY is set correctly
     - Check that the OPENAI_ENDPOINT target is configured properly
     - Ensure your Webex access token is valid
-    - Re-run the individual tool tests (4.7.1 and 4.7.2) to isolate the issue
+    - Re-run the individual tool tests (4.3.1 and 4.3.2) to isolate the issue
 
 ---
 
@@ -477,29 +439,22 @@ We'll start by duplicating your Lab 2 workflow and modifying it to use the AI Ag
 
 1. Click on the <em class="lab-warning">AI Agent</em> block to select it
 2. Expand the <em class="lab-warning">i_agent_task</em> input variable
-3. Configure it with the following text:
+3. Configure it with the following text, replacing the placeholders with reference variables from the Variable Browser:
 
 ```
-A network event was received for device
-```
-
-4. After "device ", add a <em class="lab-warning">reference variable</em> pointing to the JSON Path Query output <em class="example-input">target_device</em>
-5. Continue the text:
-
-```
-:
+A network event was received for device {target_device}:
 
 raw event:
 
-```
-
-6. Add another <em class="lab-warning">reference variable</em> pointing to the <em class="lab-warning">Webhook Request Body</em>
-7. Finally, add this instruction at the end:
-
-```
+{webhook_request_body}
 
 You MUST proceed with investigation. If any change is required to resolve alert, you MUST call tool to request change approval.
 ```
+
+Replace the placeholders as follows:
+
+- <em class="example-input">{target_device}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Activities > get_device_ip > JSONPath Queries > target_device</em>
+- <em class="example-input">{webhook_request_body}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Rule > Webhook Rule > Output > Request Body</em>
 
 !!! note
     We're keeping it simple - giving the agent minimal parsing and letting it analyze the raw event. The final instruction ensures the agent requests your approval before making any changes.
@@ -539,6 +494,7 @@ The AI Agent may ask clarifying questions before proceeding - that's OK! It's ju
     - Confirm the interface should be brought back up
     - Specify that this is a loopback interface on R3
     - Indicate that the interface was administratively shut down and needs to be restored
+    - Note: The AI Agent may think that the loopback should be left down, so it will want to confirm with you before opening a change request
 
 !!! tip
     The more context you provide, the better the agent can proceed with confidence and open a change request!
