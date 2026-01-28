@@ -23,26 +23,25 @@ flowchart LR
 However, the agentic response will be a series of LLM calls which trigger tools (sub workflows) until work is completed.
 
 ```mermaid
-flowchart TB
-    subgraph agent["AI Agent Workflow"]
+flowchart LR
+    subgraph LLM["OpenAI Chat Completion"]
         direction TB
-        subgraph llm["OpenAI Chat Completion"]
-            L1[system prompt]
-            L2[tools JSON]
-            L3[messages]
-        end
-
-        subgraph toolbox["ToolBox"]
-            T1[execute_terminal_command]
-            T2[scratchpad_read/write]
-            T3[request_change_approval]
-            T4[webex_notification]
-            T5[ask_clarifying_question]
-        end
-
-        llm <-->|tool calls| toolbox
-        llm --> loop["Loop until<br/>final answer"]
+        A1[system prompt]
+        A2[tools JSON]
+        A3[messages]
     end
+
+    subgraph Tools["ToolBox"]
+        direction TB
+        B1[execute_terminal_command]
+        B2[scratchpad_read/write]
+        B3[request_change_approval]
+        B4[webex_notification]
+        B5[ask_clarifying_question]
+    end
+
+    LLM <-->|tool calls| Tools
+    LLM --> C[Loop until final answer]
 ```
 
 ---

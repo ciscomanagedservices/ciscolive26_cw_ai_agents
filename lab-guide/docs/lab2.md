@@ -91,20 +91,19 @@ In this step, you will convert your Lab 1 notification workflow into a reusable 
 
 ```mermaid
 flowchart TB
-    subgraph main["&lt;your_name&gt;-unshut-int (main workflow)"]
-        direction LR
+    subgraph main["Main Workflow: your_name-unshut-int"]
         A[JSONPath Query] --> B[Terminal Commands]
         B --> C[Sub-workflow Call]
     end
 
-    subgraph sub["&lt;your_name&gt;-notify2 (sub-workflow)"]
+    subgraph sub["Sub-workflow: your_name-notify2"]
         D[Webex Send Message]
     end
 
     C --> D
 
-    main -.->|"Target Group: &lt;your_name&gt;-routers"| B
-    sub -.->|"Target Override: &lt;your_name&gt;-webex"| D
+    E[Target Group: your_name-routers] -.-> main
+    F[Target Override: your_name-webex] -.-> sub
 ```
 
 ### 3.1 Duplicate Your Lab 1 Notification Workflow
