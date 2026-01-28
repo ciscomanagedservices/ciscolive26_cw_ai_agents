@@ -113,8 +113,8 @@ Now we'll configure RADKit through its web interface to enroll with Cisco Cloud,
 1. Open a browser and navigate to: [https://198.18.1.250:8081/](https://198.18.1.250:8081/)
 2. Accept the self-signed certificate warning
 3. Login with:
-   - <em class="lab-warning">Username:</em> <em class="example-input">superadmin</em>
-   - <em class="lab-warning">Password:</em> <em class="example-input">0e52nsq5jf7f-bxq8whdi7dnT</em>
+    - <em class="lab-warning">Username:</em> <em class="example-input">superadmin</em>
+    - <em class="lab-warning">Password:</em> <em class="example-input">0e52nsq5jf7f-bxq8whdi7dnT</em>
 
 ### 2.2 Enroll RADKit Service with SSO
 
@@ -148,8 +148,8 @@ For each device:
 4. Enable <em class="lab-warning">Terminal Management</em>
 5. Scroll down to <em class="lab-warning">Terminal Settings</em>
 6. Add SSH credentials:
-   - <em class="lab-warning">Username:</em> <em class="example-input">cisco</em>
-   - <em class="lab-warning">Password:</em> <em class="example-input">cisco</em>
+    - <em class="lab-warning">Username:</em> <em class="example-input">cisco</em>
+    - <em class="lab-warning">Password:</em> <em class="example-input">cisco</em>
 7. Click <em class="button-click">Add & continue</em> (or <em class="button-click">Add & close</em> for the last device)
 
 ### 2.4 Add Remote Users
@@ -200,8 +200,8 @@ The RADKit MCP server source code is pre-loaded in `/home/cisco/` and maintained
    ```
 
 2. When prompted, enter:
-   - Your **email address** (the same one used for RADKit registration)
-   - Your **RADKit Service Serial** (the Service ID from Step 2.2, e.g., `xxxx-yyyy-zzzz`)
+    - Your **email address** (the same one used for RADKit registration)
+    - Your **RADKit Service Serial** (the Service ID from Step 2.2, e.g., `xxxx-yyyy-zzzz`)
 
 The script will:
 - Enroll client certificates with RADKit
@@ -216,9 +216,9 @@ The script will:
    ```
 
 2. Verify all tests show `[OK]`:
-   - Test 1: Initialize MCP Session
-   - Test 2: List Available Tools
-   - Test 3: Call Tool
+    - Test 1: Initialize MCP Session
+    - Test 2: List Available Tools
+    - Test 3: Call Tool
 
 !!! success "Success Criteria"
     All three tests should pass. The MCP endpoint is now available at: `http://198.18.1.250:8000/mcp`
@@ -253,34 +253,34 @@ You will add **3 repositories** using the steps below. Each repository uses the 
 
 1. Click <em class="button-click">New git repository</em>
 2. Fill the repository details:
-   - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - AI</em>
-   - Click <em class="button-click">Default Account Keys</em> -> <em class="button-click">Add New</em>
+    - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - AI</em>
+    - Click <em class="button-click">Default Account Keys</em> -> <em class="button-click">Add New</em>
      - <em class="lab-warning">Account Key Type:</em> <em class="example-input">Git Token-Based Credentials</em>
      - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 GitHub</em>
      - <em class="lab-warning">Token:</em> Use the GitHub token provided by your administrator (found in the dCloud lab details)
-   - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
-   - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
-   - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai</em>
+    - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
+    - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
+    - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai</em>
 
 ### 4.3 Repository 2: AI Agent (Agent Workflow + ToolBox)
 
 1. Click <em class="button-click">New git repository</em> again
 2. Fill the repository details:
-   - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
-   - Use the same Account Keys you created in Repository 1
-   - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
-   - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
-   - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai_agent</em>
+    - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+    - Use the same Account Keys you created in Repository 1
+    - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
+    - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
+    - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai_agent</em>
 
 ### 4.4 Repository 3: MCP (Model Context Protocol)
 
 1. Click <em class="button-click">New git repository</em> again
 2. Fill the repository details:
-   - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - MCP</em>
-   - Use the same Account Keys you created in Repository 1
-   - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
-   - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
-   - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/mcp</em>
+    - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - MCP</em>
+    - Use the same Account Keys you created in Repository 1
+    - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
+    - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
+    - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/mcp</em>
 
 ### 4.5 Verify Repository Configuration
 
@@ -367,9 +367,9 @@ After importing all workflows, validate that they are configured correctly:
 
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
 2. For each imported workflow:
-   - Click on the workflow name to open it
-   - Click <em class="button-click">Validate</em> in the upper right corner
-   - Ensure there are no validation errors
+    - Click on the workflow name to open it
+    - Click <em class="button-click">Validate</em> in the upper right corner
+    - Ensure there are no validation errors
 3. If you see any errors, check that all required credentials were entered correctly
 
 You should have imported a total of **5 workflows**:
@@ -383,9 +383,9 @@ You should have imported a total of **5 workflows**:
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Targets</em>
 2. Click on <em class="button-click">OPENAI_ENDPOINT</em>
 3. Verify the following settings:
-   - <em class="lab-warning">Host:</em> <em class="example-input">ciscolive-llm.com</em>
-   - <em class="lab-warning">Port:</em> <em class="example-input">443</em>
-   - <em class="lab-warning">Path:</em> (leave blank)
+    - <em class="lab-warning">Host:</em> <em class="example-input">ciscolive-llm.com</em>
+    - <em class="lab-warning">Port:</em> <em class="example-input">443</em>
+    - <em class="lab-warning">Path:</em> (leave blank)
 4. If any settings are incorrect, update them and click <em class="button-click">Save</em>
 
 ### 4.7 Test Individual Tools
@@ -398,8 +398,8 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 2. Click on <em class="button-click">Tool - RADKIT Exec Command</em> to open the workflow
 3. Click <em class="button-click">Run</em> in the upper right corner
 4. When prompted, fill out the input variables:
-   - <em class="lab-warning">i_device_name:</em> <em class="example-input">r1</em>
-   - <em class="lab-warning">i_commands:</em> <em class="example-input">show version</em>
+    - <em class="lab-warning">i_device_name:</em> <em class="example-input">r1</em>
+    - <em class="lab-warning">i_commands:</em> <em class="example-input">show version</em>
 5. Click <em class="button-click">Run</em> to execute the workflow
 6. Verify the workflow completes successfully and returns the device output
 
@@ -414,8 +414,8 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 4. Update the local variable <em class="lab-warning">l_room_name</em> to the name of the Webex space you created in Lab 1 (e.g., <em class="example-input">&lt;your_name&gt;-workflows-lab</em>)
 5. Click <em class="button-click">Run</em> in the upper right corner
 6. When prompted, fill out the input variables:
-   - <em class="lab-warning">i_instance_id:</em> <em class="example-input">test</em>
-   - <em class="lab-warning">i_message:</em> <em class="example-input">Hello from the AI Agent lab! This is a test notification.</em>
+    - <em class="lab-warning">i_instance_id:</em> <em class="example-input">test</em>
+    - <em class="lab-warning">i_message:</em> <em class="example-input">Hello from the AI Agent lab! This is a test notification.</em>
 7. Click <em class="button-click">Run</em> to execute the workflow
 8. Check your Webex space to verify you received the message
 
@@ -430,7 +430,7 @@ Now let's verify the full AI Agent workflow runs correctly.
 2. Click on <em class="button-click">AIAgent</em> to open the workflow
 3. Click <em class="button-click">Run</em> in the upper right corner
 4. When prompted, fill out the input variables:
-   - <em class="lab-warning">i_agent_task:</em> <em class="example-input">Go to r1, get the current time and interfaces which are up. Output these results exactly to webex and include a short summary.</em>
+    - <em class="lab-warning">i_agent_task:</em> <em class="example-input">Go to r1, get the current time and interfaces which are up. Output these results exactly to webex and include a short summary.</em>
 5. Click <em class="button-click">Run</em> to execute the workflow
 6. Monitor the workflow execution and verify it completes without errors
 7. Check your Webex space to confirm the agent sent the results
@@ -536,9 +536,9 @@ The AI Agent may ask clarifying questions before proceeding - that's OK! It's ju
 2. If the agent asks a question, click the <em class="button-click">Cisco Workflow Run</em> link in the Webex message
 3. In the Cisco Workflows UI, click <em class="button-click">View Task</em>
 4. Provide as much detail as possible to help the agent understand the situation:
-   - Confirm the interface should be brought back up
-   - Specify that this is a loopback interface on R3
-   - Indicate that the interface was administratively shut down and needs to be restored
+    - Confirm the interface should be brought back up
+    - Specify that this is a loopback interface on R3
+    - Indicate that the interface was administratively shut down and needs to be restored
 
 !!! tip
     The more context you provide, the better the agent can proceed with confidence and open a change request!
