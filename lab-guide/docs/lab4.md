@@ -102,7 +102,23 @@ flowchart LR
 9. Set <em class="lab-warning">Operation Name</em> to <em class="example-input">&lt;your_name&gt;-congestion-json</em> and choose the <em class="lab-warning">Preset Configuration</em> of <em class="example-input">Splunk</em>. We aren't sending to Splunk but the preset for Splunk is a nice simple JSON format that Cisco Workflows and our AI agent will nicely process. It should prepopulate the <em class="lab-warning">Content-Type</em> header for <em class="example-input">application/json</em> which we want.
 10. Leave this browser tab open. We will run a test by clicking the <em class="button-click">test</em> button after we configure our workflow to handle ThousandEyes.
 
-### 2.5 Importing a workflow for ThousandEyes event handling
+### 2.5 Create ThousandEyes API Token
+
+The ThousandEyes workflows require an API Bearer Token to query path visualization data from the ThousandEyes API.
+
+1. In ThousandEyes, click your <em class="lab-warning">name</em> in the top right of the screen, or go to <em class="button-click">Manage > Account Settings > Users and Roles</em>.
+2. Scroll down to the <em class="lab-warning">OAuth Bearer Token</em> section.
+3. Click <em class="button-click">Create</em> to generate a new token.
+4. Copy the token and save it securely - you will need this when importing the workflows.
+
+<figure markdown>
+  ![ThousandEyes OAuth Bearer Token creation screen](./img/lab4/lab4_2.5.jpg){ width="600" }
+</figure>
+
+!!! warning
+    The token is only displayed once. Make sure to copy it before closing the dialog.
+
+### 2.6 Importing a workflow for ThousandEyes event handling
 1. In Cisco Workflows, go to the Automation Workspace where the workflows are listed.
 2. Add the git repo for ThousandEyes workflows like you did in Lab 3:
     - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - ThousandEyes</em>
@@ -110,10 +126,10 @@ flowchart LR
     - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
     - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
     - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ThousandEyes</em>
-3. Click <em class="button-click">Actions > Import Workflow > From Git</em> and import the <em class="example-input">get_te_path_info</em> workflow first, and then <em class="example-input">te_alert_webhook</em> workflow.
+3. Click <em class="button-click">Actions > Import Workflow > From Git</em> and import the <em class="example-input">GetThousandEyesPathInfo</em> workflow first, and then <em class="example-input">ThousandEyesAlertWebhook</em> workflow.
+4. When prompted for the <em class="lab-warning">te_bearer</em> variable, enter the ThousandEyes OAuth Bearer Token you created in the previous step.
 
-
-### 2.6 Configuring the trigger for the workflow
+### 2.7 Configuring the trigger for the workflow
 
 1. In Cisco Workflows, go to <em class="button-click">Automation > Rules</em>
 2. Click the <em class="button-click">Automation rules</em> tab, then click <em class="button-click">+ Add automation rule</em>
