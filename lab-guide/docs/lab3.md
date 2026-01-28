@@ -249,6 +249,10 @@ We will need to import the cognitive response workflow definitions from GitHub i
     - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai_agent</em>
 6. Click <em class="button-click">Save</em>
 
+<figure markdown>
+  ![Git repository configuration with GitHub credentials and repository details](./img/lab3/lab3_4.1.jpg){ width="500" }
+</figure>
+
 ### 4.2 Import Workflows
 
 You will now import workflows from the Git repository. Follow the steps below in order, as some workflows depend on others.
@@ -427,7 +431,7 @@ We'll start by duplicating your Lab 2 workflow and modifying it to use the AI Ag
 1. Click on the duplicated workflow <em class="example-input">Copy(1) &lt;your_name&gt;-unshut-int</em> to open it
 2. In the <em class="lab-warning">General</em> tab, rename the workflow to <em class="example-input">&lt;your_name&gt;-ai-fix-shut-interface</em>
 3. Delete the <em class="lab-warning">Terminal</em> activity (the static remediation commands)
-4. Delete the existing <em class="lab-warning">sub workflow</em> activity
+4. Delete the <em class="lab-warning">Webex notification</em> activity that was added in Lab 2
 
 ### 5.3 Add the AI Agent Activity
 
@@ -453,11 +457,15 @@ You MUST proceed with investigation. If any change is required to resolve alert,
 
 Replace the placeholders as follows:
 
-- <em class="example-input">{target_device}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Activities > get_device_ip > JSONPath Queries > target_device</em>
-- <em class="example-input">{webhook_request_body}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 6px; vertical-align: middle;"> and select <em class="button-click">Rule > Webhook Rule > Output > Request Body</em>
+- <em class="example-input">{target_device}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Activities > get_device_ip > JSONPath Queries > target_device</em>
+- <em class="example-input">{webhook_request_body}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Rule > Webhook Rule > Output > Request Body</em>
 
 !!! note
     We're keeping it simple - giving the agent minimal parsing and letting it analyze the raw event. The final instruction ensures the agent requests your approval before making any changes.
+
+<figure markdown>
+  ![AI Agent workflow with i_agent_task configuration and variable references](./img/lab3/lab3_5.4.jpg){ width="600" }
+</figure>
 
 ### 5.5 Validate the Workflow
 
