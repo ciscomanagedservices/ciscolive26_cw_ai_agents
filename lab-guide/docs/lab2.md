@@ -2,7 +2,9 @@
 
 ## Overview
 
-In this lab, you will build on the event handling and workflow created in Lab 1, by setting up a remote server for Cisco Workflows to talk to your infrastructure through. You will define a rule-based remediation workflow, allowing for autonomous closed-loop infrastructure operations.
+In this lab, you will build on the event handling and workflow created in Lab 1, by setting up an **Automation Remote** for Cisco Workflows to talk to your infrastructure through. An Automation Remote enables your workflows to communicate with resources inside your network that do not have access to the internet. Because many user-deployed devices are not exposed to the internet, Automation Remotes bridge the gap between those devices and the cloud so that they can be incorporated into your workflows. See the [Automation Remote documentation](https://documentation.meraki.com/Platform_Management/Workflows/Targets/Automation_Remote) for more details.
+
+You will define a rule-based remediation workflow, allowing for autonomous closed-loop infrastructure operations.
 
 By the end of this lab, you will:
 
@@ -132,7 +134,7 @@ We need to make this workflow accept a message as input so other workflows can p
 
 1. In the right-side panel, click <em class="button-click">Variables</em> to expand the variables section
 2. Click <em class="button-click">+ Add variable</em>
-3. Configure the new variable:
+3. Configure the new variable using the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser) (the puzzle piece icon allows you to select variables):
     - <em class="lab-warning">Data Type:</em> <em class="example-input">String</em>
     - <em class="lab-warning">Name:</em> <em class="example-input">message_body</em>
     - <em class="lab-warning">Scope:</em> <em class="example-input">Input</em>
@@ -213,7 +215,7 @@ Now we'll add an activity to extract the device IP from the webhook payload.
 2. In the right-side panel, configure:
     - <em class="lab-warning">Display Name:</em> <em class="example-input">get_device_ip</em>
 3. In the <em class="lab-warning">Source JSON to Query</em> field:
-    - Click the variable icon (puzzle piece)
+    - Click the variable icon (puzzle piece) to open the [Variable Browser](https://documentation.meraki.com/Platform_Management/Workflows/Variables/Variable_Browser)
     - Navigate to: <em class="button-click">Rule > Webhook Rule > Output > Request Body</em>
 4. Under <em class="lab-warning">JSONPath Queries</em>, click <em class="button-click">+ Add</em> and configure:
     - <em class="lab-warning">JSONPath Query:</em> <em class="example-input">$.result.dvc</em>
@@ -238,6 +240,7 @@ Now we'll add an activity to extract the device IP from the webhook payload.
 conf t
 int lo0
 no sh
+end
 send log "Cisco Workflows has automated unshutting an interface."
 ```
 
@@ -295,7 +298,7 @@ Now we need to update the webhook rule from Lab 1 to trigger our new remediation
 
 1. Go to <em class="button-click">Automation</em> → <em class="button-click">Rules</em>
 2. Find and click on your webhook rule from Lab 1
-3. In the <em class="lab-warning">Actions</em> section, change the <em class="lab-warning">Workflow</em> from <em class="example-input">&lt;your_name&gt;-notify</em> to <em class="example-input">&lt;your_name&gt;-unshut-int</em>
+3. In the <em class="lab-warning">Actions</em> section, change the <em class="lab-warning">Workflow</em> from your Lab 1 notification workflow to <em class="example-input">&lt;your_name&gt;-unshut-int</em>
 4. Click <em class="button-click">Save</em>
 
 ---
