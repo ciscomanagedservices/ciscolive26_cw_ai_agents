@@ -149,8 +149,9 @@ The wttr.in API is free and not always reliable. Let's add retry logic to handle
 ### 3.1 Add Condition Block
 
 1. Click <em class="button-click">Modify</em> to edit the workflow
-2. From the left pane, drag a <em class="lab-warning">Condition Block</em> below the HTTP Request activity
-3. You now have two condition branches to configure
+2. From the left pane, expand the <em class="button-click">Logic</em> tab in the Activity Browser
+3. Drag a <em class="lab-warning">Condition Block</em> below the HTTP Request activity
+4. You now have two condition branches to configure
 
 ### 3.2 Configure Success Path (HTTP 200)
 
