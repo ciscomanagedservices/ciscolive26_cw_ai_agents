@@ -220,6 +220,10 @@ Now we need to add our new tool to the ToolBox workflow so the AI Agent can use 
 2. Right-click and select <em class="button-click">Duplicate</em> (or use the duplicate option in the menu)
 3. Position the duplicated block in the workflow
 
+<figure markdown>
+  ![Duplicating the Send Webex Notification tool block in ToolBox workflow](./img/lab5/lab5_4.2.1.jpg){ width="500" }
+</figure>
+
 ### 4.3 Configure the Tool Condition
 
 1. Click on the duplicated condition block
@@ -241,6 +245,10 @@ Now we need to add our new tool to the ToolBox workflow so the AI Agent can use 
 1. Delete the <em class="lab-warning">Tool - Send Webex Notification</em> subworkflow block
 2. From the left pane under <em class="button-click">Workflows</em>, search for <em class="example-input">Tool - Get Weather</em>
 3. Drag it into the workflow in place of the deleted block
+
+<figure markdown>
+  ![Tool - Get Weather subworkflow replacing the Webex Notification block](./img/lab5/lab5_4.2.5.jpg){ width="600" }
+</figure>
 
 ### 4.6 Wire Up Variables
 

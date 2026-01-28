@@ -198,6 +198,10 @@ Create a Webex space where the bot will send notifications. You will use this sp
     - Click <em class="button-click">Save</em>
 7. You should now be able to click <em class="button-click">Validate</em>, and <em class="button-click">Run</em> in the upper right and receive a message in your Webex Teams.
 
+<figure markdown>
+  ![Webex Send Message activity configuration with access token and message settings](./img/lab1/lab1_5.3.jpg){ width="600" }
+</figure>
+
 Yay, your first workflow has been created and tested!
  
 ---
@@ -212,6 +216,10 @@ Now let's hook the webhook up, so we can trigger our test message from a device'
 2. Set type to <em class="example-input">webhook rule</em> and title it <em class="example-input">Syslog: %LINEPROTO-5-UPDOWN</em>
 3. Set the selected <em class="lab-warning">Webhook</em> to the webhook you just created.
 4. Apply to the workflow you just created: <em class="example-input">&lt;your_name&gt;-int-notify</em> and click <em class="button-click">Save</em>.
+
+<figure markdown>
+  ![Automation rule configuration with webhook rule type and workflow selection](./img/lab1/lab1_6.1.jpg){ width="500" }
+</figure>
 
 ### 6.2 Finishing the Splunk webhook alert
 

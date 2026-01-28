@@ -250,6 +250,10 @@ Now we'll override the placeholder target condition with the actual device IP fr
 !!! note
     This passes the terminal command output (showing what commands ran and their results) to the Webex notification. You could add additional text before/after this variable if you want more context in your notifications.
 
+<figure markdown>
+  ![Notification sub-workflow configuration with message_body variable reference](./img/lab2/lab2_4.10.jpg){ width="500" }
+</figure>
+
 ### 4.12 Validate the Complete Workflow
 
 1. Click <em class="button-click">Validate</em> in the upper right corner

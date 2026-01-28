@@ -249,6 +249,10 @@ We will need to import the cognitive response workflow definitions from GitHub i
     - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai_agent</em>
 6. Click <em class="button-click">Save</em>
 
+<figure markdown>
+  ![Git repository configuration with GitHub credentials and repository details](./img/lab3/lab3_4.1.jpg){ width="500" }
+</figure>
+
 ### 4.2 Import Workflows
 
 You will now import workflows from the Git repository. Follow the steps below in order, as some workflows depend on others.
@@ -458,6 +462,10 @@ Replace the placeholders as follows:
 
 !!! note
     We're keeping it simple - giving the agent minimal parsing and letting it analyze the raw event. The final instruction ensures the agent requests your approval before making any changes.
+
+<figure markdown>
+  ![AI Agent workflow with i_agent_task configuration and variable references](./img/lab3/lab3_5.4.jpg){ width="600" }
+</figure>
 
 ### 5.5 Validate the Workflow
 
