@@ -129,13 +129,13 @@ We need to ensure Splunk is listening for syslog traffic.
 1. Go to <em class="button-click">Settings > Data > Data inputs > UDP</em>.
 2. In upper right, click <em class="button-click">New Local UDP</em>. Configure the listener for UDP, port <em class="example-input">514</em>. Hit <em class="button-click">Next</em>.
 3. Set the **source type** to `cisco:ios`. You will have to type this in manually, it is not available as a choice through the navigation tree in the pulldown.
-<figure markdown>
-![Splunk data input](./img/lab1/lab1_3.1.3.png){ width="250" }
-</figure>
+
+![Splunk data input](./img/lab1/lab1_3.1.3.png){ width="500" }
+
 4. Set the <em class="lab-warning">App context</em> to <em class="example-input">Cisco Networks</em>, <em class="lab-warning">Host method</em> as <em class="example-input">IP</em>, <em class="lab-warning">index</em> to <em class="example-input">syslog</em>.
 
 <figure markdown>
-  ![Splunk data input](./img/lab1/lab1_3.2.4.png){ width="250" }
+  ![Splunk data input](./img/lab1/lab1_3.2.4.png){ width="500" }
 </figure>
 
 6. Click <em class="button-click">Review</em> and validate your configuration then click <em class="button-click">Submit</em>.
@@ -171,13 +171,13 @@ If you want to use our demo instance, we will provide you with access and you wi
 
 1. Login to [meraki.cisco.com](https://meraki.cisco.com).
 2. You will see an <em class="lab-warning">Automation</em> section in the left sidebar, which is where we will mostly spend our time. This is the Cisco Workflows app.
-<figure markdown>
-  ![Automation UI for Workflows](./img/lab1/lab1_4.2.png){ width="250" }
-</figure>
+
+  ![Automation UI for Workflows](./img/lab1/lab1_4.2.png){ width="500" }
+
 3. Go to <em class="button-click">Automation > Rules</em> and then click the <em class="button-click">Webhooks</em> section in the header bar and click <em class="button-click">+ New webhook</em>.
-<figure markdown>
-  ![Adding a webhook](./img/lab1/lab1_4.3.png){ width="250" }
-</figure>
+
+  ![Adding a webhook](./img/lab1/lab1_4.3.png){ width="500" }
+
 4. Name the webhook <em class="example-input">&lt;your_name&gt;-splunk-webhook</em>. Keep the content type as <em class="example-input">application-json</em> and click <em class="button-click">Save</em>.
 5. Click back into the webhook you just created. You should now see the <em class="lab-warning">Webhook API Key</em> and <em class="lab-warning">Webhook URL</em> populated. Grab the Webhook URL (which has the API key embedded in the URL query) and stash it in a local notepad--we will need to put them back in Splunk in a minute.
 
