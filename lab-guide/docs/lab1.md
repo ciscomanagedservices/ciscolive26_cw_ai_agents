@@ -156,12 +156,12 @@ no shut
 2. Browse to the [search and reporting](http://198.18.1.210:8000/en-US/app/cisco_ios/search) for the `Cisco Networks` app that the syslog messages are going to. **Apps > Cisco Networks** > Search
 3. Type `index=syslog` into the search bar. You should see a few syslog events generated from that interface state change. If you don't, first ensure that you are in the correct App (Cisco Networks) for the search and that you setup the index and data inputs for the right app, as well.
 
+!!! tip "Tip"
+The configuration we have done so far gets the events into Splunk, but does not yet trigger any outbound webhooks to automation. Before we can set that up, we need to work backwards from Cisco Workflows and set some API keys up, so let's park our work in Splunk for a minute.
+
 <figure markdown>
   ![Splunk syslog index search](./img/lab1/lab1_3.3.3.png){ width="500" }
 </figure>
-
-!!! tip "Tip"
-The configuration we have done so far gets the events into Splunk, but does not yet trigger any outbound webhooks to automation. Before we can set that up, we need to work backwards from Cisco Workflows and set some API keys up, so let's park our work in Splunk for a minute.
 
 ---
 
