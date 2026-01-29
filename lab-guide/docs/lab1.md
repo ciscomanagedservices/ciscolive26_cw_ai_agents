@@ -101,7 +101,7 @@ Confirm that:
 
 You may optionally want to clear the log's boot messages to see new events easier.
 ```cisco
-clear logg
+clear logging
 <enter to confirm>
 ```
 
@@ -111,7 +111,9 @@ clear logg
 
 Now we need to get the syslog data from the router into splunk.
 
-We must create a place for the syslog messages to be stored within Splunk, so let's first create an index to store all of our syslog data. We will use an app to extend splunk to ingest Cisco syslog with [Add-on for Cisco Network Data](https://splunkbase.splunk.com/app/1467) which gives us the cisco:ios sourcetype for data parsing. We have also pre-installed the [Cisco Networks](https://splunkbase.splunk.com/app/1352) app if you want to take advantage of syslog visualizations/trending from this data, but that is beyond the intent of this course.
+We must create a place for the syslog messages to be stored within Splunk. We will use an app to extend splunk to ingest Cisco syslog with [Add-on for Cisco Network Data](https://splunkbase.splunk.com/app/1467) which gives us the cisco:ios sourcetype for data parsing of syslog messages. This has been pre-installed in Splunk already for you. We have also pre-installed the [Cisco Networks](https://splunkbase.splunk.com/app/1352) app if you want to take advantage of syslog visualizations/trending from this data, but that is beyond the intent of this course.
+
+We will store the syslog messages from our monitored routers into a special `syslog` index, so let's first create that index in splunk, to separate it from the other non-syslog data that may also be already coming into splunk.
 
 ### 3.1 Create a syslog index
 
@@ -126,19 +128,33 @@ We need to ensure Splunk is listening for syslog traffic.
 
 1. Go to <em class="button-click">Settings > Data > Data inputs > UDP</em>.
 2. In upper right, click <em class="button-click">New Local UDP</em>. Configure the listener for UDP, port <em class="example-input">514</em>. Hit <em class="button-click">Next</em>.
-3. Set the <em class="lab-warning">App context</em> to <em class="example-input">Cisco Networks</em>, <em class="lab-warning">Host method</em> as <em class="example-input">IP</em>, <em class="lab-warning">index</em> to <em class="example-input">syslog</em>.
-4. Click <em class="button-click">Review</em> and validate your configuration then click <em class="button-click">Submit</em>.
+3. Set the **source type** to `cisco:ios`. You will have to type this in manually, it is not available as a choice through the navigation tree in the pulldown.
+4. Set the <em class="lab-warning">App context</em> to <em class="example-input">Cisco Networks</em>, <em class="lab-warning">Host method</em> as <em class="example-input">IP</em>, <em class="lab-warning">index</em> to <em class="example-input">syslog</em>.
+5. Click <em class="button-click">Review</em> and validate your configuration then click <em class="button-click">Submit</em>.
+
+### 3.3 Optional syslog ingestion validation
+
+1. If you want to validate that you are getting syslog messages into splunk, `ssh cisco@198.18.1.203`, and generate an interface down event.
+
+```ios
+configure terminal
+interface Loopback0
+shut
+! Wait threee seconds
+no shut
+```
+
+2. Browse to the [search and reporting](http://198.18.1.210:8000/en-US/app/cisco_ios/search) for the `Cisco Networks` app that the syslog messages are going to. **Apps > Cisco Networks** > Search
+3. Type `index=syslog` into the search bar. You should see a few syslog events generated from that interface state change. If you don't, first ensure that you are in the correct App (Cisco Networks) for the search and that you setup the index and data inputs for the right app, as well.
 
 !!! tip "Tip"
-    You have the **expires** and **trigger conditions** to control an event state machine within Splunk. This is handy for when you may have flapping/thrashing events, where you may not want to run a workflow every time the event occurs. For this lab, we will keep it simple and trigger every time we see the event, and expire events after 5 minutes.
-
 The configuration we have done so far gets the events into Splunk, but does not yet trigger any outbound webhooks to automation. Before we can set that up, we need to work backwards from Cisco Workflows and set some API keys up, so let's park our work in Splunk for a minute.
 
 ---
 
 ## Step 4: Setting up a workflow and webhooks in Cisco Workflows
 
-If you want to work in your own private instance of Cisco Workflows, you can signup for an account at [meraki.cisco.com](https://meraki.cisco.com) with your email address.
+If you want to work in your own private instance of Cisco Workflows (preferred), you can signup for an account at [meraki.cisco.com](https://account.meraki.com/login/new_account?r=EMEA) with your email address.
 
 If you want to use our demo instance, we will provide you with access and you will share the space with others, each creating individual workflows within the tenant organization instance.
 
@@ -146,7 +162,7 @@ If you want to use our demo instance, we will provide you with access and you wi
 2. You will see an <em class="lab-warning">Automation</em> section in the left sidebar, which is where we will mostly spend our time. This is the Cisco Workflows app.
 3. Go to <em class="button-click">Automation > Rules</em> and then click the <em class="button-click">Webhooks</em> section in the header bar and click <em class="button-click">Add new webhook</em>.
 4. Name the webhook <em class="example-input">&lt;your_name&gt;-splunk-webhook</em>. Keep the content type as <em class="example-input">application-json</em> and click <em class="button-click">Save</em>.
-5. Click back into the webhook you just created. You should now see the <em class="lab-warning">Webhook API Key</em> and <em class="lab-warning">Webhook URL</em> populated. Stash these in a notepad--we will need to put them back in Splunk in a minute.
+5. Click back into the webhook you just created. You should now see the <em class="lab-warning">Webhook API Key</em> and <em class="lab-warning">Webhook URL</em> populated. Grab the Webhook URL (which has the API key embedded in the URL query) and stash it in a local notepad--we will need to put them back in Splunk in a minute.
 
 ---
 
@@ -157,19 +173,18 @@ Here we will first build a basic workflow to acknowledge that we can get an even
 ### 5.1 Creating a new Workflow
 1. Go to <em class="button-click">Automation > Workspace</em>. Click the <em class="button-click">+Create</em> button in the upper right, and choose <em class="example-input">Workflow with Automation Rule</em> since we will be attaching a webhook rule to this workflow.
 2. Name it <em class="example-input">&lt;your_name&gt;-int-notify</em> and click <em class="button-click">Continue</em>.
-3. You will be given an empty canvas. Click anywhere on the workflow canvas (not on any activity) to show the workflow properties in the left panel.
-4. In the left panel, expand <em class="lab-warning">Automation Rules</em>, then set the <em class="lab-warning">rule type</em> to <em class="example-input">Webhook Rule</em>.
-5. In the left panel are prebuilt modules you can use to call functions. Let's send a Webex message when we trigger an alert. In the left panel, navigate to <em class="button-click">Activities > Cisco Webex > Webex - Send Message to Person</em> and drag this activity box into the middle panel workspace canvas.
-6. Open a new tab. We will come back to this in a minute, but need to register for a Webex API key now.
+3. You will be given an empty canvas.
+4. In the left panel are prebuilt modules you can use to call functions. Let's send a Webex message when we trigger an alert. In the left panel, navigate to <em class="button-click">Activities > Cisco Webex > Webex - Send Message to Person</em> and drag this activity box into the middle panel workspace canvas.
+5. Open a new tab. We will come back to this in a minute, but need to register for a Webex API key first.
 
 ### 5.2 Setting up a Webex API account
 
 We need to setup a webex API before we can finish wiring up our workflow notification.
 
 1. Sign in to the [Webex Developer Portal](https://developer.webex.com/login)
-2. In the upper right, click your photo/avatar, and choose <em class="button-click">Create a new app</em>.
-3. Select <em class="button-click">Bot</em> since we just need to send/receive messages.
-4. Name your bot <em class="example-input">workflows-lab</em> and set the username to something globally unique across all Webex users like <em class="example-input">&lt;your_name&gt;-&lt;company_name&gt;-workflows-bot</em>. You must select an icon to submit. Feel free to upload a fun robot icon if you desire. Click <em class="button-click">Add bot</em>.
+2. In the upper right, click your photo/avatar, and choose <em class="button-click">My Webex apps</em> and then click <em class="button-click">Create a new app</em>.
+3. Select <em class="button-click">Create a Bot</em> since we just need to send/receive messages.
+4. Name your bot <em class="example-input">workflows-lab</em> and set the username to something globally unique across all Webex users like <em class="example-input">&lt;your_name&gt;-&lt;company_name&gt;-workflows-bot</em>. You must select an icon to submit. Choose one of the default robot icons, or feel free to upload a fun robot icon if you desire. Add a brief 10+ character description. Click <em class="button-click">Add bot</em>.
 5. Copy your <em class="lab-warning">Bot access token</em> and <em class="lab-warning">Bot ID</em> to a safe place.
 
 ### 5.2.5 Create a Webex Space for Notifications
@@ -184,9 +199,9 @@ Create a Webex space where the bot will send notifications. You will use this sp
 
 ### 5.3 Adding the webex integration
 
-1. From the Meraki Dashboard interface, go to <em class="button-click">Automation > Variables</em>, then click <em class="button-click">+New Variable</em>.
-2. Name the key <em class="example-input">&lt;yourName&gt;-webex</em>, set <em class="lab-warning">String Type</em> to <em class="example-input">Secure String</em> and put the Webex access token in the value. Click <em class="button-click">Save</em>.
-3. Go back to our workflow in <em class="button-click">Automation > Workspace > &lt;your_name&gt;-int-notify</em>. Click the name of the workflow and click <em class="button-click">View Workflow</em> on the lower right hand corner.
+1. In Workflows, go to <em class="button-click">Automation > Variables</em>. Click <em class="button-click">+New Variable</em>.
+2. Name the key <em class="example-input">&lt;yourName&gt;-webex</em>, set <em class="lab-warning">String Type</em> to <em class="example-input">Secure String</em>, leave scope as <em class="example-input">Global</em> and put the Webex access token in the value. Click <em class="button-click">Save</em>.
+3. Go back to your workflow that was started in step 5.1. If you closed that tab, get back to it with <em class="button-click">Automation > Workspace > &lt;your_name&gt;-int-notify</em>. Click the name of the workflow and click <em class="button-click">View Workflow</em> on the lower right hand corner.
 4. Click on the <em class="lab-warning">Webex Send Message</em> activity box, then in <em class="lab-warning">Access Token</em> click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right of the text box and select <em class="button-click">Global > *your_access_token*</em>.
 5. Configure the message settings:
     - Put your Webex account email address in the <em class="lab-warning">Recipient Email</em> box
