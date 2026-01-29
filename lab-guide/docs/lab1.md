@@ -99,6 +99,12 @@ Confirm that:
 - Logging trap level is set to <em class="lab-warning">debugging</em>
 - Logging host <em class="example-input">198.18.1.210</em> is listed
 
+You may optionally want to clear the log's boot messages to see new events easier.
+```cisco
+clear logg
+<enter to confirm>
+```
+
 ---
 
 ## Step 3: Setting up Splunk syslog ingestion
