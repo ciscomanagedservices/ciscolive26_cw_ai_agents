@@ -12,20 +12,14 @@ Agentic Operations represents a paradigm shift in network management where AI-po
 
 With workflow orchestration and integrations to your infrastructure and intelligent AI agents, you can start to leverage automation for fully closed-loop monitoring and response of infrastructure faults.
 
-### Key Concepts
-
-* **Event-Driven Automation:** The system reacts to events in real-time as they occur, instead of waiting for humans to pick up tickets or respond to reports of issues.
-* **Closed-Loop Remediation:** The agent not only detects issues but can assess, diagnose, recommend next steps, take corrective action, and/or verify the resolution.
-* **AI-Powered Analysis:** Cisco Workflows leverages AI to understand context and make intelligent decisions about remediation actions.
-
 ## Learning Objectives
 
 This lab will give you an introduction to:
 
-- **Event-Driven Automation** - Configuring systems to react to network events in real-time
+- **Event-Driven Automation** - Configuring systems to react to network events in real-time, instead of waiting for humans to pick up tickets or respond to reports of issues.
 - **Cisco Workflows** - Building automation workflows that integrate with network infrastructure
-- **AI-Powered Agents** - Leveraging Large Language Models for intelligent network troubleshooting
-- **Closed-Loop Remediation** - Implementing autonomous detection, analysis, and response
+- **AI-Powered Agents** - Leveraging Large Language Models to understand context and make  intelligent network troubleshooting decisions
+- **Closed-Loop Remediation** - Implementing autonomous detection, analysis, response, remediation, and/or validation
 
 By the end of this lab, you will have a solid understanding of how to build cognitive network operations agents using Cisco Workflows for AI-driven troubleshooting.
 
@@ -41,14 +35,15 @@ From your workstation, connect to the dCloud environment using the credentials p
 
 Key IP addresses for you to reference:
 
-| Purpose        | Access                   | Credentials     |
+| Purpose        | Access                   | username / password     |
 | -------------- |--------------------------|-----------------|
-| R3-mgmt        | <em class="example-input">ssh cisco@198.18.1.103</em>   | <em class="example-input">cisco</em>           |
+| R3-mgmt        | <em class="example-input">ssh cisco@198.18.1.103</em>   | <em class="example-input">cisco / cisco</em>           |
+| R2-mgmt        | <em class="example-input">ssh cisco@198.18.1.102</em>   | <em class="example-input">cisco / cisco</em>           |
 | ThousandEyes   | <em class="example-input">https://198.18.1.202</em>     | <em class="example-input">admin / welcome</em> |
 | Splunk         | <em class="example-input">http://198.18.1.210:8000</em> | <em class="example-input">admin / cisco</em>   |
-| wf-remote      | <em class="example-input">ssh root@198.18.1.204</em>    | <em class="example-input">cisco</em>           |
-| jumphost       | <em class="example-input">ssh root@198.18.1.200</em>    | <em class="example-input">cisco</em>           |
-| ubuntu-server  | <em class="example-input">ssh root@198.18.1.250</em>    | <em class="example-input">cisco</em>           |
+| wf-remote      | <em class="example-input">ssh root@198.18.1.204</em>    | <em class="example-input">root / cisco</em>           |
+| jumphost       | <em class="example-input">ssh root@198.18.1.200</em>    | <em class="example-input">root / cisco</em>           |
+| ubuntu-server  | <em class="example-input">ssh root@198.18.1.250</em>    | <em class="example-input">root / cisco</em>           |
 
 ## Getting Started
 
@@ -63,6 +58,8 @@ You will encounter the following components in this lab:
 * **Splunk** for log aggregation and alerting
 * **ThousandEyes** for user experience monitoring
 * **Large Language Model** integration (GPT 5.2 or optionally Claude Sonnet/Opus 4.5)
+* **Cisco CX RADKit** for remote access to Cisco infrastructure devices
+
 
 ### Event Flow
 
