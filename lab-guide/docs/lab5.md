@@ -3,6 +3,7 @@
 ## Prerequisites
 
 Before starting this lab, ensure you have completed:
+
 - **Lab 1** - Webex bot configured (for testing notifications)
 - **Lab 3** - AI Agent and ToolBox workflows must be imported and working
 
