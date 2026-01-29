@@ -178,31 +178,15 @@ Now you will create the main workflow that parses the webhook, sends commands to
 1. Click anywhere on the workflow canvas (not on any activity) to show the workflow properties
 2. In the left panel, expand <em class="lab-warning">Automation Rules</em>, then set the <em class="lab-warning">rule type</em> to <em class="example-input">Webhook Rule</em>
 
-### 4.3 Configure the Workflow Target Group
+### 4.3 Configure the Workflow Target
 
-Before adding activities, we need to configure the workflow to use our target group.
+Before adding activities, we need to configure the workflow target settings.
 
 1. Click anywhere on the workflow canvas (not on any activity) to show the workflow properties
 2. In the right-side panel, find the <em class="lab-warning">Target</em> section
-3. Select <em class="button-click">Execute on this target group</em>
-4. Select your <em class="example-input">&lt;your_name&gt;-routers</em> target group
+3. Select <em class="example-input">No Target</em>
 
-### 4.4 Set a Placeholder Target Group Condition
-
-We need to set a target group condition, but the actual condition depends on parsing the webhook (which happens after the workflow starts). So we'll set a placeholder that will never match, then override it in the activity.
-
-1. Still in the workflow properties, under <em class="lab-warning">Target Group</em>
-2. Choose <em class="lab-warning">Target Type:</em> <em class="example-input">Terminal Endpoint</em>
-3. Set <em class="lab-warning">Select target group criteria</em> to <em class="example-input">Choose first with matching criteria</em>
-4. Click <em class="button-click">+ Add Condition</em> and configure:
-    - <em class="lab-warning">Property:</em> <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Terminal Endpoint > Input > Host/IPAddress</em>
-    - <em class="lab-warning">Comparison:</em> <em class="example-input">Equals</em>
-    - <em class="lab-warning">Value:</em> <em class="example-input">-2</em>
-
-!!! note
-    This condition intentionally will never match any device. We set it to `-2` as a placeholder because the workflow requires some condition to pass validation. We will override this in the Terminal activity with the actual device IP parsed from the webhook.
-
-### 4.5 Add JSONPath Query Activity (Parse Webhook)
+### 4.4 Add JSONPath Query Activity (Parse Webhook)
 
 Now we'll add an activity to extract the device IP from the webhook payload.
 
@@ -211,7 +195,7 @@ Now we'll add an activity to extract the device IP from the webhook payload.
 3. Drag the <em class="lab-warning">JSONPath Query</em> activity onto the canvas below the <em class="lab-warning">Start</em> block
 4. Connect the <em class="lab-warning">Start</em> block to the <em class="lab-warning">JSONPath Query</em> activity (drag from Start's output to JSONPath's input)
 
-### 4.6 Configure the JSONPath Query Activity
+### 4.5 Configure the JSONPath Query Activity
 
 1. Click on the <em class="lab-warning">JSONPath Query</em> activity to select it
 2. In the right-side panel, configure:
@@ -227,13 +211,13 @@ Now we'll add an activity to extract the device IP from the webhook payload.
 !!! info
     The JSONPath `$.result.dvc` extracts the device IP address from Splunk's webhook payload. The extracted value will be stored in a variable called `target_device` that we'll use to route commands to the correct device.
 
-### 4.7 Add Terminal Commands Activity
+### 4.6 Add Terminal Commands Activity
 
 1. In the left panel under <em class="button-click">Activities</em>, search for <em class="example-input">Terminal</em>
 2. Drag the <em class="lab-warning">Execute Terminal Commands</em> activity below the JSONPath Query activity
 3. Connect the <em class="lab-warning">JSONPath Query</em> output to the <em class="lab-warning">Execute Terminal Commands</em> input
 
-### 4.8 Configure the Terminal Commands Activity
+### 4.7 Configure the Terminal Commands Activity
 
 1. Click on the <em class="lab-warning">Execute Terminal Commands</em> activity to select it
 2. Set the <em class="lab-warning">Display Name</em> to <em class="example-input">unshut interface</em>
@@ -246,33 +230,23 @@ end
 send log "Cisco Workflows has automated unshutting an interface."
 ```
 
-### 4.9 Override the Target Group Condition
-
-Now we'll override the placeholder target condition with the actual device IP from the webhook.
+### 4.8 Override the Workflow Target
 
 1. With the <em class="lab-warning">Execute Terminal Commands</em> activity still selected
-2. In the <em class="lab-warning">Target</em> section, click <em class="button-click">Override workflow target group criteria</em>
-3. Set <em class="lab-warning">Select target group criteria</em> to <em class="example-input">Choose first with matching criteria</em>
-4. Configure the override condition:
-    - <em class="lab-warning">Target Type:</em> <em class="example-input">Terminal Endpoint</em>
-    - <em class="lab-warning">Property:</em> <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Terminal Endpoint > Input > Host/IPAddress</em>
-    - <em class="lab-warning">Comparison:</em> <em class="example-input">Equals</em>
-    - <em class="lab-warning">Value:</em> <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Activities > get_device_ip > JSONPath Queries > target_device</em>
-
-!!! success
-    This override tells the workflow: "Instead of using the placeholder `-2` condition, match the device whose IP address equals the `target_device` value we parsed from the webhook."
+2. In the <em class="lab-warning">Target</em> section, select <em class="button-click">Override workflow target</em>
+3. Set the target to <em class="example-input">&lt;your_name&gt;-R3</em>
 
 !!! note
-    If you are having issues getting the workflow to validate, ask your instructor for help. Target group conditions can sometimes be tricky to configure correctly.
+    We are manually overriding to R3 for simplicity. If you want dynamic selection of targets based on the webhook payload, you can use target groups and selection conditions, but that is outside the scope of this lab.
 
-### 4.10 Add the Notification Sub-Workflow
+### 4.9 Add the Notification Sub-Workflow
 
 1. In the left panel, click <em class="button-click">Workflows</em> (not Activities)
 2. Search for <em class="example-input">&lt;your_name&gt;-notify2</em>
 3. Drag your <em class="lab-warning">&lt;your_name&gt;-notify2</em> workflow onto the canvas below the Terminal Commands activity
 4. Connect the <em class="lab-warning">Execute Terminal Commands</em> output to the <em class="lab-warning">notify2</em> input
 
-### 4.11 Configure the Notification Input
+### 4.10 Configure the Notification Input
 
 1. Click on the <em class="lab-warning">&lt;your_name&gt;-notify2</em> workflow block to select it
 2. Find the <em class="lab-warning">message_body</em> input field
@@ -285,7 +259,7 @@ Now we'll override the placeholder target condition with the actual device IP fr
   ![Notification sub-workflow configuration with message_body variable reference](./img/lab2/lab2_4.10.jpg){ width="500" }
 </figure>
 
-### 4.12 Validate the Complete Workflow
+### 4.11 Validate the Complete Workflow
 
 1. Click <em class="button-click">Validate</em> in the upper right corner
 2. Ensure there are no validation errors
