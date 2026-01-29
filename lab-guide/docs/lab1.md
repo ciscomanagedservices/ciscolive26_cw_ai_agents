@@ -259,7 +259,7 @@ Now let's hook the webhook up, so we can trigger our test message from a device'
 1. Go to <em class="button-click">Automation > Rules > Add automation rule</em>
 2. Set type to <em class="example-input">webhook rule</em> and title it <em class="example-input">Syslog: %LINEPROTO-5-UPDOWN</em>
 3. Set the selected <em class="lab-warning">Webhook</em> to the webhook you just created.
-4. Apply to the workflow you just created: <em class="example-input">&lt;your_name&gt;-int-notify</em> and click <em class="button-click">Save</em>.
+4. Apply to the workflow you just created: <em class="example-input">&lt;your_name&gt;-notify</em> and click <em class="button-click">Save</em>.
 
 <figure markdown>
   ![Automation rule configuration with webhook rule type and workflow selection](./img/lab1/lab1_6.1.jpg){ width="500" }

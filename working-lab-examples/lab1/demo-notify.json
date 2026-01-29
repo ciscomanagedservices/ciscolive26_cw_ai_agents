@@ -1,0 +1,144 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_02T4FYCX9XD003cIeb6laINAYVFDyaMVO3y",
+    "name": "demo-notify",
+    "title": "demo-notify",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": null,
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "automation_rules": {
+        "type": [
+          "webhook.rule_event"
+        ]
+      },
+      "delete_workflow_instance": false,
+      "display_name": "demo-notify",
+      "runtime_user": {
+        "override_target_runtime_user": false,
+        "specify_on_workflow_start": false,
+        "target_default": true
+      },
+      "target": {
+        "target_type": "web-service.endpoint",
+        "target_id": "definition_target_02T4GAZKQXH0Q5JMfyWzvOsGOjqfpwbeJHL",
+        "execute_on_workflow_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_02T4FYWIYWHQ76KFFE5TNb4ZvHqXdJ16KHA",
+        "name": "Webex - Search for Room",
+        "title": "Webex - Search for Room",
+        "type": "workflow.atomic_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": false,
+          "description": "Gets information about a room from Webex by room name or room ID. If a name is provided, the name must match exactly. If an ID is provided, that room is fetched directly. If you want to limit your search to direct or group rooms, you can do so by setting the room type.\n\nNote: This atomic will only search the first 100 rooms that the searching user is a member of.\n\nTarget: Webex integration target or an HTTP Endpoint for \"webexapis.com\" with no path\n\nAccount Key: None if using an integration-provided target, access token if using an HTTP endpoint target\n\nSteps:\n[] Validate that either a room name or room ID was provided\n[] Set the query string\n[] Build the authorization header\n[] Send the request to Webex\n[] Check if the request was successful:\n[]> If we searched by room ID and got a result, set the output\n[]> If we searched by room name, loop through the results and if a matching room is found set the output\n\nMore information about this API: https://developer.webex.com/docs/api/v1/rooms/list-rooms",
+          "display_name": "Webex - Search for Room",
+          "input": {
+            "variable_workflow_01PP790MCX1DN3EitpQebkUyJS65DbwS3nU": "$global.variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt.global.variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt$",
+            "variable_workflow_01PP790MCXB392D3R8pxh9fgOTjTde2bcMW": "sholl-lab1-test",
+            "variable_workflow_01PP790MCXHP55YE6ylOEITWsWbUFJeyWGv": "",
+            "variable_workflow_01PP790MCXM9W1MUwo85y8iNRCoQuQ4RGNa": ""
+          },
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "target_type": "web-service.endpoint",
+            "use_workflow_target": true
+          },
+          "workflow_id": "definition_workflow_01PP790MKJNWV6XyJuLdUyNlM2UV3JJACez",
+          "workflow_name": "Webex - Search for Room"
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02T4FZ1KN12FH6ZlKTNuR2ITXWZhzU7RUsj",
+        "name": "Webex - Post Message to Room",
+        "title": "Webex - Post Message to Room",
+        "type": "workflow.atomic_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": false,
+          "description": "Posts a message to a Webex room. You can provide a plain text message, a message with markdown, an attachment, or a combination of these.\n\nTarget: Webex integration target or an HTTP Endpoint for \"webexapis.com\" with no path\n\nAccount Key: None if using an integration-provided target, access token if using an HTTP endpoint target\n\nSteps:\n[] Build the JSON payload\n[] Validate that message content was provided\n[] Build the authorization header\n[] Send the request to the Webex API\n[] Check if the request was successful and set the output variables\n\nMore information about this API: https://developer.webex.com/docs/api/v1/messages/create-a-message",
+          "display_name": "Webex - Post Message to Room",
+          "input": {
+            "variable_workflow_01PP78DJH1TI76BYfsu9g0Tqj2S6cUxjtu5": "$activity.definition_activity_02T4FYWIYWHQ76KFFE5TNb4ZvHqXdJ16KHA.output.variable_workflow_01PP790MCXJ7Y5cAWcGZWbG4Es0126zb1I6$",
+            "variable_workflow_01PP78DJH1XNQ7gNQ5iZdperRHqrppzARXC": "$global.variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt.global.variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt$",
+            "variable_workflow_01PP78DJH1YWL3allalGQbg1VkgKwh9GvCi": "# It worked!",
+            "variable_workflow_01PP78DJH22BB3Ej3I8tJ4OCQur0unYGjj9": "",
+            "variable_workflow_01SVERQNMKN8N6vqX2djMtAfshphGydGsH8": "",
+            "variable_workflow_02AENCV86E2FM76Xwk4JaWwHqWfXgNwCOwx": ""
+          },
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "target_type": "web-service.endpoint",
+            "use_workflow_target": true,
+            "use_workflow_target_group": true
+          },
+          "workflow_id": "definition_workflow_01PP78DJMXS415nTjonujf03ROkr6t2PNyw",
+          "workflow_name": "Webex - Post Message to Room"
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ],
+    "template_type": "template_workflow.workflow_with_automation_rule"
+  },
+  "targets": {
+    "definition_target_02T4GAZKQXH0Q5JMfyWzvOsGOjqfpwbeJHL": {
+      "unique_name": "definition_target_02T4GAZKQXH0Q5JMfyWzvOsGOjqfpwbeJHL",
+      "name": "webex-api",
+      "title": "webex-api",
+      "type": "web-service.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "disable_certificate_validation": false,
+        "display_name": "webex-api",
+        "host": "webexapis.com",
+        "ignore_proxy": false,
+        "is_https_proxy": false,
+        "no_runtime_user": true,
+        "protocol": "https"
+      }
+    }
+  },
+  "variables": {
+    "variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt": {
+      "unique_name": "variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt",
+      "properties": {
+        "value": "*****",
+        "scope": "global",
+        "name": "demo-webex-key",
+        "type": "datatype.secure_string",
+        "is_required": false,
+        "display_on_wizard": false,
+        "is_invisible": false,
+        "variable_string_format": ""
+      },
+      "object_type": "variable"
+    }
+  },
+  "atomic_workflows": [
+    "definition_workflow_01PP790MKJNWV6XyJuLdUyNlM2UV3JJACez",
+    "definition_workflow_01PP78DJMXS415nTjonujf03ROkr6t2PNyw"
+  ],
+  "dependent_workflows": [
+    "definition_workflow_01PP790MKJNWV6XyJuLdUyNlM2UV3JJACez",
+    "definition_workflow_01PP78DJMXS415nTjonujf03ROkr6t2PNyw"
+  ]
+}
