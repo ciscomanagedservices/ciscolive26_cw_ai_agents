@@ -186,7 +186,7 @@ Here we will first build a basic workflow to acknowledge that we can get an even
 
 ### 5.1 Creating a new Workflow
 1. Go to <em class="button-click">Automation > Workspace</em>. Click the <em class="button-click">+Create</em> button in the upper right, and choose <em class="example-input">Workflow with Automation Rule</em> since we will be attaching a webhook rule to this workflow.
-2. Name it <em class="example-input">&lt;your_name&gt;-int-notify</em> and click <em class="button-click">Continue</em>.
+2. Name it <em class="example-input">&lt;your_name&gt;-notify</em> and click <em class="button-click">Continue</em>.
 3. You will be given an empty canvas.
 4. In the left panel are prebuilt modules you can use to call functions. Let's send a Webex message when we trigger an alert. In the left panel, navigate to <em class="button-click">Activities > Cisco Webex > Webex - Send Message to Person</em> and drag this activity box into the middle panel workspace canvas.
 5. Open a new tab. We will come back to this in a minute, but need to register for a Webex API key first.
