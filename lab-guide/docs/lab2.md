@@ -36,15 +36,40 @@ flowchart LR
 ```sh
 scp remotePackage.zip root@198.18.1.204:/root/
 ```
-7. SSH to the wf-remote server and clone the lab repository:
+7. SSH to the wf-remote server and run the registration script:
 ```sh
 ssh root@198.18.1.204
-git clone https://github.com/ciscomanagedservices/ciscolive26_cw_ai_agents.git
+./register_remote.py /root/remotePackage.zip
 ```
-8. Run the python script passing in the zip package to initiate the remote server registration procedure:
-```sh
-cd ciscolive26_cw_ai_agents/scripts/remote_server
-./remote_register.py /root/remotePackage.zip
+
+Example output:
+```
+root@default-hostname:~# ./register_remote.py /root/remotePackage.zip
+[*] Extracting base64 from zip file: /root/remotePackage.zip
+[+] Found config file: scdozier-remote_remoteconfig_20260129T215214.txt
+[+] Successfully extracted base64 string from zip
+[*] Decoding OVF user-data string...
+[+] Successfully decoded cloud-config
+[*] Extracting YAML configuration files...
+[*] Files found in cloud-config:
+    - /etc/ao-remote/values.yaml
+    - /etc/ao-remote/ca-key-pair.yaml
+[+] Found values.yaml at: /etc/ao-remote/values.yaml
+[+] Found ca-key-pair.yaml at: /etc/ao-remote/ca-key-pair.yaml
+
+======================================================================
+XDR Remote Appliance Configuration
+======================================================================
+Remote Name:     <your_name>-remote
+Remote ID:       1744720:02T4G1V7NYIII0DoURJal8r4JSjHUqqvPs2
+MQTT Broker:     tcps://us-remote.workflows.meraki.com:8883
+Proxy:
+======================================================================
+
+
+[!] Existing XDR containers are already running
+[*] Would you like to stop and remove them before re-registering? (yes/no)
+>
 ```
 9. Wait a few seconds, and then refresh the Workflow's Targets page. You should see your remote move into a `Connected` status.
 
@@ -72,6 +97,9 @@ cd ciscolive26_cw_ai_agents/scripts/remote_server
     - <em class="lab-warning">Password:</em> <em class="example-input">cisco</em>
 3. Ensure that the <em class="lab-warning">status</em> of the devices shows as <em class="example-input">Valid</em> which is ensuring a basic connection check to the device.
 
+!!! note
+    If the target cannot connect, verify the IP address is correct and that <em class="lab-warning">Remote Keys</em> is set to your remote server. Without the Remote Keys configured, Workflows will attempt to connect over the internet instead of through your remote server.
+
 ### 2.2 Create a Target group
 
 Target groups contain the sets of devices that you can run the automation on. We want to create a group that would contain all possible devices that we'd run the automation on.
@@ -81,7 +109,7 @@ Target groups contain the sets of devices that you can run the automation on. We
 
 1. Go to <em class="button-click">Automation > Targets > + New target group</em> and name it <em class="example-input">&lt;your_name&gt;-routers</em>.
 2. Click <em class="button-click">+ Add target type</em> and choose the <em class="lab-warning">target type</em> of <em class="example-input">Terminal Endpoint</em>.
-3. You could either implicitly add all targets you'd potentially run the automation on here, specify a matching condition, or you could enable the <em class="lab-warning">Include all targets of this type</em> if all terminal endpoints should get this workflow treatment. Since we are potentially dealing with other lab pods in the same tenant, let's just add our one device matching <em class="example-input">&lt;your_name&gt;-R3</em> into the target group. You could add your other pod routers in this group in the future, if you want.
+3. Set <em class="lab-warning">Include all targets of this type</em>.
 
 ---
 
@@ -118,7 +146,7 @@ We need to make this workflow accept a message as input so other workflows can p
 
 ### 3.4 Update the Webex Activity to Use the Input Variable
 
-1. Click on the <em class="lab-warning">Send Webex Team Message</em> activity in the workflow canvas to select it
+1. Click on the <em class="lab-warning">Post Message to Room</em> activity in the workflow canvas to select it
 2. In the activity properties panel, find the <em class="lab-warning">Markdown Message</em> field
 3. Clear the existing content
 4. Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and navigate to: <em class="button-click">Workflow > Input > message_body</em>
@@ -233,6 +261,9 @@ Now we'll override the placeholder target condition with the actual device IP fr
 
 !!! success
     This override tells the workflow: "Instead of using the placeholder `-2` condition, match the device whose IP address equals the `target_device` value we parsed from the webhook."
+
+!!! note
+    If you are having issues getting the workflow to validate, ask your instructor for help. Target group conditions can sometimes be tricky to configure correctly.
 
 ### 4.10 Add the Notification Sub-Workflow
 

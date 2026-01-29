@@ -160,48 +160,17 @@ no shut
 
 ---
 
-## Step 4: Setting up a workflow and webhooks in Cisco Workflows
+## Step 4: Setting up a Webex API account
 
-If you want to work in your own private instance of Cisco Workflows (preferred), you can signup for an account at [meraki.cisco.com](https://account.meraki.com/login/new_account?r=EMEA) with your email address.
+We need to setup a Webex API before we can build our workflow notification.
 
-If you want to use our demo instance, we will provide you with access and you will share the space with others, each creating individual workflows within the tenant organization instance.
-
-1. Login to [meraki.cisco.com](https://meraki.cisco.com).
-2. You will see an <em class="lab-warning">Automation</em> section in the left sidebar, which is where we will mostly spend our time. This is the Cisco Workflows app.
-3. Go to <em class="button-click">Automation > Rules</em> and then click the <em class="button-click">Webhooks</em> section in the header bar and click <em class="button-click">+ New webhook</em>.
-4. Name the webhook <em class="example-input">&lt;your_name&gt;-splunk-webhook</em>. Keep the content type as <em class="example-input">application-json</em> and click <em class="button-click">Save</em>.
-5. Click back into the webhook you just created. You should now see the <em class="lab-warning">Webhook API Key</em> and <em class="lab-warning">Webhook URL</em> populated. Grab the Webhook URL (which has the API key embedded in the URL query) and stash it in a local notepad--we will need to put them back in Splunk in a minute.
-
-<figure markdown>
-  ![Automation UI for Workflows](./img/lab1/lab1_4.2.png){ width="500" }
-</figure>
-<figure markdown>
-  ![Adding a webhook](./img/lab1/lab1_4.3.png){ width="500" }
-</figure>
----
-
-## Step 5: Building a basic response workflow
-
-Here we will first build a basic workflow to acknowledge that we can get an event to trigger a workflow. It won't do any troubleshooting/repair just yet.
-
-### 5.1 Creating a new Workflow
-1. Go to <em class="button-click">Automation > Workspace</em>. Click the <em class="button-click">+Create</em> button in the upper right, and choose <em class="example-input">Workflow with Automation Rule</em> since we will be attaching a webhook rule to this workflow.
-2. Name it <em class="example-input">&lt;your_name&gt;-int-notify</em> and click <em class="button-click">Continue</em>.
-3. You will be given an empty canvas.
-4. In the left panel are prebuilt modules you can use to call functions. Let's send a Webex message when we trigger an alert. In the left panel, navigate to <em class="button-click">Activities > Cisco Webex > Webex - Send Message to Person</em> and drag this activity box into the middle panel workspace canvas.
-5. Open a new tab. We will come back to this in a minute, but need to register for a Webex API key first.
-
-### 5.2 Setting up a Webex API account
-
-We need to setup a webex API before we can finish wiring up our workflow notification.
-
-1. Sign in to the [Webex Developer Portal](https://developer.webex.com/login)
+1. Sign up for an account at the [Webex Developer Portal](https://developer.webex.com/login) if you don't already have one.
 2. In the upper right, click your photo/avatar, and choose <em class="button-click">My Webex apps</em> and then click <em class="button-click">Create a new app</em>.
 3. Select <em class="button-click">Create a Bot</em> since we just need to send/receive messages.
 4. Name your bot <em class="example-input">workflows-lab</em> and set the username to something globally unique across all Webex users like <em class="example-input">&lt;your_name&gt;-&lt;company_name&gt;-workflows-bot</em>. You must select an icon to submit. Choose one of the default robot icons, or feel free to upload a fun robot icon if you desire. Add a brief 10+ character description. Click <em class="button-click">Add bot</em>.
-5. Copy your <em class="lab-warning">Bot access token</em> and <em class="lab-warning">Bot ID</em> to a safe place.
+5. Copy your <em class="lab-warning">Bot access token</em> and <em class="lab-warning">Bot username</em> to a safe place.
 
-### 5.2.5 Create a Webex Space for Notifications
+### 4.1 Create a Webex Space for Notifications
 
 Create a Webex space where the bot will send notifications. You will use this space throughout the remaining labs.
 
@@ -211,19 +180,46 @@ Create a Webex space where the bot will send notifications. You will use this sp
 4. Add your bot to the space by typing its username (e.g., <em class="example-input">&lt;your_name&gt;-&lt;company_name&gt;-workflows-bot@webex.bot</em>)
 5. Note the space name - you will use this in later labs for AI Agent notifications
 
-### 5.3 Adding the webex integration
+---
+
+## Step 5: Building a basic response workflow
+
+Here we will first build a basic workflow to acknowledge that we can get an event to trigger a workflow. It won't do any troubleshooting/repair just yet.
+
+### 5.1 Creating a new Workflow
+
+1. Sign up for an account at [meraki.cisco.com](https://account.meraki.com/login/new_account?r=EMEA) with your email address if you don't already have one.
+2. Login to [meraki.cisco.com](https://meraki.cisco.com).
+3. You will see an <em class="lab-warning">Automation</em> section in the left sidebar, which is where we will mostly spend our time. This is the Cisco Workflows app.
+4. Go to <em class="button-click">Automation > Workspace</em>. Click the <em class="button-click">+Create</em> button in the upper right, and choose <em class="example-input">Workflow with Automation Rule</em> since we will be attaching a webhook rule to this workflow.
+5. Name it <em class="example-input">&lt;your_name&gt;-int-notify</em> and click <em class="button-click">Continue</em>.
+6. You will be given an empty canvas.
+7. In the left panel are prebuilt modules you can use to call functions. Let's send a Webex message when we trigger an alert. In the left panel, navigate to <em class="button-click">Activities > Cisco Webex > Webex - Search for Room</em> and drag this activity box into the middle panel workspace canvas.
+8. Click on the <em class="lab-warning">Webex - Search for Room</em> activity block. Set the <em class="lab-warning">Search Room Name</em> input to <em class="example-input">&lt;your_name&gt;-workflows-lab</em>.
+9. For the <em class="lab-warning">Access Token</em>, click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right of the text box and select your Webex API key variable (we will create this in Step 5.2).
+10. Next, drag a <em class="button-click">Webex - Post Message to Room</em> activity block onto the canvas and connect it after the Search for Room block.
+11. Click on the <em class="lab-warning">Webex - Post Message to Room</em> activity block and configure:
+    - <em class="lab-warning">Access Token:</em> Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select your Webex API key variable
+    - <em class="lab-warning">Room ID:</em> Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and navigate to <em class="button-click">Activities > Webex - Search for Room > Room ID</em>
+    - <em class="lab-warning">Markdown Message:</em> Configure your notification message (see Step 5.3)
+
+### 5.2 Adding the Webex integration
 
 1. In Workflows, go to <em class="button-click">Automation > Variables</em>. Click <em class="button-click">+New Variable</em>.
 2. Name the key <em class="example-input">&lt;yourName&gt;-webex</em>, set <em class="lab-warning">String Type</em> to <em class="example-input">Secure String</em>, leave scope as <em class="example-input">Global</em> and put the Webex access token in the value. Click <em class="button-click">Save</em>.
 3. Go back to your workflow that was started in step 5.1. If you closed that tab, get back to it with <em class="button-click">Automation > Workspace > &lt;your_name&gt;-int-notify</em>. Click the name of the workflow and click <em class="button-click">View Workflow</em> on the lower right hand corner.
-4. Click on the <em class="lab-warning">Webex Send Message</em> activity box, then in <em class="lab-warning">Access Token</em> click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right of the text box and select <em class="button-click">Global > *your_access_token*</em>.
-5. Configure the message settings:
-    - Put your Webex account email address in the <em class="lab-warning">Recipient Email</em> box
+
+### 5.3 Configure the Webex activities
+
+1. Click on the <em class="lab-warning">Webex - Search for Room</em> activity box, then in <em class="lab-warning">Access Token</em> click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right of the text box and select <em class="button-click">Global > *your_access_token*</em>.
+2. Click on the <em class="lab-warning">Webex - Post Message to Room</em> activity box and configure:
+    - In <em class="lab-warning">Access Token</em>, click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Global > *your_access_token*</em>
+    - In <em class="lab-warning">Room ID</em>, click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Activities > Webex - Search for Room > Room ID</em>
     - In the <em class="lab-warning">Markdown Message</em> box, type <em class="example-input"># It worked!</em>
     - Press Enter for a new line
     - Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right and add the variable <em class="button-click">Rule > Webhook Rule > Output > Request Headers</em>
     - This will take the JSON from the webhook and send it in a Webex Teams message
-6. Configure the target:
+3. Configure the target:
     - Under <em class="lab-warning">Target</em>, choose <em class="button-click">Override workflow target</em>
     - Click the <em class="button-click">+</em> to add a new target
     - Create an <em class="example-input">HTTP endpoint</em> with protocol of <em class="example-input">HTTPS</em>
@@ -231,7 +227,7 @@ Create a Webex space where the bot will send notifications. You will use this sp
     - Set <em class="lab-warning">No account keys</em> to <em class="example-input">True</em>
     - Check <em class="lab-warning">Disable server certification validation</em>
     - Click <em class="button-click">Save</em>
-7. You should now be able to click <em class="button-click">Validate</em>, and <em class="button-click">Run</em> in the upper right and receive a message in your Webex Teams.
+4. You should now be able to click <em class="button-click">Validate</em>, and <em class="button-click">Run</em> in the upper right and receive a message in your Webex space.
 
 <figure markdown>
   ![Webex Send Message activity configuration with access token and message settings](./img/lab1/lab1_5.3.jpg){ width="600" }
@@ -245,9 +241,22 @@ Yay, your first workflow has been created and tested!
 
 Now let's hook the webhook up, so we can trigger our test message from a device's syslog event.
 
-### 6.1 Setting up the Meraki automation rule
+### 6.1 Setting up a webhook in Cisco Workflows
 
-1. Go back to the Workspace, then go to <em class="button-click">Automation > Rules > Add automation rule</em>
+1. Go to <em class="button-click">Automation > Rules</em> and then click the <em class="button-click">Webhooks</em> section in the header bar and click <em class="button-click">+ New webhook</em>.
+2. Name the webhook <em class="example-input">&lt;your_name&gt;-splunk-webhook</em>. Keep the content type as <em class="example-input">application-json</em> and click <em class="button-click">Save</em>.
+3. Click back into the webhook you just created. You should now see the <em class="lab-warning">Webhook API Key</em> and <em class="lab-warning">Webhook URL</em> populated. Grab the Webhook URL (which has the API key embedded in the URL query) and stash it in a local notepad--we will need to put them back in Splunk in a minute.
+
+<figure markdown>
+  ![Automation UI for Workflows](./img/lab1/lab1_4.2.png){ width="500" }
+</figure>
+<figure markdown>
+  ![Adding a webhook](./img/lab1/lab1_4.3.png){ width="500" }
+</figure>
+
+### 6.2 Setting up the Meraki automation rule
+
+1. Go to <em class="button-click">Automation > Rules > Add automation rule</em>
 2. Set type to <em class="example-input">webhook rule</em> and title it <em class="example-input">Syslog: %LINEPROTO-5-UPDOWN</em>
 3. Set the selected <em class="lab-warning">Webhook</em> to the webhook you just created.
 4. Apply to the workflow you just created: <em class="example-input">&lt;your_name&gt;-int-notify</em> and click <em class="button-click">Save</em>.
@@ -256,29 +265,30 @@ Now let's hook the webhook up, so we can trigger our test message from a device'
   ![Automation rule configuration with webhook rule type and workflow selection](./img/lab1/lab1_6.1.jpg){ width="500" }
 </figure>
 
-### 6.2 Finishing the Splunk webhook alert
+### 6.3 Finishing the Splunk webhook alert
 
 Now we need to setup alerts for interesting syslog messages to trigger webhooks into Cisco Workflows for response.
 
-We do this with a saved search that triggers a webhook. Splunk doesn't have flexible customization with webhook authentication by default, so we will leverage the installed app [Better Webhooks](https://splunkbase.splunk.com/app/7450) to define a webhook in the authentication format Cisco Workflows expects.
+We will create a saved search that triggers a webhook when matching syslog events are detected.
 
-1. Go back to Splunk, and in the upper bar click <em class="button-click">Apps > Better Webhooks</em>.
-2. On the <em class="lab-warning">Credentials</em> page, click <em class="button-click">+New Credential</em>.
-3. Set <em class="lab-warning">Credential type</em> to <em class="example-input">Custom HTTP Header</em> and <em class="lab-warning">Header Name</em> as <em class="example-input">Authorization</em> and put your Cisco Workflows API key in the <em class="lab-warning">Header Value</em> and click <em class="button-click">Submit</em>.
-4. We will use a saved search to match Splunk criteria and trigger the webhook. Now go back to the <em class="button-click">Settings > Knowledge > Search, alerts, and reporting</em> and let's create an alert.
-5. Click <em class="button-click">Settings > Knowledge > Searches, Alerting, and Reports</em>.
-6. **IMPORTANT!** Make sure you change the <em class="lab-warning">App context</em> in the upper header to <em class="example-input">Cisco Networks</em> before creating the alert, so it associates to the right app's index.
-7. Click <em class="button-click">New Alert</em> in the upper right.
-8. Set the inputs to the following and save it:
+1. Go back to Splunk and navigate to <em class="button-click">Settings > KNOWLEDGE > Searches, reports and alerts</em>.
+2. **IMPORTANT!** Make sure you change the <em class="lab-warning">App context</em> in the upper header to <em class="example-input">Cisco Networks</em> before creating the alert, so it associates to the right app's index.
+3. Click <em class="button-click">New Alert</em> in the upper right.
+4. Set the inputs to the following and save it:
     - <em class="lab-warning">Title:</em> <em class="example-input">%LINEPROTO-5-UPDOWN webhook</em>
     - <em class="lab-warning">Search:</em> <em class="example-input">index=syslog "%LINEPROTO-5-UPDOWN" "changed state to down"</em>
     - <em class="lab-warning">App:</em> <em class="example-input">Cisco Networks</em>
     - <em class="lab-warning">Alert type:</em> <em class="example-input">Real-time</em>
     - <em class="lab-warning">Trigger alert when:</em> <em class="example-input">Per-Result</em>
-    - <em class="lab-warning">Trigger Actions:</em> <em class="example-input">Better Webhook</em>
+    - <em class="lab-warning">Expires:</em> <em class="example-input">1</em>
+    - <em class="lab-warning">Trigger Actions:</em> <em class="example-input">Webhook</em>
+5. In the Webhook configuration, paste your <em class="lab-warning">Webhook URL</em> from step 6.1.
 
 !!! tip "Troubleshooting Tip"
     You may want to also add a <em class="lab-warning">Trigger action</em> for <em class="example-input">Add to Triggered Alerts</em> so that you can verify the alert is triggering correctly by checking <em class="button-click">Activity > Triggered Alerts</em>. Alerts will not appear there unless this action is configured.
+
+!!! tip "Webhook Troubleshooting"
+    To troubleshoot webhook issues from within Cisco Workflows, go to <em class="button-click">Automation > Rules</em>, then click the <em class="button-click">History</em> tab to see incoming webhook requests and their status.
 
 ---
 
