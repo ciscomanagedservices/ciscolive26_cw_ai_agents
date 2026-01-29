@@ -1,0 +1,377 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_02T4GMR4WT87P2P9AVg4WzHMeoH7faUto9g",
+    "name": "demo-unshut-int",
+    "title": "demo-unshut-int",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": null,
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "automation_rules": {
+        "type": [
+          "webhook.rule_event"
+        ]
+      },
+      "delete_workflow_instance": false,
+      "display_name": "demo-unshut-int",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "no_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_02T4GQNB0K8746wZQ9SMi34FhIcT836eoZl",
+        "name": "JSONPath Query",
+        "title": "get device ip",
+        "type": "corejava.jsonpathquery",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "description": "JSONPath Query to get value in JSON",
+          "display_name": "get device ip",
+          "input_json": "$rule.webhook rule_event.output.request_body$",
+          "jsonpath_queries": [
+            {
+              "jsonpath_query": "$.result.dvc",
+              "jsonpath_query_name": "target_device",
+              "jsonpath_query_type": "string",
+              "set_default_value": false,
+              "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02T4GSI63YBUC2TUXIRNXrY7jH7hUcWT3vR",
+        "name": "Execute Terminal Command(s)",
+        "title": "unshut interface",
+        "type": "terminal.command",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "command_timeout": 60,
+          "commands": "conf t\nint lo0\nno sh\nend\nsend log \"Cisco Workflows has automated unshutting an interface.\"",
+          "continue_on_failure": false,
+          "description": "Executes commands on terminal target",
+          "display_name": "unshut interface",
+          "merge_commands": false,
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "override_workflow_target": true,
+            "target_id": "definition_target_02T4GNXW4BIQ13G0qYt800mMIh1lJkOE1Xe"
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02T4GTXY8KVLU6d3u80MmzsyA7RbntWPZx1",
+        "name": "demo-notify2",
+        "title": "demo-notify2",
+        "type": "workflow.sub_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "demo-notify2",
+          "input": {
+            "variable_workflow_02T4GJVM889LQ2uCGP8SnCmkNCAC8cvw9CB": "$activity.definition_activity_02T4GSI63YBUC2TUXIRNXrY7jH7hUcWT3vR.output.response_body$"
+          },
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "execute_on_this_target": true,
+            "target_id": "definition_target_02T4GAZKQXH0Q5JMfyWzvOsGOjqfpwbeJHL",
+            "target_type": "web-service.endpoint"
+          },
+          "workflow_id": "definition_workflow_02T4GJ5RW5IN85FcVZYy4zIk3Fm1e2vzItU",
+          "workflow_name": "demo-notify2"
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ]
+  },
+  "rules": {
+    "ruleevent_02T4H28733UV81fjM1yyovA53383Fk6mkCJ": {
+      "name": "demo-int-notify",
+      "title": "demo-int-notify",
+      "type": "webhook.rule_event",
+      "rule_type": "rule_event",
+      "base_type": "rule",
+      "object_type": "ruleevent",
+      "version": "1.0.0",
+      "properties": {
+        "description": "",
+        "disabled": false,
+        "display_name": "demo-int-notify",
+        "group_by": false,
+        "rule_type": "rule_event",
+        "title": "demo-int-notify",
+        "webhook_id": "webhook_02T4G5TJN6MCC1WhWBl1u50jWXYhWCwBXQw",
+        "workflows_config": [
+          {
+            "disabled": false,
+            "ref_id": "definition_workflow_02T4GMR4WT87P2P9AVg4WzHMeoH7faUto9g",
+            "status": {
+              "state": "started-polling",
+              "prev_state": "started-polling",
+              "error_msg": ""
+            }
+          }
+        ]
+      },
+      "disabled": false,
+      "unique_name": "ruleevent_02T4H28733UV81fjM1yyovA53383Fk6mkCJ"
+    }
+  },
+  "targets": {
+    "definition_target_02T4GAZKQXH0Q5JMfyWzvOsGOjqfpwbeJHL": {
+      "unique_name": "definition_target_02T4GAZKQXH0Q5JMfyWzvOsGOjqfpwbeJHL",
+      "name": "webex-api",
+      "title": "webex-api",
+      "type": "web-service.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "disable_certificate_validation": false,
+        "display_name": "webex-api",
+        "host": "webexapis.com",
+        "ignore_proxy": false,
+        "is_https_proxy": false,
+        "no_runtime_user": true,
+        "protocol": "https"
+      }
+    },
+    "definition_target_02T4GNXW4BIQ13G0qYt800mMIh1lJkOE1Xe": {
+      "unique_name": "definition_target_02T4GNXW4BIQ13G0qYt800mMIh1lJkOE1Xe",
+      "name": "R3",
+      "title": "R3",
+      "type": "terminal.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "ao_remote_id": "02T4G1V7NYIII0DoURJal8r4JSjHUqqvPs2",
+        "default_runtime_user_id": "definition_runtime_user_02T4GNQJ3N5CS4SgDD0eaqVCOfOWUCSBZ79",
+        "display_name": "R3",
+        "host": "198.18.1.103",
+        "port": 22,
+        "prompt_pattern": "#",
+        "protocol": "ssh"
+      }
+    }
+  },
+  "runtime_users": {
+    "definition_runtime_user_02T4GNQJ3N5CS4SgDD0eaqVCOfOWUCSBZ79": {
+      "unique_name": "definition_runtime_user_02T4GNQJ3N5CS4SgDD0eaqVCOfOWUCSBZ79",
+      "name": "router-creds",
+      "title": "router-creds",
+      "type": "runtime_user.terminal_password_credentials",
+      "base_type": "runtime_user",
+      "object_type": "definition_runtime_user",
+      "properties": {
+        "display_name": "router-creds",
+        "password": "*****",
+        "user": "cisco"
+      }
+    }
+  },
+  "variables": {
+    "variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt": {
+      "unique_name": "variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt",
+      "properties": {
+        "value": "*****",
+        "scope": "global",
+        "name": "demo-webex-key",
+        "type": "datatype.secure_string",
+        "is_required": false,
+        "display_on_wizard": false,
+        "is_invisible": false,
+        "variable_string_format": ""
+      },
+      "object_type": "variable"
+    }
+  },
+  "subworkflows": [
+    {
+      "workflow": {
+        "unique_name": "definition_workflow_02T4GJ5RW5IN85FcVZYy4zIk3Fm1e2vzItU",
+        "name": "demo-notify2",
+        "title": "demo-notify2",
+        "type": "generic.workflow",
+        "base_type": "workflow",
+        "variables": [
+          {
+            "schema_id": "datatype.string",
+            "properties": {
+              "value": "-1",
+              "scope": "input",
+              "name": "message_body",
+              "type": "datatype.string",
+              "is_required": true,
+              "display_on_wizard": false,
+              "is_invisible": false,
+              "variable_string_format": "json"
+            },
+            "unique_name": "variable_workflow_02T4GJVM889LQ2uCGP8SnCmkNCAC8cvw9CB",
+            "object_type": "variable_workflow"
+          }
+        ],
+        "properties": {
+          "atomic": {
+            "is_atomic": false
+          },
+          "automation_rules": {
+            "type": [
+              "webhook.rule_event"
+            ]
+          },
+          "delete_workflow_instance": false,
+          "display_name": "demo-notify2",
+          "runtime_user": {
+            "target_default": true
+          },
+          "target": {
+            "target_type": "web-service.endpoint",
+            "target_id": "definition_target_02T4GAZKQXH0Q5JMfyWzvOsGOjqfpwbeJHL",
+            "execute_on_workflow_target": true
+          }
+        },
+        "object_type": "definition_workflow",
+        "actions": [
+          {
+            "unique_name": "definition_activity_02T4GJ5YYNF092DA0xKJZlQoUJn1GjFEJGW",
+            "name": "Webex - Search for Room",
+            "title": "Webex - Search for Room",
+            "type": "workflow.atomic_workflow",
+            "base_type": "subworkflow",
+            "properties": {
+              "continue_on_failure": false,
+              "description": "Gets information about a room from Webex by room name or room ID. If a name is provided, the name must match exactly. If an ID is provided, that room is fetched directly. If you want to limit your search to direct or group rooms, you can do so by setting the room type.\n\nNote: This atomic will only search the first 100 rooms that the searching user is a member of.\n\nTarget: Webex integration target or an HTTP Endpoint for \"webexapis.com\" with no path\n\nAccount Key: None if using an integration-provided target, access token if using an HTTP endpoint target\n\nSteps:\n[] Validate that either a room name or room ID was provided\n[] Set the query string\n[] Build the authorization header\n[] Send the request to Webex\n[] Check if the request was successful:\n[]> If we searched by room ID and got a result, set the output\n[]> If we searched by room name, loop through the results and if a matching room is found set the output\n\nMore information about this API: https://developer.webex.com/docs/api/v1/rooms/list-rooms",
+              "display_name": "Webex - Search for Room",
+              "input": {
+                "variable_workflow_01PP790MCX1DN3EitpQebkUyJS65DbwS3nU": "$global.variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt.global.variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt$",
+                "variable_workflow_01PP790MCXB392D3R8pxh9fgOTjTde2bcMW": "sholl-lab1-test",
+                "variable_workflow_01PP790MCXHP55YE6ylOEITWsWbUFJeyWGv": "",
+                "variable_workflow_01PP790MCXM9W1MUwo85y8iNRCoQuQ4RGNa": ""
+              },
+              "runtime_user": {
+                "target_default": true
+              },
+              "skip_execution": false,
+              "target": {
+                "target_type": "web-service.endpoint",
+                "use_workflow_target": true
+              },
+              "workflow_id": "definition_workflow_01PP790MKJNWV6XyJuLdUyNlM2UV3JJACez",
+              "workflow_name": "Webex - Search for Room"
+            },
+            "object_type": "definition_activity"
+          },
+          {
+            "unique_name": "definition_activity_02T4GJ621GDCP6vid4FOT2HBNT1hsLyloq9",
+            "name": "Webex - Post Message to Room",
+            "title": "Webex - Post Message to Room",
+            "type": "workflow.atomic_workflow",
+            "base_type": "subworkflow",
+            "properties": {
+              "continue_on_failure": false,
+              "description": "Posts a message to a Webex room. You can provide a plain text message, a message with markdown, an attachment, or a combination of these.\n\nTarget: Webex integration target or an HTTP Endpoint for \"webexapis.com\" with no path\n\nAccount Key: None if using an integration-provided target, access token if using an HTTP endpoint target\n\nSteps:\n[] Build the JSON payload\n[] Validate that message content was provided\n[] Build the authorization header\n[] Send the request to the Webex API\n[] Check if the request was successful and set the output variables\n\nMore information about this API: https://developer.webex.com/docs/api/v1/messages/create-a-message",
+              "display_name": "Webex - Post Message to Room",
+              "input": {
+                "variable_workflow_01PP78DJH1TI76BYfsu9g0Tqj2S6cUxjtu5": "$activity.definition_activity_02T4GJ5YYNF092DA0xKJZlQoUJn1GjFEJGW.output.variable_workflow_01PP790MCXJ7Y5cAWcGZWbG4Es0126zb1I6$",
+                "variable_workflow_01PP78DJH1XNQ7gNQ5iZdperRHqrppzARXC": "$global.variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt.global.variable_02T4G2NA0AC947GYpokYfIqUpaBa7c2Lmzt$",
+                "variable_workflow_01PP78DJH1YWL3allalGQbg1VkgKwh9GvCi": "$workflow.definition_workflow_02T4GJ5RW5IN85FcVZYy4zIk3Fm1e2vzItU.input.variable_workflow_02T4GJVM889LQ2uCGP8SnCmkNCAC8cvw9CB$",
+                "variable_workflow_01PP78DJH22BB3Ej3I8tJ4OCQur0unYGjj9": "",
+                "variable_workflow_01SVERQNMKN8N6vqX2djMtAfshphGydGsH8": "",
+                "variable_workflow_02AENCV86E2FM76Xwk4JaWwHqWfXgNwCOwx": ""
+              },
+              "runtime_user": {
+                "target_default": true
+              },
+              "skip_execution": false,
+              "target": {
+                "target_type": "web-service.endpoint",
+                "use_workflow_target": true,
+                "use_workflow_target_group": true
+              },
+              "workflow_id": "definition_workflow_01PP78DJMXS415nTjonujf03ROkr6t2PNyw",
+              "workflow_name": "Webex - Post Message to Room"
+            },
+            "object_type": "definition_activity"
+          }
+        ],
+        "categories": [
+          "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+        ],
+        "template_type": "template_workflow.workflow_with_automation_rule"
+      },
+      "atomic_workflows": [
+        "definition_workflow_01PP790MKJNWV6XyJuLdUyNlM2UV3JJACez",
+        "definition_workflow_01PP78DJMXS415nTjonujf03ROkr6t2PNyw"
+      ],
+      "dependent_workflows": [
+        "definition_workflow_01PP790MKJNWV6XyJuLdUyNlM2UV3JJACez",
+        "definition_workflow_01PP78DJMXS415nTjonujf03ROkr6t2PNyw"
+      ]
+    }
+  ],
+  "webhooks": {
+    "webhook_02T4G5TJN6MCC1WhWBl1u50jWXYhWCwBXQw": {
+      "name": "demo-splunk-webhook",
+      "title": "demo-splunk-webhook",
+      "type": "generic.webhook",
+      "base_type": "webhook",
+      "object_type": "webhook",
+      "version": "1.0.0",
+      "properties": {
+        "display_name": "demo-splunk-webhook",
+        "request_content_type": "application/json"
+      },
+      "unique_name": "webhook_02T4G5TJN6MCC1WhWBl1u50jWXYhWCwBXQw",
+      "expires_on": "2027-01-29T21:57:16.149Z"
+    }
+  },
+  "remotemetas": {
+    "remote_meta_02T4G1V86I7OR7WQVwNeXM4K2pAFANgjJWo": {
+      "base_type": "remote_meta",
+      "type": "generic.remote_meta",
+      "name": "scdozier-remote",
+      "title": "scdozier-remote",
+      "version": "1.0.0",
+      "properties": {
+        "advanced": {
+          "require_advanced": false
+        },
+        "cloud_type": "vmware",
+        "display_name": "scdozier-remote",
+        "network": {
+          "is_dhcp": true
+        },
+        "proxy": {
+          "require_proxy": false
+        }
+      },
+      "unique_name": "remote_meta_02T4G1V86I7OR7WQVwNeXM4K2pAFANgjJWo",
+      "object_type": "remote_meta"
+    }
+  },
+  "dependent_workflows": [
+    "definition_workflow_02T4GJ5RW5IN85FcVZYy4zIk3Fm1e2vzItU"
+  ]
+}
