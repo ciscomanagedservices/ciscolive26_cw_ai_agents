@@ -215,7 +215,7 @@ Create a Webex space where the bot will send notifications. You will use this sp
 
 1. In Workflows, go to <em class="button-click">Automation > Variables</em>. Click <em class="button-click">+New Variable</em>.
 2. Name the key <em class="example-input">&lt;yourName&gt;-webex</em>, set <em class="lab-warning">String Type</em> to <em class="example-input">Secure String</em>, leave scope as <em class="example-input">Global</em> and put the Webex access token in the value. Click <em class="button-click">Save</em>.
-3. Go back to your workflow that was started in step 5.1. If you closed that tab, get back to it with <em class="button-click">Automation > Workspace > &lt;your_name&gt;-int-notify</em>. Click the name of the workflow and click <em class="button-click">View Workflow</em> on the lower right hand corner.
+3. Go back to your workflow that was started in step 5.1. If you closed that tab, get back to it with <em class="button-click">Automation > Workspace > &lt;your_name&gt;-notify</em>. Click the name of the workflow and click <em class="button-click">View Workflow</em> on the lower right hand corner.
 4. Click on the <em class="lab-warning">Webex Send Message</em> activity box, then in <em class="lab-warning">Access Token</em> click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right of the text box and select <em class="button-click">Global > *your_access_token*</em>.
 5. Configure the message settings:
     - Put your Webex account email address in the <em class="lab-warning">Recipient Email</em> box
