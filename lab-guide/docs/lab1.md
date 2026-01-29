@@ -314,7 +314,7 @@ This should produce a new log as seen in `show logging` with contents of `%LINEP
 ### 7.2 Validation
 
 1. **Check Splunk for the syslog event:**
-    - View the results of the <em class="example-input">index=syslog "%LINEPROTO-5-UPDOWN"</em> saved search from the <em class="button-click">Searches, Reports, and Alerts</em> page
+    - View the results of the [<em class="example-input">index=syslog "%LINEPROTO-5-UPDOWN"</em>](http://198.18.1.210:8000/en-US/app/search/search?q=search%20index%3Dsyslog%20%22%25LINEPROTO-5-UPDOWN%22) saved search from the <em class="button-click">Searches, Reports, and Alerts</em> page
     - Click <em class="button-click">Run</em> to execute the search
     - Change the search scope (right of search bar) from <em class="example-input">Real-time</em> to <em class="example-input">All-time</em> to see historical results
     - You may need to wait a couple minutes for the event to get picked up and indexed (typically ~60 seconds end-to-end)
