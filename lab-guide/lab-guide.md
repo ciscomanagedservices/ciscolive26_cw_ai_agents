@@ -13,5 +13,6 @@ Components you will encounter in this lab:
 * Splunk
 * ThousandEyes
 * Cisco CSR100v virtual routers 
+* CX RADKit with MCP server
 * LLM integration (Claude Opus 4.5)
 
