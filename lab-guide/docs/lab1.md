@@ -204,21 +204,8 @@ Here we will first build a basic workflow to acknowledge that we can get an even
     - <em class="lab-warning">Access Token:</em> Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select your Webex API key variable
     - <em class="lab-warning">Room ID:</em> Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and navigate to <em class="button-click">Activities > Webex - Search for Room > Room ID</em>
     - <em class="lab-warning">Markdown Message:</em> Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right and add the variable <em class="button-click"> > Webhook  > Output > Request Headers</em>
-
-
-3. Go back to your workflow that was started in step 5.1. If you closed that tab, get back to it with <em class="button-click">Automation > Workspace > &lt;your_name&gt;-notify</em>. Click the name of the workflow and click <em class="button-click">View Workflow</em> on the lower right hand corner.
-
-### 5.3 Configure the Webex activities
-
-1. Click on the <em class="lab-warning">Webex - Search for Room</em> activity box, then in <em class="lab-warning">Access Token</em> click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right of the text box and select <em class="button-click">Global > *your_access_token*</em>.
-2. Click on the <em class="lab-warning">Webex - Post Message to Room</em> activity box and configure:
-    - In <em class="lab-warning">Access Token</em>, click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Global > *your_access_token*</em>
-    - In <em class="lab-warning">Room ID</em>, click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Activities > Webex - Search for Room > Room ID</em>
-    - In the <em class="lab-warning">Markdown Message</em> box, type <em class="example-input"># It worked!</em>
-    - Press Enter for a new line
-    - Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right and add the variable <em class="button-click"> > Webhook  > Output > Request Headers</em>
     - This will take the JSON from the webhook and send it in a Webex Teams message
-3. Configure the target:
+9. Configure the target:
     - Under <em class="lab-warning">Target</em>, choose <em class="button-click">Override workflow target</em>
     - Click the <em class="button-click">+</em> to add a new target
     - Create an <em class="example-input">HTTP endpoint</em> with protocol of <em class="example-input">HTTPS</em>
@@ -226,7 +213,7 @@ Here we will first build a basic workflow to acknowledge that we can get an even
     - Set <em class="lab-warning">No account keys</em> to <em class="example-input">True</em>
     - Check <em class="lab-warning">Disable server certification validation</em>
     - Click <em class="button-click">Save</em>
-4. You should now be able to click <em class="button-click">Validate</em>, and <em class="button-click">Run</em> in the upper right and receive a message in your Webex space.
+10. You should now be able to click <em class="button-click">Validate</em>, and <em class="button-click">Run</em> in the upper right and receive a message in your Webex space.
 
 <figure markdown>
   ![Webex Send Message activity configuration with access token and message settings](./img/lab1/lab1_5.3.jpg){ width="600" }
