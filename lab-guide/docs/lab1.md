@@ -319,10 +319,8 @@ This should produce a new log as seen in `show logging` with contents of `%LINEP
     If you aren't seeing end-to-end notification, isolate where the messaging is not making it. Start at Splunk and troubleshoot within these logical areas:
 
     * **IOS syslog logging or Splunk data ingestion** - Is the syslog reaching Splunk?
-    * **Search/reporting/webhook in Splunk** - Is the alert triggering?
-    * **Workflows webhook & automation ** - Is the workflow being triggered?
-
-    To help isolate, check Splunk's saved search to see if the syslog is picked up, and the <em class="button-click">Activity > Triggered Alerts</em> page to see if the webhook went out to Cisco Workflows.
+    * **Search/reporting/webhook in Splunk** - Is the alert triggering? To help isolate, check Splunk's saved search to see if the syslog is picked up, and the <em class="button-click">Activity > Triggered Alerts</em> page to see if the webhook went out to Cisco Workflows.
+    * **Workflows rule history** - Is the workflow being triggered? If you see the webhook with rule match count of None, Workflow got the webhook but didn't match a valid workflow to run. Check that your workflow doesn't have errors.
 
 ---
 
