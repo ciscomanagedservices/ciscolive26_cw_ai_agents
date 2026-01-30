@@ -102,14 +102,11 @@ Proxy:
 !!! note
     If the target cannot connect, verify the IP address is correct and that <em class="lab-warning">Remote Keys</em> is set to your remote server. Without the Remote Keys configured, Workflows will attempt to connect over the internet instead of through your remote server.
 
-!!! info
-    In a production environment with many devices (targets), you'd likely use target groups which define a set of targets used for a workflow. For this lab, we're keeping the target simple, since in lab3 we will integrate a remote inventory/access tool (Cisco CX RADKit) that prevents having to also manage inventory in Workflows.
-
 ---
 
 ## Step 3: Create Standalone Notification Workflow
 
-In this step, you will convert your Lab 1 notification workflow into a reusable standalone workflow that can be called from other workflows. This is necessary because of the target group limitation described in Step 2.2. The main workflow (`<your_name>-unshut-int`) will contain a JSONPath Query, Terminal Commands, and a Sub-workflow Call that invokes the notification sub-workflow (`<your_name>-notify2`). The main workflow uses the target group for router access, while the sub-workflow overrides the target to use the Webex endpoint.
+In this step, you will convert your Lab 1 notification workflow into a reusable standalone workflow. The main workflow (`<your_name>-unshut-int`) will contain a JSONPath Query, Terminal Commands, and a Sub-workflow Call that invokes the notification sub-workflow (`<your_name>-notify2`).
 
 ### 3.1 Duplicate Your Lab 1 Notification Workflow
 
@@ -231,7 +228,7 @@ send log "Cisco Workflows has automated unshutting an interface."
 3. Set the target to <em class="example-input">&lt;your_name&gt;-R3</em>
 
 !!! note
-    We are manually overriding to R3 for simplicity. If you want dynamic selection of targets based on the webhook payload, you can use target groups and selection conditions, but that is outside the scope of this lab.
+    We are manually overriding to R3 for simplicity. In a production environment with many devices (targets), you'd likely  want dynamic selection of targets based on the webhook payload, and use target groups and selection conditions. For this lab, we're keeping the target simple, since in lab3 we will integrate a remote inventory/access tool (Cisco CX RADKit) that prevents having to duplicate device inventory in Workflows.
 
 ### 4.9 Add the Notification Sub-Workflow
 
