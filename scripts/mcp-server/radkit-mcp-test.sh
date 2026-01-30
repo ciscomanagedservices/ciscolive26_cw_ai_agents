@@ -154,46 +154,72 @@ extract_json() {
 #######################################
 print_header "Test 1: Initialize MCP Session"
 
-INIT_RESPONSE=$(curl -sS -i -N \
-    -H "Accept: text/event-stream, application/json" \
-    "${MCP_URL}" 2>&1 | head -50)
+# MCP protocol requires: initialize -> wait for response -> send initialized notification
+# Use curl with headers to capture session ID
 
-# Try to extract session ID from headers
-SESSION_ID=$(echo "$INIT_RESPONSE" | grep -i "mcp-session-id:" | head -1 | cut -d' ' -f2 | tr -d '\r')
-
-if [[ -n "$SESSION_ID" ]]; then
-    print_status "Session initialized"
-    print_info "Session ID: ${SESSION_ID}"
-else
-    print_warning "Could not extract session ID from GET request"
-    print_info "Trying POST initialize method..."
-
-    # Try POST initialize
-    INIT_POST=$(mcp_request "initialize" '{
+INIT_PAYLOAD=$(cat <<EOF
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
         "protocolVersion": "2024-11-05",
         "capabilities": {},
         "clientInfo": {
             "name": "radkit-mcp-test",
             "version": "1.0.0"
         }
-    }' 1)
+    }
+}
+EOF
+)
+
+# Send initialize request and capture both headers and body
+INIT_FULL=$(curl -sS -i -X POST "${MCP_URL}" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json, text/event-stream" \
+    -d "$INIT_PAYLOAD" 2>&1)
+
+# Extract session ID from response headers
+SESSION_ID=$(echo "$INIT_FULL" | grep -i "mcp-session-id:" | head -1 | awk '{print $2}' | tr -d '\r\n')
+
+# Extract the JSON body (everything after the blank line)
+INIT_BODY=$(echo "$INIT_FULL" | sed -n '/^\r*$/,$p' | tail -n +2)
+
+if [[ -n "$SESSION_ID" ]]; then
+    print_status "Session initialized"
+    print_info "Session ID: ${SESSION_ID}"
 
     if [[ "$VERBOSE" == true ]]; then
         print_info "Initialize response:"
-        echo "$INIT_POST" | $JQ_CMD 2>/dev/null || echo "$INIT_POST"
+        echo "$INIT_BODY" | $JQ_CMD 2>/dev/null || echo "$INIT_BODY"
     fi
 
-    # Extract session ID from response headers or body
-    SESSION_ID=$(echo "$INIT_POST" | grep -i "mcp-session-id" | head -1 | cut -d':' -f2 | tr -d ' \r"')
+    # Send initialized notification (required by MCP protocol)
+    print_info "Sending initialized notification..."
+    NOTIF_PAYLOAD=$(cat <<EOF
+{
+    "jsonrpc": "2.0",
+    "method": "notifications/initialized",
+    "params": {}
+}
+EOF
+)
 
-    if [[ -z "$SESSION_ID" ]]; then
-        # Generate a random session ID as fallback
-        SESSION_ID=$(cat /dev/urandom | LC_ALL=C tr -dc 'a-f0-9' | fold -w 32 | head -n 1)
-        print_warning "Using generated session ID: ${SESSION_ID}"
-    else
-        print_status "Session initialized via POST"
-        print_info "Session ID: ${SESSION_ID}"
-    fi
+    curl -sS -X POST "${MCP_URL}" \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/json" \
+        -H "mcp-session-id: ${SESSION_ID}" \
+        -d "$NOTIF_PAYLOAD" >/dev/null 2>&1
+
+    # Give the server a moment to process
+    sleep 1
+    print_status "Initialization complete"
+else
+    print_error "Failed to get session ID"
+    print_info "Response:"
+    echo "$INIT_FULL" | head -20
+    exit 1
 fi
 
 #######################################
