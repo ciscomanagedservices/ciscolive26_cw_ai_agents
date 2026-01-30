@@ -37,13 +37,31 @@ check_prerequisites() {
     fi
     print_status "Working directory OK"
 
-    # Check RADKit service container is running
+    # Check RADKit service container is running, start if needed
     if ! docker ps | grep -q radkit-service; then
-        print_error "RADKit service container is not running"
-        echo "Try: docker start radkit-service"
-        exit 1
+        print_warning "RADKit service container is not running"
+
+        # Check if container exists but is stopped
+        if docker ps -a | grep -q radkit-service; then
+            echo "Starting radkit-service container..."
+            docker start radkit-service >/dev/null 2>&1
+            sleep 3
+
+            if docker ps | grep -q radkit-service; then
+                print_status "RADKit service container started"
+            else
+                print_error "Failed to start radkit-service container"
+                echo "Check logs with: docker logs radkit-service"
+                exit 1
+            fi
+        else
+            print_error "RADKit service container does not exist"
+            echo "Please run the RADKit installation script first"
+            exit 1
+        fi
+    else
+        print_status "RADKit service container is running"
     fi
-    print_status "RADKit service container is running"
 
     # Check Docker is available
     if ! command -v docker &> /dev/null; then
@@ -242,8 +260,9 @@ run_container() {
         docker rm -f radkit-mcp >/dev/null 2>&1 || true
     fi
 
-    # Start new container
+    # Start new container with restart policy for persistence
     docker run -d \
+        --restart=unless-stopped \
         --name radkit-mcp \
         --network radkit-network \
         --env-file .env \
