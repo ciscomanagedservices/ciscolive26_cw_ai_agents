@@ -1,4 +1,4 @@
-# Lab 5 - Extending the AI Agent with Custom Tools
+# (optional) Lab 5 - Extending the AI Agent with Custom Tools
 
 ## Prerequisites
 
