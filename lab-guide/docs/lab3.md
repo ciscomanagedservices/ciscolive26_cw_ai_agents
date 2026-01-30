@@ -58,27 +58,35 @@ RADKit (Remote Access and Diagnostic Kit) provides secure remote access to netwo
    ssh root@198.18.1.250
    ```
 
-### 1.2 Clone the Lab Repository
+### 1.2 Verify Pre-loaded Files
 
-1. Clone the GitHub repository:
+The RADKit service container and MCP server files are pre-loaded on the ubuntu-server.
+
+1. Verify the pre-loaded files exist:
    ```bash
-   git clone https://github.com/ciscomanagedservices/ciscolive26_cw_ai_agents.git
-   ```
-
-   > **Note:** The repository is public. If you encounter issues, use the GitHub PAT from the dCloud credentials file.
-
-2. Navigate to the RADKit scripts directory:
-   ```bash
-   cd ciscolive26_cw_ai_agents/scripts/radkit
+   ls -la /home/cisco/
    ```
 
 !!! note "Pre-loaded Files"
     The following files are pre-loaded on the ubuntu-server in `/home/cisco/`:
 
-    - `radkit-service.tar` - RADKit Docker image
+    - `radkit-service.tar` - RADKit Docker image (already loaded)
     - `radkit-mcp-server-community/` - MCP server source code repository
+    - `scripts/mcp/` - Setup scripts for this lab
 
-### 1.3 Run the RADKit Installation Script
+2. If the RADKit service container is already running, you can skip to Step 2:
+   ```bash
+   docker ps | grep radkit
+   ```
+
+   If you see `radkit-service` in the output, proceed to **Step 2: Configure RADKit Service**.
+
+3. If the container is not running but exists, try to start it:
+   ```bash
+   docker start radkit-service
+   ```
+
+### 1.3 Run the RADKit Installation Script (If Needed)
 
 1. Run the installation script, specifying the pre-loaded tar file:
    ```bash
@@ -145,7 +153,7 @@ For each device:
 1. Enter the <em class="lab-warning">Name</em> and <em class="lab-warning">IP Address</em>
 2. Select <em class="example-input">IOS XE</em> as the device type
 3. Check <em class="lab-warning">Active (remotely manageable)</em>
-4. Enable <em class="lab-warning">Terminal Management</em>
+4. Under <em class="lab-warning">Available Management Protocols</em>, click the checkbox for <em class="lab-warning">Terminal</em>
 5. Scroll down to <em class="lab-warning">Terminal Settings</em>
 6. Add SSH credentials:
     - <em class="lab-warning">Username:</em> <em class="example-input">cisco</em>
@@ -187,38 +195,91 @@ The RADKit MCP server source code is pre-loaded in `/home/cisco/` and maintained
 
 ### 3.2 Copy Setup Scripts
 
-1. Copy the setup scripts from the lab repository to the MCP server directory:
+1. Copy the setup scripts from the pre-loaded scripts directory to the MCP server directory:
    ```bash
-   cp /root/ciscolive26_cw_ai_agents/scripts/mcp-server/setup_mcp.sh .
-   cp /root/ciscolive26_cw_ai_agents/scripts/mcp-server/enroll_client.py .
+   cp /home/cisco/scripts/mcp/setup_mcp.sh .
+   cp /home/cisco/scripts/mcp/enroll_client.py .
+   chmod +x setup_mcp.sh enroll_client.py
    ```
 
    > **Note:** You should still be in the `/home/cisco/radkit-mcp-server-community` directory from Step 3.1.
 
-### 3.3 Run the MCP Setup Script
+### 3.3 Install RADKit Client
 
-1. Run the setup script (from the `/home/cisco/radkit-mcp-server-community` directory):
+Before running the setup script, you must install the RADKit client Python package:
+
+1. Install the RADKit client from PyPI:
+   ```bash
+   python3 -m pip install cisco_radkit_client==1.9.2 --break-system-packages
+   ```
+
+   > **Note:** The `--break-system-packages` flag is required on Ubuntu 24.04 due to PEP 668 externally-managed environment restrictions.
+
+### 3.4 Enroll RADKit Client Certificates
+
+The enrollment process authenticates you with RADKit cloud and generates client certificates.
+
+1. Run the enrollment script:
+   ```bash
+   python3 enroll_client.py
+   ```
+
+2. When prompted, enter your <em class="lab-warning">Cisco email address</em> (same one used in Step 2.2)
+
+3. **IMPORTANT:** The script will display a URL like this:
+   ```
+   https://id.cisco.com/oauth2/default/v1/authorize?response_type=code&client_id=radkit_prod...
+   ```
+
+!!! warning "Action Required"
+    You **MUST** copy this URL and paste it into your browser to complete OAuth authentication. The script will wait for you to complete the login.
+
+4. After completing OAuth in your browser, return to the terminal
+
+5. When prompted for a <em class="lab-warning">private key password</em>, enter:
+   ```
+   0e52nsq5jf7f-bxq8whdi7dnT
+   ```
+
+   > **Note:** This password is hardcoded in the setup script to simplify the lab. In production, you would use a unique, strong password.
+
+6. Confirm the password when prompted
+
+!!! info "More Information"
+    For detailed information about setting up the MCP server outside of this lab, see the official documentation at [https://github.com/CiscoDevNet/radkit-mcp-server-community](https://github.com/CiscoDevNet/radkit-mcp-server-community)
+
+### 3.5 Run the MCP Setup Script
+
+Now run the setup script to build and start the MCP server container:
+
+1. Run the setup script:
    ```bash
    ./setup_mcp.sh
    ```
 
 2. When prompted, enter:
-    - Your **email address** (the same one used for RADKit registration)
-    - Your **RADKit Service Serial** (the Service ID from Step 2.2, e.g., `xxxx-yyyy-zzzz`)
+    - Your <em class="lab-warning">email address</em> (the same one used for RADKit registration)
+    - Your <em class="lab-warning">RADKit Service Serial</em> (the Service ID from Step 2.2, e.g., <em class="example-input">xxxx-yyyy-zzzz</em>)
 
 The script will:
-- Enroll client certificates with RADKit
-- Create a Docker network for RADKit communication
-- Build and run the MCP server container on port 8000
 
-### 3.4 Verify MCP Server
+- Check DNS configuration and fix if needed
+- Verify your RADKit enrollment
+- Create a Docker network for RADKit communication
+- Build the MCP server Docker image
+- Start the MCP server container on port 8000
+
+!!! tip "Re-running the Script"
+    The script is designed to be idempotent. If you need to re-run it (e.g., after fixing an error), it will clean up existing resources automatically.
+
+### 3.6 Verify MCP Server
 
 1. Run the test script to verify the MCP server is working:
    ```bash
-   /root/ciscolive26_cw_ai_agents/scripts/mcp-server/radkit-mcp-test.sh
+   /home/cisco/scripts/mcp/radkit-mcp-test.sh
    ```
 
-2. Verify all tests show `[OK]`:
+2. Verify all tests show <em class="button-click">[OK]</em>:
     - Test 1: Initialize MCP Session
     - Test 2: List Available Tools
     - Test 3: Call Tool
