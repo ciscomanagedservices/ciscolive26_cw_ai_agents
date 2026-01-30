@@ -25,7 +25,7 @@ Configure the foundational infrastructure for agentic network operations:
 ### Lab 2: Automated Response with Cisco Workflows
 Build rule-based remediation workflows for closed-loop automation:
 - Register a Cisco Workflows Remote Server for device connectivity
-- Configure terminal targets and target groups
+- Configure terminal targets
 - Create automated remediation workflows (interface unshut)
 - Parse webhook payloads and dynamically select target devices
 
@@ -43,6 +43,9 @@ Extend agentic response with ThousandEyes observability:
 - Integrate ThousandEyes webhooks with Cisco Workflows
 - Trigger AI-driven troubleshooting from network performance degradation
 - Observe end-to-end root cause analysis and automated remediation
+
+### Lab 5: (Optional) Integrate your own tool
+Learn how to build and intergrate your own tools/integtations to work with the AI agent
 
 ## Repository Structure
 
@@ -83,6 +86,13 @@ mkdocs serve
 - **Scott Dozier** - Lab Developer
 - **Steve Holl** - Lab Developer
 - **Aman Sardana** - Contributor
+
+## Supporting info
+
+* [Cisco Workflows](https://meraki.cisco.com)
+* [Cisco CX RADKit](https://radkit.cisco.com)
+* [Unofficial RADKit Community MCP server](https://github.com/CiscoDevNet/radkit-mcp-server-community/blob/main/README.md) - Note: an official MCP server is coming soon for RADKit
+* [Unofficial Workflows/XDR remote server registration script](https://github.com/sholl-cisco/xdr-remote-register)
 
 ## License
 
