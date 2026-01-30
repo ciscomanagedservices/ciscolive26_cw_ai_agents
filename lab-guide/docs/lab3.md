@@ -258,7 +258,7 @@ We will need to import the cognitive response workflow definitions from GitHub i
 You will now import workflows from the Git repository. Follow the steps below in order, as some workflows depend on others.
 
 !!! note
-    When importing workflows, you may be prompted for credentials or API keys. Keep your OpenAI API key and Webex access token from earlier labs handy.
+    When importing workflows, you may be prompted for credentials or API keys. Keep your Webex access token from Lab 1 handy.
 
 !!! info "About Atomic Workflows"
     The <em class="example-input">OpenAIChatCompletion</em>, <em class="example-input">MCPListTools</em>, and <em class="example-input">MCPRunTool</em> workflows are Atomic workflows. Atomic workflows are immutable, reusable workflow components found in the Activities panel or in the 'Atomics' section of workspace. See the [Atomic Actions documentation](https://documentation.meraki.com/Platform_Management/Workflows/Workflows/Atomic_Actions) for more details.
@@ -300,7 +300,17 @@ flowchart LR
     - <em class="lab-warning">Version:</em> Latest
     - Click <em class="button-click">Import</em>
 
-#### 4.2.3 Import ToolBox
+#### 4.2.3 Import ToolSendWebexNotification
+
+1. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em> -> <em class="button-click">Git</em> tab
+2. Select the following:
+    - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+    - <em class="lab-warning">Workflow:</em> <em class="example-input">ToolSendWebexNotification</em>
+    - <em class="lab-warning">Version:</em> Latest
+3. Click <em class="button-click">Import</em>
+4. When prompted for the <em class="lab-warning">Webex Access Token</em> variable, enter the Webex Access Token you created in Lab 1
+
+#### 4.2.4 Import ToolBox
 
 The ToolBox workflow includes all tool subworkflows as embedded components, so you only need to import this single workflow to get all the tools.
 
@@ -311,10 +321,13 @@ The ToolBox workflow includes all tool subworkflows as embedded components, so y
     - <em class="lab-warning">Version:</em> Latest
 3. Click <em class="button-click">Import</em>
 
+!!! warning
+    You will see a warning about a missing remote connection. This is expected - we will fix this after all imports are complete.
+
 !!! note
     The ToolBox workflow bundles all individual tools (scratchpad, Webex notifications, change approval, terminal commands, and RADKIT tools) as subworkflows. You do not need to import them separately.
 
-#### 4.2.4 Import AI Agent
+#### 4.2.5 Import AI Agent
 
 1. Click <em class="button-click">Actions</em> -> <em class="button-click">Import Workflow</em> -> <em class="button-click">Git</em> tab
 2. Select the following:
@@ -322,10 +335,11 @@ The ToolBox workflow includes all tool subworkflows as embedded components, so y
     - <em class="lab-warning">Workflow:</em> <em class="example-input">AIAgent</em>
     - <em class="lab-warning">Version:</em> Latest
 3. Click <em class="button-click">Import</em>
-4. When prompted for <em class="lab-warning">OPENAI_API_KEY</em>, enter the API key found in the dCloud file
-    - **Ask your instructor if you cannot locate this key**
 
-#### 4.2.5 Validate All Workflows
+!!! warning
+    You will see a warning about a missing remote connection. This is expected - we will fix this in the next step.
+
+#### 4.2.6 Validate All Workflows
 
 After importing all workflows, validate that they are configured correctly:
 
@@ -336,15 +350,16 @@ After importing all workflows, validate that they are configured correctly:
     - Ensure there are no validation errors
 3. If you see any errors, check that all required credentials were entered correctly
 
-You should have imported a total of **5 workflows**:
+You should have imported a total of **6 workflows**:
 
 - OpenAIChatCompletion
 - MCPListTools
 - MCPRunTool
+- ToolSendWebexNotification
 - ToolBox
 - AIAgent
 
-#### 4.2.6 Verify OpenAI Endpoint Configuration
+#### 4.2.7 Verify OpenAI Endpoint Configuration
 
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Targets</em>
 2. Click on <em class="button-click">OPENAI_ENDPOINT</em>
@@ -353,6 +368,17 @@ You should have imported a total of **5 workflows**:
     - <em class="lab-warning">Port:</em> <em class="example-input">443</em>
     - <em class="lab-warning">Path:</em> (leave blank)
 4. If any settings are incorrect, update them and click <em class="button-click">Save</em>
+
+#### 4.2.8 Configure Variables and Targets
+
+After importing the workflows, we need to configure the variables and targets properly.
+
+1. Go to <em class="button-click">Automation > Variables</em> and click on <em class="example-input">OPENAI_API_KEY</em>. Set it to the API key found in the dCloud pod information. If you can't find it, ask the instructor.
+2. Go to <em class="button-click">Automation > Variables</em> and click on <em class="example-input">Webex Access Token</em>. Make sure it is set to the Webex Access Token you created in Lab 1.
+3. Go to <em class="button-click">Automation > Targets</em> and click on <em class="example-input">RADKit MCP - Lab</em>. Set the <em class="lab-warning">Remote Keys</em> to your Automation Remote you configured earlier.
+
+    !!! warning
+        If you forget to set the Remote Keys, your requests will go out over the internet instead of through your Automation Remote to the MCP Server which talks to the RADKit server.
 
 ### 4.3 Test Individual Tools
 
