@@ -1,6 +1,5 @@
-# Cisco Live EMEA 2026 - Agentic AI for Network Operations
-
-**Cisco Workflows AI Agents Lab**
+# Building Cognitive Network Operations Agents with Cisco Workflows for AI-driven Troubleshooting
+LTRAI-1487: Cisco Workflows AI Agents Lab
 
 A 4-hour instructor-led lab at Cisco Live EMEA Amsterdam demonstrating how to build agentic AI-driven network operations using Cisco Workflows, ThousandEyes, and CX RADKit.
 
