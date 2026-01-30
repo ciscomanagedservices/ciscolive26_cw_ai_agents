@@ -117,7 +117,8 @@ The ThousandEyes workflows require an API Bearer Token to query path visualizati
 !!! warning
     The token is only displayed once. Make sure to copy it before closing the dialog.
 
-### 2.6 Importing a workflow for ThousandEyes event handling
+### 2.6 Importing workflows for ThousandEyes event handling
+
 1. In Cisco Workflows, go to the Automation Workspace where the workflows are listed.
 2. Add the git repo for ThousandEyes workflows like you did in Lab 3:
     - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - ThousandEyes</em>
@@ -127,8 +128,35 @@ The ThousandEyes workflows require an API Bearer Token to query path visualizati
     - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ThousandEyes</em>
 3. Click <em class="button-click">Actions > Import Workflow > From Git</em> and import the <em class="example-input">GetThousandEyesPathInfo</em> workflow first, and then <em class="example-input">ThousandEyesAlertWebhook</em> workflow.
 4. When prompted for the <em class="lab-warning">te_bearer</em> variable, enter the ThousandEyes OAuth Bearer Token you created in the previous step.
+5. Now we need to import a few more workflows. Add the git repo for the AI Agent workflows:
+    - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
+    - Use the same Account Keys from Lab 3
+    - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
+    - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
+    - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai_agent</em>
+6. Import the <em class="example-input">ToolSendWebexNotification</em> workflow first. When prompted for the <em class="lab-warning">Webex Access Token</em> variable, enter the Webex Access Token you created in Lab 1.
+7. Import the <em class="example-input">Toolbox</em> workflow.
 
-### 2.7 Configuring the trigger for the workflow
+    !!! warning
+        You will see a warning about a missing remote connection. This is expected - we will fix this after all imports are complete.
+
+8. Import the <em class="example-input">AI Agent</em> workflow.
+
+    !!! warning
+        You will see a warning about a missing remote connection. This is expected - we will fix this in the next step.
+
+### 2.7 Configuring Variables and Targets
+
+After importing the workflows, we need to configure the variables and targets properly.
+
+1. Go to <em class="button-click">Automation > Variables</em> and click on <em class="example-input">OPENAI_API_KEY</em>. Set it to the API key found in the dCloud pod information. If you can't find it, ask the instructor.
+2. Go to <em class="button-click">Automation > Variables</em> and click on <em class="example-input">Webex Access Token</em>. Make sure it is set to the Webex Access Token you created in Lab 1.
+3. Go to <em class="button-click">Automation > Targets</em> and click on <em class="example-input">RADKit MCP - Lab</em>. Set the <em class="lab-warning">Remote Keys</em> to your Automation Remote you configured earlier.
+
+    !!! warning
+        If you forget to set the Remote Keys, your requests will go out over the internet instead of through your Automation Remote to the MCP Server which talks to the RADKit server.
+
+### 2.8 Configuring the trigger for the workflow
 
 1. In Cisco Workflows, go to <em class="button-click">Automation > Rules</em>
 2. Click the <em class="button-click">Automation rules</em> tab, then click <em class="button-click">+ Add automation rule</em>
@@ -148,12 +176,17 @@ The ThousandEyes workflows require an API Bearer Token to query path visualizati
 ### 3.2 Validating the troubleshooting run
 1. It will take a few minutes for ThousandEyes to see the result, since we have a 2 minute alert. Any one have any good stories or jokes? If not, Steve is going to play music he likes which may not be to your favor.
 2. If you signed up for an email alert, you should receive it soon. Otherwise, check the <em class="lab-warning">workflow run</em> section in Cisco Workflows to validate that the workflow has started to run.
-3. It should now be troubleshooting the network. This takes some time to analyze output and determine the action to take for remediation--roughly 5 minutes with current early 2026 models. To watch for progress as it troubleshoots you can click <em class="button-click">...</em> on the <em class="lab-warning">AI Agent</em> subworkflow in the webhook workflow run, and then click <em class="button-click">Update I_messages variable</em> to watch for the latest updates in realtime. You will want to change the iteration in the main <em class="lab-warning">Agent Iteration Loop</em> to the last or second to last iteration (sometimes the last iteration is still processing and won't have content).
-4. Alternatively, you can just wait for Webex Teams summary messages at milestones.
-5. Eventually you should see it request a task to be approved. Go to <em class="button-click">Automation > User Tasks</em> to see if it is requesting a task approval. If it needs more info from you, it may also request something in <em class="lab-warning">Prompts</em> but for this use case we don't expect it to need a prompt as it should have all the info it needs from ThousandEyes + RADKit to identify what it needs to solve the issue.
-6. Once you see the change request, take a look at it. You should see a well curated explanation of the symptom, isolation to the root cause, and suggested fix if the change is approved. It even qualifies the risk of the change.
-7. Click <em class="button-click">Approve</em>. It will take a few more minutes, but then the policy should be removed and ThousandEyes alert should clear.
-8. The agent may keep assessing. We often see that after the fix it analyzes like a Problem Manager would, to determine how to prevent this issue from ever occurring again. See if you see that and a second change request.
+3. Go to <em class="button-click">Automation > Run Monitoring</em> to see runs in action after the webhook fires (approximately 60 seconds).
+4. It should now be troubleshooting the network. This takes some time to analyze output and determine the action to take for remediation--roughly 5 minutes with current early 2026 models. To watch for progress as it troubleshoots you can click <em class="button-click">...</em> on the <em class="lab-warning">AI Agent</em> subworkflow in the webhook workflow run, and then click <em class="button-click">Update I_messages variable</em> to watch for the latest updates in realtime. You will want to change the iteration in the main <em class="lab-warning">Agent Iteration Loop</em> to the last or second to last iteration (sometimes the last iteration is still processing and won't have content).
+5. Alternatively, you can just wait for Webex Teams summary messages at milestones. The Webex notification activity is the last notify sub-workflow that runs at each milestone.
+6. Eventually you should see it request a task to be approved. Go to <em class="button-click">Automation > User Tasks</em> to see if it is requesting a task approval. If it needs more info from you, it may also request something in <em class="lab-warning">Prompts</em> but for this use case we don't expect it to need a prompt as it should have all the info it needs from ThousandEyes + RADKit to identify what it needs to solve the issue.
+
+    !!! tip
+        Any tasks or prompts that require action will be under <em class="button-click">Action > Prompts</em>. While you get Webex notifications, you can go directly to the prompts and approvals to interact with the AI Agent.
+
+7. Once you see the change request, take a look at it. You should see a well curated explanation of the symptom, isolation to the root cause, and suggested fix if the change is approved. It even qualifies the risk of the change.
+8. Click <em class="button-click">Approve</em>. It will take a few more minutes, but then the policy should be removed and ThousandEyes alert should clear.
+9. The agent may keep assessing. We often see that after the fix it analyzes like a Problem Manager would, to determine how to prevent this issue from ever occurring again. See if you see that and a second change request.
 
 ---
 
