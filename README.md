@@ -7,7 +7,7 @@ A 4-hour instructor-led lab at Cisco Live EMEA Amsterdam demonstrating how to bu
 
 This lab guides participants through building an end-to-end agentic network operations pipeline—from event detection through AI-driven troubleshooting and automated remediation. You'll progress from basic notification workflows to fully autonomous AI agents that can diagnose and resolve network issues.
 
-Here is a [demo](https://www.youtube.com/watch?v=Hxal9NnFM2I) of what you will build.
+Here is a [10m video demo](https://www.youtube.com/watch?v=Hxal9NnFM2I) of what you will build.
 
 ### Architecture
 
