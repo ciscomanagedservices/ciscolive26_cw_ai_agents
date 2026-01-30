@@ -182,25 +182,30 @@ Here we will first build a basic workflow to acknowledge that we can get an even
 
 ### 5.1 Creating a new Workflow
 
-1. Sign up for an account at [meraki.cisco.com](https://account.meraki.com/login/new_account?r=EMEA) with your email address if you don't already have one.
+1. Sign up for an account at [meraki.cisco.com](https://account.meraki.com/login/new_account?r=EMEA) with your email address if you don't already have one. You will have to confirm the email invite, and then inut the MFA code in another email link to finish registration.
 2. Login to [meraki.cisco.com](https://meraki.cisco.com).
 3. You will see an <em class="lab-warning">Automation</em> section in the left sidebar, which is where we will mostly spend our time. This is the Cisco Workflows app.
-4. Go to <em class="button-click">Automation > Workspace</em>. Click the <em class="button-click">+Create</em> button in the upper right, and choose <em class="example-input">Workflow with Automation Rule</em> since we will be attaching a webhook rule to this workflow.
-5. Name it <em class="example-input">&lt;your_name&gt;-notify</em> and click <em class="button-click">Continue</em>.
-6. You will be given an empty canvas.
-7. In the left panel are prebuilt modules you can use to call functions. Let's send a Webex message when we trigger an alert. In the left panel, navigate to <em class="button-click">Activities > Cisco Webex > Webex - Search for Room</em> and drag this activity box into the middle panel workspace canvas.
-8. Click on the <em class="lab-warning">Webex - Search for Room</em> activity block. Set the <em class="lab-warning">Search Room Name</em> input to <em class="example-input">&lt;your_name&gt;-workflows-lab</em>.
-9. For the <em class="lab-warning">Access Token</em>, click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right of the text box and select your Webex API key variable (we will create this in Step 5.2).
-10. Next, drag a <em class="button-click">Webex - Post Message to Room</em> activity block onto the canvas and connect it after the Search for Room block.
-11. Click on the <em class="lab-warning">Webex - Post Message to Room</em> activity block and configure:
+
+### 5.2 Setting the webex API key
+
+1. In Workflows, go to <em class="button-click">Automation > Variables</em>. Click <em class="button-click">+New Variable</em>.
+2. Name the key <em class="example-input">&lt;yourName&gt;-webex</em>, set <em class="lab-warning">String Type</em> to <em class="example-input">Secure String</em>, leave scope as <em class="example-input">Global</em> and put the Webex access token in the value. Click <em class="button-click">Save</em>.
+
+### 5.3 Configuring a workflow
+
+1. Go to <em class="button-click">Automation > Workspace</em>. Click the <em class="button-click">+Create</em> button in the upper right, and choose <em class="example-input">Workflow with Automation Rule</em> since we will be attaching a webhook rule to this workflow.
+2. Name it <em class="example-input">&lt;your_name&gt;-notify</em> and click <em class="button-click">Continue</em>.
+3. You will be given an empty canvas.
+4. In the left panel are prebuilt modules you can use to call functions. Let's send a Webex message when we trigger an alert. In the left panel, navigate to <em class="button-click">Activities > Cisco Webex > Webex - Search for Room</em> and drag this activity box into the middle panel workspace canvas.
+5. Click on the <em class="lab-warning">Webex - Search for Room</em> activity block. Set the <em class="lab-warning">Search Room Name</em> input to <em class="example-input">&lt;your_name&gt;-workflows-lab</em>.
+6. For the <em class="lab-warning">Access Token</em>, click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right of the text box and select your Webex API key variable (we will create this in Step 5.2).
+7. Next, drag a <em class="button-click">Webex - Post Message to Room</em> activity block onto the canvas and connect it after the Search for Room block.
+8. Click on the <em class="lab-warning">Webex - Post Message to Room</em> activity block and configure:
     - <em class="lab-warning">Access Token:</em> Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select your Webex API key variable
     - <em class="lab-warning">Room ID:</em> Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and navigate to <em class="button-click">Activities > Webex - Search for Room > Room ID</em>
     - <em class="lab-warning">Markdown Message:</em> Configure your notification message (see Step 5.3)
 
-### 5.2 Adding the Webex integration
 
-1. In Workflows, go to <em class="button-click">Automation > Variables</em>. Click <em class="button-click">+New Variable</em>.
-2. Name the key <em class="example-input">&lt;yourName&gt;-webex</em>, set <em class="lab-warning">String Type</em> to <em class="example-input">Secure String</em>, leave scope as <em class="example-input">Global</em> and put the Webex access token in the value. Click <em class="button-click">Save</em>.
 3. Go back to your workflow that was started in step 5.1. If you closed that tab, get back to it with <em class="button-click">Automation > Workspace > &lt;your_name&gt;-notify</em>. Click the name of the workflow and click <em class="button-click">View Workflow</em> on the lower right hand corner.
 
 ### 5.3 Configure the Webex activities
