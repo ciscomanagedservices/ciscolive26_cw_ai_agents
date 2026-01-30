@@ -665,7 +665,7 @@
         "description": "OpenAI compatible endpoint for AI Agent workflows",
         "disable_certificate_validation": false,
         "display_name": "OPENAI_ENDPOINT",
-        "host": "maryalice-orthodox-nerissa.ngrok-free.dev",
+        "host": "ciscolive-llm.com",
         "ignore_proxy": false,
         "is_https_proxy": false,
         "no_runtime_user": true,
