@@ -276,7 +276,7 @@ The script will:
 
 1. Run the test script to verify the MCP server is working:
    ```bash
-   /home/cisco/scripts/mcp/radkit-mcp-test.sh
+   bash /home/cisco/scripts/mcp/radkit-mcp-test.sh
    ```
 
 2. Verify all tests show <em class="button-click">[OK]</em>:
