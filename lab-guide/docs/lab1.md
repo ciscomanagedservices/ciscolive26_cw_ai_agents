@@ -229,7 +229,7 @@ Now let's hook the webhook up, so we can trigger our test message from a device'
 
 ### 6.1 Setting up a webhook in Cisco Workflows
 
-1. Go to <em class="button-click">Automation > s</em> and then click the <em class="button-click">Webhooks</em> section in the header bar and click <em class="button-click">+ New webhook</em>.
+1. Go to <em class="button-click">Automation > Rules</em> and then click the <em class="button-click">Webhooks</em> section in the header bar and click <em class="button-click">+ New webhook</em>.
 2. Name the webhook <em class="example-input">&lt;your_name&gt;-splunk-webhook</em>. Keep the content type as <em class="example-input">application-json</em> and click <em class="button-click">Save</em>.
 3. Click back into the webhook you just created. You should now see the <em class="lab-warning">Webhook API Key</em> and <em class="lab-warning">Webhook URL</em> populated. Grab the Webhook URL (which has the API key embedded in the URL query) and stash it in a local notepad--we will need to put them back in Splunk in a minute.
 
@@ -242,7 +242,7 @@ Now let's hook the webhook up, so we can trigger our test message from a device'
 
 ### 6.2 Setting up the Meraki automation 
 
-1. Go to <em class="button-click">Automation > s > Add automation </em>
+1. Go to <em class="button-click">Automation > Rules > Add automation </em>
 2. Set type to <em class="example-input">webhook </em> and title it <em class="example-input">Syslog: %LINEPROTO-5-UPDOWN</em>
 3. Set the selected <em class="lab-warning">Webhook</em> to the webhook you just created.
 4. Apply to the workflow you just created: <em class="example-input">&lt;your_name&gt;-notify</em> and click <em class="button-click">Save</em>.
@@ -266,7 +266,7 @@ We will create a saved search that triggers a webhook when matching syslog event
     - <em class="lab-warning">App:</em> <em class="example-input">Cisco Networks</em>
     - <em class="lab-warning">Alert type:</em> <em class="example-input">Real-time</em>
     - <em class="lab-warning">Trigger alert when:</em> <em class="example-input">Per-Result</em>
-    - <em class="lab-warning">Expires:</em> <em class="example-input">1</em>
+    - <em class="lab-warning">Expires:</em> <em class="example-input">1 second</em>
     - <em class="lab-warning">Trigger Actions:</em> <em class="example-input">Webhook</em>
 5. In the Webhook configuration, paste your <em class="lab-warning">Webhook URL</em> from step 6.1.
 
@@ -274,7 +274,7 @@ We will create a saved search that triggers a webhook when matching syslog event
     You may want to also add a <em class="lab-warning">Trigger action</em> for <em class="example-input">Add to Triggered Alerts</em> so that you can verify the alert is triggering correctly by checking <em class="button-click">Activity > Triggered Alerts</em>. Alerts will not appear there unless this action is configured.
 
 !!! tip "Webhook Troubleshooting"
-    To troubleshoot webhook issues from within Cisco Workflows, go to <em class="button-click">Automation > s</em>, then click the <em class="button-click">History</em> tab to see incoming webhook requests and their status.
+    To see if the syslog generated an alert, run the <em class="lab-warning">Run</em> from the <em class="lab-warning">Searches, Reports, and Alerts</em> page and change the search duration from <em class="button-click">Real-time</em> to <em class="button-click">Presets> All-time</em>. To troubleshoot webhook issues from within Cisco Workflows, go to <em class="button-click">Automation > Rules</em>, then click the <em class="button-click">History</em> tab to see incoming webhook requests and their status. This will tell you if the webhook is making it into Workflows from Splunk.
 
 ---
 
