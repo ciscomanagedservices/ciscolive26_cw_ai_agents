@@ -102,16 +102,8 @@ Proxy:
 !!! note
     If the target cannot connect, verify the IP address is correct and that <em class="lab-warning">Remote Keys</em> is set to your remote server. Without the Remote Keys configured, Workflows will attempt to connect over the internet instead of through your remote server.
 
-### 2.2 Create a Target group
-
-Target groups contain the sets of devices that you can run the automation on. We want to create a group that would contain all possible devices that we'd run the automation on.
-
 !!! info
-    Target groups can only be associated at the workflow level, not at the per-activity level. The same target group needs to apply across all activities that need targets. So if we have a workflow with activities to multiple targets in the same workflow, they need to be in the same target group. There are two approaches here: a) Move the webex notification to a standalone workflow overriding the target to the webex URL, and call it with the **Workflows** activity; or b) Put both targets in a target group, and use the **override target condition** function to define a conditional that picks the appropriate target(s) from the aggregate target group list. This is overly complicated, so let's take Approach A.
-
-1. Go to <em class="button-click">Automation > Targets > + New target group</em> and name it <em class="example-input">&lt;your_name&gt;-routers</em>.
-2. Click <em class="button-click">+ Add target type</em> and choose the <em class="lab-warning">target type</em> of <em class="example-input">Terminal Endpoint</em>.
-3. Set <em class="lab-warning">Include all targets of this type</em>.
+    In a production environment with many devices (targets), you'd likely use target groups which define a set of targets used for a workflow. For this lab, we're keeping the target simple, since in lab3 we will integrate a remote inventory/access tool (Cisco CX RADKit) that prevents having to also manage inventory in Workflows.
 
 ---
 
