@@ -31,19 +31,13 @@ Your lab environment is hosted on Cisco dCloud and has been pre-provisioned for 
 
 ### 1.1 Connect to Your Lab Pod
 
-1. Open a web browser on your workstation
-2. Navigate to the <em class="lab-warning">Cisco eXpo</em> portal (URL provided by your instructor)
-3. Click <em class="button-click">Get Started</em> to be assigned an available lab pod
-4. Once assigned, you will see the <em class="lab-warning">Session View</em> displaying your topology and connection details
+1. TBD
+2. Once assigned, you will see the <em class="lab-warning">Session View</em> displaying your topology and connection details
 
 ### 1.2 Connectivity to the lab
 
-If you are at Cisco Live, you should have direct access to your lab network without VPN. However, if you need to VPN into the lab:
-
-1. Click the <em class="button-click">topology icon</em> in the top center bar, switching from the default list view.
-2. Click the <em class="button-click">info</em> menu item right below the topology button
-3. Expand <em class="lab-warning">Cisco Secure Client Credentials</em>, and use this information to establish a VPN connection with Cisco Secure Client.
-4. This will put you on the network that can access the <em class="example-input">198.18.1.x/24</em> network, which is our management network. You should be able to ping <em class="example-input">198.18.1.200</em>.
+1. TBD
+2. This will put you on the network that can access the <em class="example-input">198.18.1.x/24</em> network, which is our management network. You should be able to ping <em class="example-input">198.18.1.200</em>.
 
 ---
 
