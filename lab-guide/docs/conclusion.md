@@ -29,5 +29,7 @@ In this lab, you gained hands-on experience with:
 
 ## Feedback
 
-We value your feedback! Please complete the session survey to help us improve future labs.
+We value your feedback!
+
+**Please complete the session survey to help us improve future labs.** Providing high scores lets us know you like the content and the instructors to ensure that this or similar sessions can be offered to yourselves or others in the future.
 
