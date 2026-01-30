@@ -3,9 +3,8 @@
 ## Prerequisites
 
 Before starting this lab, ensure you have completed:
-
-- **Lab 3** - AI Agent workflow, RADKit, and MCP server must be configured and working
 - **Lab 1** - Webex bot and notification workflow (for receiving agent messages)
+- **Lab 3** - AI Agent workflow, RADKit, and MCP server must be configured and working
 
 ---
 
