@@ -50,39 +50,39 @@ In this step, you will configure router R3 to send syslog messages to Splunk. Th
 1. Open <em class="lab-warning">PuTTY</em> or your favorite terminal from your workstation
 2. SSH to router R3:
 
-```sh
-ssh cisco@198.18.1.103
-Password: cisco
-```
+    ```sh
+    ssh cisco@198.18.1.103
+    Password: cisco
+    ```
 
 ### 2.2 Configure Syslog
 
 Enter configuration mode and apply the following configuration:
 
-```cisco
-enable
-configure terminal
-
-! Enable syslog at debugging level to capture interface events
-logging trap debugging
-
-! Include hostname in syslog messages for identification
-logging origin-id hostname
-
-! Set source interface to mgmt interface
-logging source-interface GigabitEthernet3
-
-! Configure Splunk as the syslog destination
-logging host 198.18.1.210
-
-! Optional: you may want to set the timestamps for logging and debugging:
-service timestamps log datetime msec
-service timestamps debug datetime msec 
-
-end
-write memory
-```
-
+    ```cisco
+    enable
+    configure terminal
+    
+    ! Enable syslog at debugging level to capture interface events
+    logging trap debugging
+    
+    ! Include hostname in syslog messages for identification
+    logging origin-id hostname
+    
+    ! Set source interface to mgmt interface
+    logging source-interface GigabitEthernet3
+    
+    ! Configure Splunk as the syslog destination
+    logging host 198.18.1.210
+    
+    ! Optional: you may want to set the timestamps for logging and debugging:
+    service timestamps log datetime msec
+    service timestamps debug datetime msec 
+    
+    end
+    write memory
+    ```
+    
 ### 2.3 Verify Syslog Configuration
 
 ```cisco
@@ -94,10 +94,10 @@ Confirm that:
 - Logging host <em class="example-input">198.18.1.210</em> is listed
 
 You may optionally want to clear the log's boot messages to see new events easier.
-```cisco
-clear logging
-<enter to confirm>
-```
+    ```cisco
+    clear logging
+    <enter to confirm>
+    ```
 
 ---
 
@@ -135,25 +135,25 @@ We need to ensure Splunk is listening for syslog traffic.
 
 1. If you want to validate that you are getting syslog messages into splunk, `ssh cisco@198.18.1.203`, and generate an interface down event.
 
-```ios
-configure terminal
-interface Loopback0
-shut
-! Wait threee seconds
-no shut
-```
+    ```ios
+    configure terminal
+    interface Loopback0
+    shut
+    ! Wait threee seconds
+    no shut
+    ```
 
 2. Browse to the [search and reporting](http://198.18.1.210:8000/en-US/app/cisco_ios/search) for the `Cisco Networks` app that the syslog messages are going to. **Apps > Cisco Networks** > Search
 3. Type `index=syslog` into the search bar. You should see a few syslog events generated from that interface state change. If you don't, first ensure that you are in the correct App (Cisco Networks) for the search and that you setup the index and data inputs for the right app, as well.
 
-!!! tip "Tip"
-    The configuration we have done so far gets the events into Splunk, but does not yet trigger any outbound webhooks to automation. Before we can set that up, we need to work backwards from Cisco Workflows and set some API keys up, so let's park our work in Splunk for a minute.
-
-<figure markdown>
-  ![Splunk syslog index search](./img/lab1/lab1_3.3.3.png){ width="500" }
-</figure>
-
----
+    !!! tip "Tip"
+        The configuration we have done so far gets the events into Splunk, but does not yet trigger any outbound webhooks to automation. Before we can set that up, we need to work backwards from Cisco Workflows and set some API keys up, so let's park our work in Splunk for a minute.
+    
+    <figure markdown>
+      ![Splunk syslog index search](./img/lab1/lab1_3.3.3.png){ width="500" }
+    </figure>
+    
+    ---
 
 ## Step 4: Setting up a Webex API account
 
@@ -185,7 +185,8 @@ Here we will first build a basic workflow to acknowledge that we can get an even
 
 1. Sign up for an account at [meraki.cisco.com](https://account.meraki.com/login/new_account?r=EMEA) with your email address if you don't already have one. You will have to confirm the email invite, and then inut the MFA code in another email link to finish registration.
 2. Login to [meraki.cisco.com](https://meraki.cisco.com).
-3. You will see an <em class="lab-warning">Automation</em> section in the left sidebar, which is where we will mostly spend our time. This is the Cisco Workflows app.
+3. If you get a dialog, click the <em class="lab-warning">Setup systems manager screen</em> and click <em class="example-input">Next</em>.
+4. You will see an <em class="lab-warning">Automation</em> section in the left sidebar, which is where we will mostly spend our time. This is the Cisco Workflows app.
 
 ### 5.2 Setting the webex API key
 
@@ -216,9 +217,9 @@ Here we will first build a basic workflow to acknowledge that we can get an even
     - Click <em class="button-click">Save</em>
 10. You should now be able to click <em class="button-click">Validate</em>, and <em class="button-click">Run</em> in the upper right and receive a message in your Webex space.
 
-<figure markdown>
-  ![Webex Send Message activity configuration with access token and message settings](./img/lab1/lab1_5.3.jpg){ width="600" }
-</figure>
+    <figure markdown>
+      ![Webex Send Message activity configuration with access token and message settings](./img/lab1/lab1_5.3.jpg){ width="600" }
+    </figure>
 
 Yay, your first workflow has been created and tested!
  
@@ -234,12 +235,12 @@ Now let's hook the webhook up, so we can trigger our test message from a device'
 2. Name the webhook <em class="example-input">&lt;your_name&gt;-splunk-webhook</em>. Keep the content type as <em class="example-input">application-json</em> and click <em class="button-click">Save</em>.
 3. Click back into the webhook you just created. You should now see the <em class="lab-warning">Webhook API Key</em> and <em class="lab-warning">Webhook URL</em> populated. Grab the Webhook URL (which has the API key embedded in the URL query) and stash it in a local notepad--we will need to put them back in Splunk in a minute.
 
-<figure markdown>
-  ![Automation UI for Workflows](./img/lab1/lab1_4.2.png){ width="500" }
-</figure>
-<figure markdown>
-  ![Adding a webhook](./img/lab1/lab1_4.3.png){ width="500" }
-</figure>
+    <figure markdown>
+      ![Automation UI for Workflows](./img/lab1/lab1_4.2.png){ width="500" }
+    </figure>
+    <figure markdown>
+      ![Adding a webhook](./img/lab1/lab1_4.3.png){ width="500" }
+    </figure>
 
 ### 6.2 Setting up the Meraki automation 
 
@@ -248,9 +249,9 @@ Now let's hook the webhook up, so we can trigger our test message from a device'
 3. Set the selected <em class="lab-warning">Webhook</em> to the webhook you just created.
 4. Apply to the workflow you just created: <em class="example-input">&lt;your_name&gt;-notify</em> and click <em class="button-click">Save</em>.
 
-<figure markdown>
-  ![Automation  configuration with webhook  type and workflow selection](./img/lab1/lab1_6.1.jpg){ width="500" }
-</figure>
+    <figure markdown>
+      ![Automation  configuration with webhook  type and workflow selection](./img/lab1/lab1_6.1.jpg){ width="500" }
+    </figure>
 
 ### 6.3 Finishing the Splunk webhook alert
 
@@ -271,11 +272,11 @@ We will create a saved search that triggers a webhook when matching syslog event
     - <em class="lab-warning">Trigger Actions:</em> <em class="example-input">Webhook</em>
 5. In the Webhook configuration, paste your <em class="lab-warning">Webhook URL</em> from step 6.1.
 
-!!! tip "Troubleshooting Tip"
-    You may want to also add a <em class="lab-warning">Trigger action</em> for <em class="example-input">Add to Triggered Alerts</em> so that you can verify the alert is triggering correctly by checking <em class="button-click">Activity > Triggered Alerts</em>. Alerts will not appear there unless this action is configured.
-
-!!! tip "Webhook Troubleshooting"
-    To see if the syslog generated an alert, run the <em class="lab-warning">Run</em> from the <em class="lab-warning">Searches, Reports, and Alerts</em> page and change the search duration from <em class="button-click">Real-time</em> to <em class="button-click">Presets> All-time</em>. To troubleshoot webhook issues from within Cisco Workflows, go to <em class="button-click">Automation > Rules</em>, then click the <em class="button-click">History</em> tab to see incoming webhook requests and their status. This will tell you if the webhook is making it into Workflows from Splunk.
+    !!! tip "Troubleshooting Tip"
+        You may want to also add a <em class="lab-warning">Trigger action</em> for <em class="example-input">Add to Triggered Alerts</em> so that you can verify the alert is triggering correctly by checking <em class="button-click">Activity > Triggered Alerts</em>. Alerts will not appear there unless this action is configured.
+    
+    !!! tip "Webhook Troubleshooting"
+        To see if the syslog generated an alert, run the <em class="lab-warning">Run</em> from the <em class="lab-warning">Searches, Reports, and Alerts</em> page and change the search duration from <em class="button-click">Real-time</em> to <em class="button-click">Presets> All-time</em>. To troubleshoot webhook issues from within Cisco Workflows, go to <em class="button-click">Automation > Rules</em>, then click the <em class="button-click">History</em> tab to see incoming webhook requests and their status. This will tell you if the webhook is making it into Workflows from Splunk.
 
 ---
 
@@ -287,13 +288,13 @@ We will test on R3 since that is the router where we configured syslog forwardin
 
 1. You can generate a test syslog message by shutting down the loopback0
 
-```cisco
-clear logging
-enable
-configure terminal
-interface Loopback0
-shutdown
-```
+    ```cisco
+    clear logging
+    enable
+    configure terminal
+    interface Loopback0
+    shutdown
+    ```
 
 This should produce a new log as seen in `show logging` with contents of `%LINEPROTO-5-UPDOWN`.
 
@@ -315,13 +316,13 @@ This should produce a new log as seen in `show logging` with contents of `%LINEP
 3. **Check Webex for the notification:**
     - You should have received a Webex message with JSON payload of the syslog event
     - Notice the extra info that the Cisco Networks app parses from the syslog format
-
-!!! warning "Troubleshooting"
-    If you aren't seeing end-to-end notification, isolate where the messaging is not making it. Start at Splunk and troubleshoot within these logical areas:
-
-    * **IOS syslog logging or Splunk data ingestion** - Is the syslog reaching Splunk?
-    * **Search/reporting/webhook in Splunk** - Is the alert triggering? To help isolate, check Splunk's saved search to see if the syslog is picked up, and the <em class="button-click">Activity > Triggered Alerts</em> page to see if the webhook went out to Cisco Workflows.
-    * **Workflows rule history** - Is the workflow being triggered? If you see the webhook with rule match count of None, Workflow got the webhook but didn't match a valid workflow to run. Check that your workflow doesn't have errors.
+    
+    !!! warning "Troubleshooting"
+        If you aren't seeing end-to-end notification, isolate where the messaging is not making it. Start at Splunk and troubleshoot within these logical areas:
+    
+        * **IOS syslog logging or Splunk data ingestion** - Is the syslog reaching Splunk?
+        * **Search/reporting/webhook in Splunk** - Is the alert triggering? To help isolate, check Splunk's saved search to see if the syslog is picked up, and the <em class="button-click">Activity > Triggered Alerts</em> page to see if the webhook went out to Cisco Workflows.
+        * **Workflows rule history** - Is the workflow being triggered? If you see the webhook with rule match count of None, Workflow got the webhook but didn't match a valid workflow to run. Check that your workflow doesn't have errors.
 
 ---
 
