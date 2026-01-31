@@ -3,6 +3,27 @@ LTRAI-1487: Cisco Workflows AI Agents Lab
 
 A 4-hour instructor-led lab at Cisco Live EMEA Amsterdam demonstrating how to build agentic AI-driven network operations using Cisco Workflows, ThousandEyes, and CX RADKit.
 
+## Authors
+
+- **Scott Dozier** - Lab Developer
+- **Steve Holl** - Lab Developer
+- **Aman Sardana** - Contributor
+
+
+## Lab Guide
+
+The full lab guide is available online at:
+
+**🌐 [https://cl-ltr.ciscolabs.com/0361f55971/](https://cl-ltr.ciscolabs.com/0361f55971/)**
+
+You can also serve the guide locally with MkDocs:
+
+```bash
+cd lab-guide
+pip install mkdocs
+mkdocs serve
+```
+
 ## Overview
 
 This lab guides participants through building an end-to-end agentic network operations pipeline—from event detection through AI-driven troubleshooting and automated remediation. You'll progress from basic notification workflows to fully autonomous AI agents that can diagnose and resolve network issues.
@@ -68,26 +89,6 @@ Learn how to build and intergrate your own tools/integtations to work with the A
 - Cisco Workflows account (meraki.cisco.com)
 - Webex account for bot integration
 - ThousandEyes account (for Lab 4)
-
-## Lab Guide
-
-The full lab guide is available online at:
-
-**🌐 [https://cl-ltr.ciscolabs.com/0361f55971/](https://cl-ltr.ciscolabs.com/0361f55971/)**
-
-You can also serve the guide locally with MkDocs:
-
-```bash
-cd lab-guide
-pip install mkdocs
-mkdocs serve
-```
-
-## Authors
-
-- **Scott Dozier** - Lab Developer
-- **Steve Holl** - Lab Developer
-- **Aman Sardana** - Contributor
 
 ## Supporting info
 
