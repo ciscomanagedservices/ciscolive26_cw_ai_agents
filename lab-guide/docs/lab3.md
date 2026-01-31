@@ -53,7 +53,7 @@ RADKit (Remote Access and Diagnostic Kit) provides secure remote access to netwo
 
 ### 1.1 Connect to the Ubuntu Server
 
-1. From your workstation, SSH to the ubuntu-server:
+1. From your workstation, SSH to the radkit-server:
    ```bash
    ssh root@198.18.1.250
    ```
@@ -78,7 +78,7 @@ The RADKit service container and MCP server files are pre-loaded on the ubuntu-s
     docker ps | grep radkit
     ```
 
-    If you see `radkit-service` in the output, proceed to **Step 2: Configure RADKit Service**.
+    If you see `radkit-service` in the output (which should be the case for you), proceed to **Step 2: Configure RADKit Service**.
 
 ### 1.3 Run the RADKit Installation Script (If Needed)
 
@@ -87,7 +87,7 @@ The RADKit service container and MCP server files are pre-loaded on the ubuntu-s
     docker start radkit-service
     ```
 
-2. Run the installation script, specifying the pre-loaded tar file:
+2. If radkit won't start or stay up, then run the installation script, specifying the pre-loaded tar file:
     ```bash
     ./radkit-install.sh -t /home/cisco/radkit-service.tar
     ```
@@ -132,8 +132,8 @@ Now we'll configure RADKit through its web interface to enroll with Cisco Cloud,
 5. Click the <em class="button-click">CLICK HERE</em> link to complete SSO authentication
 6. After SSO completes, close the SSO tab and return to the RADKit WebUI
 
-!!! warning "Important"
-    Note the <em class="lab-warning">Service ID</em> displayed in the top banner, center of the screen (e.g., <em class="example-input">xxxx-yyyy-zzzz</em>). You will need this for MCP server setup in Step 3.
+    !!! warning "Important"
+        Note the <em class="lab-warning">Service ID</em> displayed in the top banner, center of the screen (e.g., <em class="example-input">xxxx-yyyy-zzzz</em>). You will need this for MCP server setup in Step 3.
 
 ### 2.3 Add Network Devices
 
@@ -141,11 +141,11 @@ Now we'll configure RADKit through its web interface to enroll with Cisco Cloud,
 2. Click <em class="button-click">Add Device</em>
 3. Add the following three devices:
 
-| Name | IP Address | Device Type |
-|------|------------|-------------|
-| r1 | 198.18.1.101 | IOS XE |
-| r2 | 198.18.1.102 | IOS XE |
-| r3 | 198.18.1.103 | IOS XE |
+    | Name | IP Address | Device Type |
+    |------|------------|-------------|
+    | r1 | 198.18.1.101 | IOS XE |
+    | r2 | 198.18.1.102 | IOS XE |
+    | r3 | 198.18.1.103 | IOS XE |
 
 For each device:
 
@@ -173,8 +173,8 @@ For each device:
 
 The MCP (Model Context Protocol) server allows Cisco Workflows to interact with RADKit-managed devices through a standardized API.
 
-!!! note "About MCP"
-    We will be setting up an MCP server that acts as an intermediary for Cisco Workflows to send JSON RPC requests over HTTP to the MCP server, which then runs commands in the RADKit SDK. MCP is explained in more detail here: [What is Model Context Protocol (MCP) Explained](https://composio.dev/blog/what-is-model-context-protocol-mcp-explained)
+    !!! note "About MCP"
+        We will be setting up an MCP server that acts as an intermediary for Cisco Workflows to send JSON RPC requests over HTTP to the MCP server, which then runs commands in the RADKit SDK. MCP is explained in more detail here: [What is Model Context Protocol (MCP) Explained](https://composio.dev/blog/what-is-model-context-protocol-mcp-explained)
 
 ### 3.1 Update the RADKit MCP Server Repository
 
@@ -186,7 +186,7 @@ The RADKit MCP server source code is pre-loaded in `/home/cisco/` and maintained
    git pull
    ```
 
-   > **Note:** If the directory doesn't exist, clone it:
+   > **Note:** If the directory doesn't exist, clone it, but for lab participants it will be there for you:
    > ```bash
    > cd /home/cisco
    > git clone https://github.com/CiscoDevNet/radkit-mcp-server-community
@@ -194,44 +194,31 @@ The RADKit MCP server source code is pre-loaded in `/home/cisco/` and maintained
 
 ### 3.2 Copy Setup Scripts
 
-1. Copy the setup scripts from the pre-loaded scripts directory to the MCP server directory:
+1. You should see `setup_mcp.sh` and `enroll_client.py` in `/home/cisco/radkit-mcp-server-community`. If not, the scripts are also in `/home/cisco/scripts/mcp` and can be copied over, or pulled from this repo:
    ```bash
    cp /home/cisco/scripts/mcp/setup_mcp.sh .
    cp /home/cisco/scripts/mcp/enroll_client.py .
    chmod +x setup_mcp.sh enroll_client.py
    ```
 
-   > **Note:** You should still be in the `/home/cisco/radkit-mcp-server-community` directory from Step 3.1.
-
-### 3.3 Install RADKit Client
-
-Before running the setup script, you must install the RADKit client Python package:
-
-1. Install the RADKit client from PyPI:
-   ```bash
-   python3 -m pip install cisco_radkit_client==1.9.2 --break-system-packages
-   ```
-
-   > **Note:** The `--break-system-packages` flag is required on Ubuntu 24.04 due to PEP 668 externally-managed environment restrictions.
-
-### 3.4 Enroll RADKit Client Certificates
+### 3.4 Enroll RADKit Client Certificates and setup MCP server
 
 The enrollment process authenticates you with RADKit cloud and generates client certificates.
 
-1. Run the enrollment script:
+1. From `/home/cisco/radkit-mcp-server-community`, run the setup, which will enroll certificates and setup the mcp server in a container:
    ```bash
-   python3 enroll_client.py
+   bash setup_mcp.sh
    ```
 
 2. When prompted, enter your <em class="lab-warning">Cisco email address</em> (same one used in Step 2.2)
 
-3. **IMPORTANT:** The script will display a URL like this:
+3. **IMPORTANT:** After hitting **Enter** when instructed, the script will display a URL like this:
    ```
    https://id.cisco.com/oauth2/default/v1/authorize?response_type=code&client_id=radkit_prod...
    ```
 
-!!! warning "Action Required"
-    You **MUST** copy this URL and paste it into your browser to complete OAuth authentication. The script will wait for you to complete the login.
+    !!! warning "Action Required"
+        You **MUST** copy this URL and paste it into your browser to complete OAuth authentication. The script will wait for you to complete the login.
 
 4. After completing OAuth in your browser, return to the terminal
 
@@ -244,19 +231,10 @@ The enrollment process authenticates you with RADKit cloud and generates client 
 
 6. Confirm the password when prompted
 
-!!! info "More Information"
-    For detailed information about setting up the MCP server outside of this lab, see the official documentation at [https://github.com/CiscoDevNet/radkit-mcp-server-community](https://github.com/CiscoDevNet/radkit-mcp-server-community)
+    !!! info "More Information"
+        For detailed information about setting up the MCP server outside of this lab, see the official documentation at [https://github.com/CiscoDevNet/radkit-mcp-server-community](https://github.com/CiscoDevNet/radkit-mcp-server-community)
 
-### 3.5 Run the MCP Setup Script
-
-Now run the setup script to build and start the MCP server container:
-
-1. Run the setup script:
-   ```bash
-   ./setup_mcp.sh
-   ```
-
-2. When prompted, enter:
+7. You are now enrolled, and the MCP server setup is starting. When prompted, enter:
     - Your <em class="lab-warning">email address</em> (the same one used for RADKit registration)
     - Your <em class="lab-warning">RADKit Service Serial</em> (the Service ID from Step 2.2, e.g., <em class="example-input">xxxx-yyyy-zzzz</em>)
 
@@ -268,8 +246,8 @@ The script will:
 - Build the MCP server Docker image
 - Start the MCP server container on port 8000
 
-!!! tip "Re-running the Script"
-    The script is designed to be idempotent. If you need to re-run it (e.g., after fixing an error), it will clean up existing resources automatically.
+    !!! tip "Re-running the Script"
+        The script is designed to be idempotent. If you need to re-run it (e.g., after fixing an error), it will clean up existing resources automatically.
 
 ### 3.6 Verify MCP Server
 
@@ -282,9 +260,9 @@ The script will:
     - Test 1: Initialize MCP Session
     - Test 2: List Available Tools
     - Test 3: Call Tool
-
-!!! success "Success Criteria"
-    All three tests should pass. The MCP endpoint is now available at: `http://198.18.1.250:8000/mcp`
+    
+    !!! success "Success Criteria"
+        All three tests should pass. The MCP endpoint is now available at: `http://198.18.1.250:8000/mcp`
 
 ---
 
@@ -309,19 +287,19 @@ We will need to import the cognitive response workflow definitions from GitHub i
     - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai_agent</em>
 6. Click <em class="button-click">Save</em>
 
-<figure markdown>
-  ![Git repository configuration with GitHub credentials and repository details](./img/lab3/lab3_4.1.jpg){ width="500" }
-</figure>
+    <figure markdown>
+      ![Git repository configuration with GitHub credentials and repository details](./img/lab3/lab3_4.1.jpg){ width="500" }
+    </figure>
 
 ### 4.2 Import Workflows
 
 You will now import workflows from the Git repository. Follow the steps below in order, as some workflows depend on others.
+    
+    !!! note
+        When importing workflows, you may be prompted for credentials or API keys. Keep your Webex access token from Lab 1 handy.
 
-!!! note
-    When importing workflows, you may be prompted for credentials or API keys. Keep your Webex access token from Lab 1 handy.
-
-!!! info "About Atomic Workflows"
-    The <em class="example-input">OpenAIChatCompletion</em>, <em class="example-input">MCPListTools</em>, and <em class="example-input">MCPRunTool</em> workflows are Atomic workflows. Atomic workflows are immutable, reusable workflow components found in the Activities panel or in the 'Atomics' section of workspace. See the [Atomic Actions documentation](https://documentation.meraki.com/Platform_Management/Workflows/Workflows/Atomic_Actions) for more details.
+    !!! info "About Atomic Workflows"
+        The <em class="example-input">OpenAIChatCompletion</em>, <em class="example-input">MCPListTools</em>, and <em class="example-input">MCPRunTool</em> workflows are Atomic workflows. Atomic workflows are immutable, reusable workflow components found in the Activities panel or in the 'Atomics' section of workspace. See the [Atomic Actions documentation](https://documentation.meraki.com/Platform_Management/Workflows/Workflows/Atomic_Actions) for more details.
 
 #### Import Order Overview
 
@@ -339,11 +317,11 @@ flowchart LR
 3. Select the following:
     - <em class="lab-warning">Repository:</em> <em class="example-input">LTRAI-1487 - AI Agent</em>
     - <em class="lab-warning">Workflow:</em> <em class="example-input">OpenAIChatCompletion</em>
-    - <em class="lab-warning">Version:</em> Latest
+    - <em class="lab-warning">Version:</em> *Latest* (the most recent version is always the top option in the pulldown)
 4. Click <em class="button-click">Import</em>
 5. When prompted for <em class="lab-warning">i_api_key</em>:
     - Enter your lab OpenAI API key
-    - **Ask your instructor for this key if you don't have it**
+    - **This is available in lab-assistant.com. Ask your instructor for this key if you don't have it**
 6. Click <em class="button-click">Import</em>
 
 #### 4.2.2 Import MCP Server Tools
@@ -381,11 +359,11 @@ The ToolBox workflow includes all tool subworkflows as embedded components, so y
     - <em class="lab-warning">Version:</em> Latest
 3. Click <em class="button-click">Import</em>
 
-!!! warning
-    You will see a warning about a missing remote connection. This is expected - we will fix this after all imports are complete.
-
-!!! note
-    The ToolBox workflow bundles all individual tools (scratchpad, Webex notifications, change approval, terminal commands, and RADKIT tools) as subworkflows. You do not need to import them separately.
+    !!! warning
+        You will see a warning about a missing remote connection. This is expected - we will fix this after all imports are complete.
+    
+    !!! note
+        The ToolBox workflow bundles all individual tools (scratchpad, Webex notifications, change approval, terminal commands, and RADKIT tools) as subworkflows. You do not need to import them separately.
 
 #### 4.2.5 Import AI Agent
 
@@ -395,29 +373,35 @@ The ToolBox workflow includes all tool subworkflows as embedded components, so y
     - <em class="lab-warning">Workflow:</em> <em class="example-input">AIAgent</em>
     - <em class="lab-warning">Version:</em> Latest
 3. Click <em class="button-click">Import</em>
-
-!!! warning
-    You will see a warning about a missing remote connection. This is expected - we will fix this in the next step.
+    
+    !!! warning
+        You will see a warning about a missing remote connection. This is expected - we will fix this in the next step.
 
 #### 4.2.6 Validate All Workflows
+
+You should see these workflows in <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>:
+
+    - AI Agent
+    - ToolBox
+    - Tool - Send Webex Notification
+    - Tool - Request Change Approval
+    - (...and several other Tool -  [*] workflows)
+
+You should also see these atomics:
+
+    - OpenAIChatCompletion
+    - MCPListTools
+    - MCPRunTool
+    - Tool - Send Webex Notification
 
 After importing all workflows, validate that they are configured correctly:
 
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
-2. For each imported workflow:
+2. For each imported workflow and atomic:
     - Click on the workflow name to open it
     - Click <em class="button-click">Validate</em> in the upper right corner
     - Ensure there are no validation errors
 3. If you see any errors, check that all required credentials were entered correctly
-
-You should have imported a total of **6 workflows**:
-
-- OpenAIChatCompletion
-- MCPListTools
-- MCPRunTool
-- ToolSendWebexNotification
-- ToolBox
-- AIAgent
 
 #### 4.2.7 Verify OpenAI Endpoint Configuration
 
@@ -434,8 +418,12 @@ You should have imported a total of **6 workflows**:
 After importing the workflows, we need to configure the variables and targets properly.
 
 1. Go to <em class="button-click">Automation > Variables</em> and click on <em class="example-input">OPENAI_API_KEY</em>. Set it to the API key found in the dCloud pod information. If you can't find it, ask the instructor.
-2. Go to <em class="button-click">Automation > Variables</em> and click on <em class="example-input">Webex Access Token</em>. Make sure it is set to the Webex Access Token you created in Lab 1.
-3. Go to <em class="button-click">Automation > Targets</em> and click on <em class="example-input">RADKit MCP - Lab</em>. Set the <em class="lab-warning">Remote Keys</em> to your Automation Remote you configured earlier.
+   
+    !!! note
+        In a production environment, API keys. and passwords should be set to secure strings so users can't reverse and see them, but for troubleshooting and ease for workflow importing, we use a plain string variable.
+   
+3. Go to <em class="button-click">Automation > Variables</em> and click on <em class="example-input">Webex Access Token</em>. Make sure it has a password set on it from import. You won't be able to validate the string since it is a secure string.
+4. Go to <em class="button-click">Automation > Targets</em> and click on <em class="example-input">RADKit MCP - Lab</em>. Set the <em class="lab-warning">Remote Keys</em> to your Automation Remote you configured earlier.
 
     !!! warning
         If you forget to set the Remote Keys, your requests will go out over the internet instead of through your Automation Remote to the MCP Server which talks to the RADKit server.
@@ -455,8 +443,8 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 5. Click <em class="button-click">Run</em> to execute the workflow
 6. Verify the workflow completes successfully and returns the device output
 
-!!! success "Success Criteria"
-    The workflow should complete without errors and display the `show version` output from device r1.
+    !!! success "Success Criteria"
+        The workflow should complete without errors and display the `show version` output from device r1.
 
 #### 4.3.2 Test Webex Notification Tool
 
@@ -466,8 +454,8 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 4. Update the local variable <em class="lab-warning">l_room_name</em> to the name of the Webex space you created in Lab 1 (e.g., <em class="example-input">&lt;your_name&gt;-workflows-lab</em>)
 5. Verify the local variable <em class="lab-warning">l_meraki_dashboard_url</em> matches your Cisco Workflows URL prefix. Look at your browser's address bar - the URL should start with something like <em class="example-input">https://n219.dashboard.meraki.com/o/XXXXXX/</em>. If the variable value doesn't match your URL prefix, update it accordingly.
 
-!!! note
-    The <em class="lab-warning">l_meraki_dashboard_url</em> variable is used to generate clickable links in Webex notifications that take you directly to the workflow run. If this doesn't match your environment, the links in notifications won't work correctly.
+    !!! note
+        The <em class="lab-warning">l_meraki_dashboard_url</em> variable is used to generate clickable links in Webex notifications that take you directly to the workflow run. If this doesn't match your environment, the links in notifications won't work correctly.
 
 6. Click <em class="button-click">Run</em> in the upper right corner
 7. When prompted, fill out the input variables:
@@ -476,8 +464,8 @@ Before testing the full AI Agent, let's verify that the individual tools work co
 8. Click <em class="button-click">Run</em> to execute the workflow
 9. Check your Webex space to verify you received the message
 
-!!! success "Success Criteria"
-    You should see your test message appear in your Webex space from Lab 1.
+    !!! success "Success Criteria"
+        You should see your test message appear in your Webex space from Lab 1.
 
 ### 4.4 Test the AI Agent
 
@@ -492,17 +480,17 @@ Now let's verify the full AI Agent workflow runs correctly.
 6. Monitor the workflow execution and verify it completes without errors
 7. Check your Webex space to confirm the agent sent the results
 
-!!! success "Success Criteria"
-    The workflow should complete successfully, and you should receive a Webex message containing the device time, interface status, and a summary from the AI Agent.
+    !!! success "Success Criteria"
+        The workflow should complete successfully, and you should receive a Webex message containing the device time, interface status, and a summary from the AI Agent.
 
-!!! bug "Troubleshooting"
-    If the workflow fails:
-
-    - Verify the OPENAI_API_KEY is set correctly
-    - Check that the OPENAI_ENDPOINT target is configured properly
-    - Ensure your Webex access token is valid
-    - Re-run the individual tool tests (4.3.1 and 4.3.2) to isolate the issue
-
+    !!! bug "Troubleshooting"
+        If the workflow fails:
+    
+        - Verify the OPENAI_API_KEY is set correctly
+        - Check that the OPENAI_ENDPOINT target is configured properly
+        - Ensure your Webex access token is valid
+        - Re-run the individual tool tests (4.3.1 and 4.3.2) to isolate the issue
+    
 ---
 
 ## Step 5: Create AI Agent Workflow for Event Remediation
@@ -536,27 +524,27 @@ We'll start by duplicating your Lab 2 workflow and modifying it to use the AI Ag
 2. Expand the <em class="lab-warning">i_agent_task</em> input variable
 3. Configure it with the following text, replacing the placeholders with reference variables from the Variable Browser:
 
-```
-A network event was received for device {target_device}:
-
-raw event:
-
-{webhook_request_body}
-
-You MUST proceed with investigation. If any change is required to resolve alert, you MUST call tool to request change approval.
-```
+    ```
+    A network event was received for device {target_device}:
+    
+    raw event:
+    
+    {webhook_request_body}
+    
+    You MUST proceed with investigation. If any change is required to resolve alert, you MUST call tool to request change approval.
+    ```
 
 Replace the placeholders as follows:
 
 - <em class="example-input">{target_device}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Activities > get_device_ip > JSONPath Queries > target_device</em>
 - <em class="example-input">{webhook_request_body}</em> → Click the variable reference icon <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select <em class="button-click">Rule > Webhook Rule > Output > Request Body</em>
+    
+    !!! note
+        We're keeping it simple - giving the agent minimal parsing and letting it analyze the raw event. The final instruction ensures the agent requests your approval before making any changes.
 
-!!! note
-    We're keeping it simple - giving the agent minimal parsing and letting it analyze the raw event. The final instruction ensures the agent requests your approval before making any changes.
-
-<figure markdown>
-  ![AI Agent workflow with i_agent_task configuration and variable references](./img/lab3/lab3_5.4.jpg){ width="600" }
-</figure>
+    <figure markdown>
+      ![AI Agent workflow with i_agent_task configuration and variable references](./img/lab3/lab3_5.4.jpg){ width="600" }
+    </figure>
 
 ### 5.5 Validate the Workflow
 
@@ -595,8 +583,8 @@ The AI Agent may ask clarifying questions before proceeding - that's OK! It's ju
     - Indicate that the interface was administratively shut down and needs to be restored
     - Note: The AI Agent may think that the loopback should be left down, so it will want to confirm with you before opening a change request
 
-!!! tip
-    The more context you provide, the better the agent can proceed with confidence and open a change request!
+    !!! tip
+        The more context you provide, the better the agent can proceed with confidence and open a change request!
 
 ### 5.9 Approve the Change Request
 
@@ -606,9 +594,9 @@ Once the agent has enough information, it will request your approval before maki
 2. Click the <em class="button-click">Cisco Workflow Run</em> link in the Webex message
 3. In the Cisco Workflows UI, click <em class="button-click">View Task</em>
 4. Review the agent's proposed action and click <em class="button-click">Approve</em> to allow the agent to bring the interface back up
-
-!!! note
-    The next lab uses a workflow with more detailed prompting for complex ThousandEyes troubleshooting scenarios.
+    
+    !!! note
+        The next lab uses a workflow with more detailed prompting for complex ThousandEyes troubleshooting scenarios.
 
 ### 5.10 Validation
 
