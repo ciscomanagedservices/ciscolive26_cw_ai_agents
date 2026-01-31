@@ -124,11 +124,12 @@ We need to ensure Splunk is listening for syslog traffic.
 2. In upper right, click <em class="button-click">New Local UDP</em>. Configure the listener for UDP, port <em class="example-input">514</em>. Hit <em class="button-click">Next</em>.
 3. Set the **source type** to `cisco:ios`. You will have to type this in manually, it is not available as a choice through the navigation tree in the pulldown.
 4. Set the <em class="lab-warning">App context</em> to <em class="example-input">Cisco Networks</em>, <em class="lab-warning">Host method</em> as <em class="example-input">IP</em>, <em class="lab-warning">index</em> to <em class="example-input">syslog</em>.
-5. Click <em class="button-click">Review</em> and validate your configuration then click <em class="button-click">Submit</em>.
 
-<figure markdown>
-  ![Splunk data input](./img/lab1/lab1_3.2.4.png){ width="500" }
-</figure>
+    <figure markdown>
+        ![Splunk data input](./img/lab1/lab1_3.2.4.png){ width="500" }
+    </figure>
+   
+5. Click <em class="button-click">Review</em> and validate your configuration then click <em class="button-click">Submit</em>.
 
 ### 3.3 Optional syslog ingestion validation
 
