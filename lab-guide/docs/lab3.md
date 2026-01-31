@@ -73,26 +73,26 @@ The RADKit service container and MCP server files are pre-loaded on the ubuntu-s
         - `radkit-mcp-server-community/` - MCP server source code repository
         - `scripts/` - Setup scripts for this lab. Some have already been run for you.
 
-2. If the RADKit service container is already running, you can skip to Step 2:
+2. Check if the RADKit service container is already running:
     ```bash
     docker ps | grep radkit
     ```
 
     If you see `radkit-service` in the output, proceed to **Step 2: Configure RADKit Service**.
 
-3. If the container is not running but exists, try to start it:
+### 1.3 Run the RADKit Installation Script (If Needed)
+
+1. If the container is not running but exists, try to start it:
     ```bash
     docker start radkit-service
     ```
 
-### 1.3 Run the RADKit Installation Script (If Needed)
-
-1. Run the installation script, specifying the pre-loaded tar file:
+2. Run the installation script, specifying the pre-loaded tar file:
     ```bash
     ./radkit-install.sh -t /home/cisco/radkit-service.tar
     ```
 
-2. When prompted for the superadmin password during bootstrap, enter:
+3. When prompted for the superadmin password during bootstrap, enter:
     ```
     0e52nsq5jf7f-bxq8whdi7dnT
     ```
@@ -104,7 +104,7 @@ The RADKit service container and MCP server files are pre-loaded on the ubuntu-s
     - Bootstrap the RADKit service
     - Start the container on port 8081
 
-3. Verify the container is running:
+4. Verify the container is running:
     ```bash
     docker ps | grep radkit
     ```
