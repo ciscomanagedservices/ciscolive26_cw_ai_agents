@@ -133,7 +133,7 @@ Now we'll configure RADKit through its web interface to enroll with Cisco Cloud,
 6. After SSO completes, close the SSO tab and return to the RADKit WebUI
 
 !!! warning "Important"
-    Note the <em class="lab-warning">Service ID</em> displayed at the top center of the screen (e.g., <em class="example-input">xxxx-yyyy-zzzz</em>). You will need this for MCP server setup in Step 3.
+    Note the <em class="lab-warning">Service ID</em> displayed in the top banner, center of the screen (e.g., <em class="example-input">xxxx-yyyy-zzzz</em>). You will need this for MCP server setup in Step 3.
 
 ### 2.3 Add Network Devices
 
