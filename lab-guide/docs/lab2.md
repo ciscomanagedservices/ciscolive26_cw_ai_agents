@@ -8,8 +8,8 @@ You will define a rule-based remediation workflow, allowing for autonomous close
 
 By the end of this lab, you will:
 
-- Be able to have Cisco Workflows talk to devices in your infrastructure.
-- Configure static / rule-based workflows where you can automate defined response and remediation.
+    - Be able to have Cisco Workflows talk to devices in your infrastructure.
+    - Configure static / rule-based workflows where you can automate defined response and remediation.
 
 This will show one way to have automated response, before we bring in cognitive agentic response.
 
@@ -33,50 +33,50 @@ flowchart LR
 4. Back on the <em class="lab-warning">Remote Targets</em> page, click the <em class="button-click">...</em> under <em class="lab-warning">Actions</em> and choose <em class="button-click">Connect</em>.
 5. Click <em class="button-click">Generate Package</em> from the popup. This will generate and automatically download a file <em class="example-input">remotePackage.zip</em>.
 6. Copy the file over to the wf-remote server (<em class="example-input">198.18.1.204</em>):
-```sh
-scp remotePackage.zip root@198.18.1.204:/root/
-```
+    ```sh
+    scp remotePackage.zip root@198.18.1.204:/root/
+    ```
 7. SSH to the wf-remote server and run the registration script:
-```sh
-ssh root@198.18.1.204
-./register_remote.py /root/remotePackage.zip
-```
+    ```sh
+    ssh root@198.18.1.204
+    ./register_remote.py /root/remotePackage.zip
+    ```
 
 You will be prompted to say 'yes' to initiate registration after it checks the existing status. If there are old certifications or registration (i.e. you ran the script and/or registered before) it will first prompt to remove the certificates before prompting to register.
 
 Example output:
-```
-root@default-hostname:~# ./register_remote.py /root/remotePackage.zip
-[*] Extracting base64 from zip file: /root/remotePackage.zip
-[+] Found config file: scdozier-remote_remoteconfig_20260129T215214.txt
-[+] Successfully extracted base64 string from zip
-[*] Decoding OVF user-data string...
-[+] Successfully decoded cloud-config
-[*] Extracting YAML configuration files...
-[*] Files found in cloud-config:
-    - /etc/ao-remote/values.yaml
-    - /etc/ao-remote/ca-key-pair.yaml
-[+] Found values.yaml at: /etc/ao-remote/values.yaml
-[+] Found ca-key-pair.yaml at: /etc/ao-remote/ca-key-pair.yaml
-
-======================================================================
-XDR Remote Appliance Configuration
-======================================================================
-Remote Name:     <your_name>-remote
-Remote ID:       1744720:02T4G1V7NYIII0DoURJal8r4JSjHUqqvPs2
-MQTT Broker:     tcps://us-remote.workflows.meraki.com:8883
-Proxy:
-======================================================================
-
-
-[!] Existing XDR containers are already running
-[*] Would you like to stop and remove them before re-registering? (yes/no)
->
-```
+    ```
+    root@default-hostname:~# ./register_remote.py /root/remotePackage.zip
+    [*] Extracting base64 from zip file: /root/remotePackage.zip
+    [+] Found config file: scdozier-remote_remoteconfig_20260129T215214.txt
+    [+] Successfully extracted base64 string from zip
+    [*] Decoding OVF user-data string...
+    [+] Successfully decoded cloud-config
+    [*] Extracting YAML configuration files...
+    [*] Files found in cloud-config:
+        - /etc/ao-remote/values.yaml
+        - /etc/ao-remote/ca-key-pair.yaml
+    [+] Found values.yaml at: /etc/ao-remote/values.yaml
+    [+] Found ca-key-pair.yaml at: /etc/ao-remote/ca-key-pair.yaml
+    
+    ======================================================================
+    XDR Remote Appliance Configuration
+    ======================================================================
+    Remote Name:     <your_name>-remote
+    Remote ID:       1744720:02T4G1V7NYIII0DoURJal8r4JSjHUqqvPs2
+    MQTT Broker:     tcps://us-remote.workflows.meraki.com:8883
+    Proxy:
+    ======================================================================
+    
+    
+    [!] Existing XDR containers are already running
+    [*] Would you like to stop and remove them before re-registering? (yes/no)
+    >
+    ```
 9. Wait a few seconds, and then refresh the Workflow's Targets page. You should see your remote move into a `Connected` status.
 
-!!! note
-    The official process for registering a remote server differs from this a bit. Cisco Workflows currently only supports remote servers running on virtual VMWare appliances where you can pass the initialization/registration text into an OVF template. Since dCloud doesn't support OVF templates, we feed the remotePackage into a python script that runs the same cloud init script that the OVF template would have triggered. Cisco is working on making the official remote server deployment more flexible for deployments outside of OVF / VMWare. For the full documentation on deploying a remote server, see the official [Cisco Workflows documentation](https://documentation.meraki.com/Platform_Management/Workflows/Targets/Automation_Remote/Remote_Setup_and_Deployment).
+    !!! note
+        The official process for registering a remote server differs from this a bit. Cisco Workflows currently only supports remote servers running on virtual VMWare appliances where you can pass the initialization/registration text into an OVF template. Since dCloud doesn't support OVF templates, we feed the remotePackage into a python script that runs the same cloud init script that the OVF template would have triggered. Cisco is working on making the official remote server deployment more flexible for deployments outside of OVF / VMWare. For the full documentation on deploying a remote server, see the official [Cisco Workflows documentation](https://documentation.meraki.com/Platform_Management/Workflows/Targets/Automation_Remote/Remote_Setup_and_Deployment).
 
 ---
 
@@ -99,8 +99,8 @@ Proxy:
     - <em class="lab-warning">Password:</em> <em class="example-input">cisco</em>
 3. Ensure that the <em class="lab-warning">status</em> of the devices shows as <em class="example-input">Valid</em> which is ensuring a basic connection check to the device.
 
-!!! note
-    If the target cannot connect, verify the IP address is correct and that <em class="lab-warning">Remote Keys</em> is set to your remote server. Without the Remote Keys configured, Workflows will attempt to connect over the internet instead of through your remote server.
+        !!! note
+            If the target cannot connect, verify the IP address is correct and that <em class="lab-warning">Remote Keys</em> is set to your remote server. Without the Remote Keys configured, Workflows will attempt to connect over the internet instead of through your remote server.
 
 ---
 
@@ -199,8 +199,8 @@ Now we'll add an activity to extract the device IP from the webhook payload.
     - <em class="lab-warning">Property Name:</em> <em class="example-input">target_device</em>
     - <em class="lab-warning">Property Type:</em> <em class="example-input">String</em>
 
-!!! info
-    The JSONPath `$.result.dvc` extracts the device IP address from Splunk's webhook payload. The extracted value will be stored in a variable called `target_device` that we'll use to route commands to the correct device.
+    !!! info
+        The JSONPath `$.result.dvc` extracts the device IP address from Splunk's webhook payload. The extracted value will be stored in a variable called `target_device` that we'll use to route commands to the correct device.
 
 ### 4.6 Add Terminal Commands Activity
 
@@ -213,13 +213,13 @@ Now we'll add an activity to extract the device IP from the webhook payload.
 1. Click on the <em class="lab-warning">Execute Terminal Commands</em> activity to select it
 2. Set the <em class="lab-warning">Display Name</em> to <em class="example-input">unshut interface</em>
 3. In the <em class="lab-warning">Terminal > Input Commands</em> section, enter the following commands (one per line):
-```cisco
-conf t
-int lo0
-no sh
-end
-send log "Cisco Workflows has automated unshutting an interface."
-```
+    ```cisco
+    conf t
+    int lo0
+    no sh
+    end
+    send log "Cisco Workflows has automated unshutting an interface."
+    ```
 
 ### 4.8 Override the Workflow Target
 
@@ -227,8 +227,8 @@ send log "Cisco Workflows has automated unshutting an interface."
 2. In the <em class="lab-warning">Target</em> section, select <em class="button-click">Override workflow target</em>
 3. Set the target to <em class="example-input">&lt;your_name&gt;-R3</em>
 
-!!! note
-    We are manually overriding to R3 for simplicity. In a production environment with many devices (targets), you'd likely  want dynamic selection of targets based on the webhook payload, and use target groups and selection conditions. For this lab, we're keeping the target simple, since in lab3 we will integrate a remote inventory/access tool (Cisco CX RADKit) that prevents having to duplicate device inventory in Workflows.
+    !!! note
+        We are manually overriding to R3 for simplicity. In a production environment with many devices (targets), you'd likely  want dynamic selection of targets based on the webhook payload, and use target groups and selection conditions. For this lab, we're keeping the target simple, since in lab3 we will integrate a remote inventory/access tool (Cisco CX RADKit) that prevents having to duplicate device inventory in Workflows.
 
 ### 4.9 Add the Notification Sub-Workflow
 
@@ -243,12 +243,12 @@ send log "Cisco Workflows has automated unshutting an interface."
 2. Find the <em class="lab-warning">message_body</em> input field
 3. <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and navigate to: <em class="button-click">Activities > unshut interface > Response body</em>
 
-!!! note
-    This passes the terminal command output (showing what commands ran and their results) to the Webex notification. You could add additional text before/after this variable if you want more context in your notifications.
-
-<figure markdown>
-  ![Notification sub-workflow configuration with message_body variable reference](./img/lab2/lab2_4.10.jpg){ width="500" }
-</figure>
+    !!! note
+        This passes the terminal command output (showing what commands ran and their results) to the Webex notification. You could add additional text before/after this variable if you want more context in your notifications.
+    
+    <figure markdown>
+      ![Notification sub-workflow configuration with message_body variable reference](./img/lab2/lab2_4.10.jpg){ width="500" }
+    </figure>
 
 ### 4.11 Validate the Complete Workflow
 
