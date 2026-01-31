@@ -1,6 +1,6 @@
 #!/bin/bash
 # Recover RADKit after /tmp/radkit was cleared on reboot
-# Run with: sudo bash recover_radkit.sh
+# Run with: sudo bash radkit_fixes.sh
 # These apply some fixes founed on 30-jan that need to be done post install.
 # Script may not be needed to be run, if dcloud has our updated images or if 
 # instructors have already run this.
