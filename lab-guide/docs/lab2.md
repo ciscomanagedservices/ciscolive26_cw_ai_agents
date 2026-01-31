@@ -8,8 +8,8 @@ You will define a rule-based remediation workflow, allowing for autonomous close
 
 By the end of this lab, you will:
 
-    - Be able to have Cisco Workflows talk to devices in your infrastructure.
-    - Configure static / rule-based workflows where you can automate defined response and remediation.
+- Be able to have Cisco Workflows talk to devices in your infrastructure.
+- Configure static / rule-based workflows where you can automate defined response and remediation.
 
 This will show one way to have automated response, before we bring in cognitive agentic response.
 
@@ -99,8 +99,8 @@ Example output:
     - <em class="lab-warning">Password:</em> <em class="example-input">cisco</em>
 3. Ensure that the <em class="lab-warning">status</em> of the devices shows as <em class="example-input">Valid</em> which is ensuring a basic connection check to the device.
 
-        !!! note
-            If the target cannot connect, verify the IP address is correct and that <em class="lab-warning">Remote Keys</em> is set to your remote server. Without the Remote Keys configured, Workflows will attempt to connect over the internet instead of through your remote server.
+    !!! note
+        If the target cannot connect, verify the IP address is correct and that <em class="lab-warning">Remote Keys</em> is set to your remote server. Without the Remote Keys configured, Workflows will attempt to connect over the internet instead of through your remote server.
 
 ---
 
