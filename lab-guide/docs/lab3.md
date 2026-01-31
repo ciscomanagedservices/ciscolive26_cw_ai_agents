@@ -304,7 +304,7 @@ We will need to import the cognitive response workflow definitions from GitHub i
     - Click <em class="button-click">Default Account Keys</em> -> <em class="button-click">Add New</em>
         - <em class="lab-warning">Account Key Type:</em> <em class="example-input">Git Token-Based Credentials</em>
         - <em class="lab-warning">Display Name:</em> <em class="example-input">LTRAI-1487 GitHub</em>
-        - <em class="lab-warning">Token:</em> Use the GitHub token provided by your administrator (found in the dCloud lab details)
+        - <em class="lab-warning">Token:</em> Use the GitHub token provided by your administrator (found in the lab-assistant.com lab details)
     - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
     - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
     - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ai_agent</em>
