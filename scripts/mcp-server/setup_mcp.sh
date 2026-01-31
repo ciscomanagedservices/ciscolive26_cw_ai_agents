@@ -113,52 +113,52 @@ check_dns() {
 # Check Enrollment
 #######################################
 check_enrollment() {
-  echo ""
-  echo "========================================"
-  echo "Checking RADKit Enrollment"
-  echo "========================================"
+    echo ""
+    echo "========================================"
+    echo "Checking RADKit Enrollment"
+    echo "========================================"
 
-  echo "Enter your email used to register RADKit:"
-  read -r EMAIL
+    echo "Enter your email used to register RADKit:"
+    read -r EMAIL
 
-  if [[ -z "$EMAIL" ]]; then
-      print_error "Email cannot be empty"
-      exit 1
-  fi
+    if [[ -z "$EMAIL" ]]; then
+        print_error "Email cannot be empty"
+        exit 1
+    fi
 
-  IDENTITY_DIR=~/.radkit/identities/prod.radkit-cloud.cisco.com/$EMAIL
+    IDENTITY_DIR=~/.radkit/identities/prod.radkit-cloud.cisco.com/$EMAIL
 
-  if [[ ! -d "$IDENTITY_DIR" ]] || [[ ! -f "$IDENTITY_DIR/certificate.pem" ]]; then
-      print_warning "RADKit enrollment not found for $EMAIL"
-      echo ""
-      echo "Running enrollment process..."
-      echo ""
+    if [[ ! -d "$IDENTITY_DIR" ]] || [[ ! -f "$IDENTITY_DIR/certificate.pem" ]]; then
+        print_warning "RADKit enrollment not found for $EMAIL"
+        echo ""
+        echo "Running enrollment process..."
+        echo ""
 
-      # Check if enroll_client.py exists
-      if [[ ! -f "enroll_client.py" ]]; then
-          print_error "enroll_client.py not found in current directory"
-          exit 1
-      fi
+        # Check if enroll_client.py exists
+        if [[ ! -f "enroll_client.py" ]]; then
+            print_error "enroll_client.py not found in current directory"
+            exit 1
+        fi
 
-      # Run enrollment script with the email pre-filled via stdin
-      # The script will handle radkit_client installation if needed
-      echo "$EMAIL" | python3 enroll_client.py
+        # Run enrollment script with email as argument
+        python3 enroll_client.py --email "$EMAIL"
 
-      # Verify enrollment succeeded
-      if [[ ! -d "$IDENTITY_DIR" ]] || [[ ! -f "$IDENTITY_DIR/certificate.pem" ]]; then
-          print_error "Enrollment failed - certificates not found after enrollment"
-          echo "Please run enrollment manually: python3 enroll_client.py"
-          exit 1
-      fi
-      print_status "RADKit enrollment completed for $EMAIL"
-  else
-      print_status "RADKit enrollment found for $EMAIL"
-  fi
+        # Verify enrollment succeeded
+        if [[ ! -d "$IDENTITY_DIR" ]] || [[ ! -f "$IDENTITY_DIR/certificate.pem" ]]; then
+            print_error "Enrollment failed - certificates not found after enrollment"
+            echo "Please run enrollment manually: python3 enroll_client.py"
+            exit 1
+        fi
+        print_status "RADKit enrollment completed for $EMAIL"
+    else
+        print_status "RADKit enrollment found for $EMAIL"
+    fi
 
-  # Export for use in other functions
-  export EMAIL
-  export IDENTITY_DIR
+    # Export for use in other functions
+    export EMAIL
+    export IDENTITY_DIR
 }
+
 
 #######################################
 # Setup Docker Network
@@ -343,3 +343,4 @@ main() {
 }
 
 main
+root@ubuntu:/home/cisco/radkit-mcp-server-community# 
