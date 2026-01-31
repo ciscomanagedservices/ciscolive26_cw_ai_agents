@@ -75,8 +75,8 @@ Example output:
     ```
 9. Wait a few seconds, and then refresh the Workflow's Targets page. You should see your remote move into a `Connected` status.
 
-    !!! note
-        The official process for registering a remote server differs from this a bit. Cisco Workflows currently only supports remote servers running on virtual VMWare appliances where you can pass the initialization/registration text into an OVF template. Since dCloud doesn't support OVF templates, we feed the remotePackage into a python script that runs the same cloud init script that the OVF template would have triggered. Cisco is working on making the official remote server deployment more flexible for deployments outside of OVF / VMWare. For the full documentation on deploying a remote server, see the official [Cisco Workflows documentation](https://documentation.meraki.com/Platform_Management/Workflows/Targets/Automation_Remote/Remote_Setup_and_Deployment).
+!!! note
+    The official process for registering a remote server differs from this a bit. Cisco Workflows currently only supports remote servers running on virtual VMWare appliances where you can pass the initialization/registration text into an OVF template. Since dCloud doesn't support OVF templates, we feed the remotePackage into a python script that runs the same cloud init script that the OVF template would have triggered. Cisco is working on making the official remote server deployment more flexible for deployments outside of OVF / VMWare. For the full documentation on deploying a remote server, see the official [Cisco Workflows documentation](https://documentation.meraki.com/Platform_Management/Workflows/Targets/Automation_Remote/Remote_Setup_and_Deployment).
 
 ---
 
