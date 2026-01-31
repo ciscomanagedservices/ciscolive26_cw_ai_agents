@@ -9,6 +9,8 @@
 #   -d, --data-dir DIR  Data directory (default: /tmp/radkit)
 #   -s, --skip-bootstrap  Skip bootstrap step (if already done)
 #   -h, --help          Show this help
+#
+# v1.1 31-jan-2026 - embedded DNS, python-lite, and persistent tmp file fixes.
 
 set -e
 
@@ -84,6 +86,30 @@ fi
 
 print_status "Docker found: $(docker --version)"
 
+# Configure Docker DNS (fixes network resolution issues in some environments)
+if [ ! -f /etc/docker/daemon.json ]; then
+    print_status "Configuring Docker DNS..."
+    mkdir -p /etc/docker
+    tee /etc/docker/daemon.json > /dev/null <<EOF
+{
+  "dns": ["8.8.8.8", "8.8.4.4"]
+}
+EOF
+    systemctl restart docker
+    print_status "Docker DNS configured and restarted"
+    sleep 3
+else
+    print_status "Docker daemon.json already exists, skipping DNS config"
+fi
+
+# Pull python image (needed for MCP server)
+if ! docker images | grep -q "python.*3.11-slim"; then
+    print_status "Pulling python:3.11-slim image..."
+    docker pull python:3.11-slim
+else
+    print_status "Python 3.11-slim image already present"
+fi
+
 # Check if container already exists
 if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
     print_warning "Container '${CONTAINER_NAME}' already exists"
@@ -113,6 +139,13 @@ else
         exit 1
     fi
     print_status "Image already loaded."
+fi
+
+# Create tmpfiles exclusion rule (prevents /tmp/radkit from being cleared on reboot)
+if [[ "${RADKIT_DATA_DIR}" == /tmp/* ]] && [ ! -f /etc/tmpfiles.d/radkit.conf ]; then
+    print_status "Creating tmpfiles exclusion rule for ${RADKIT_DATA_DIR}..."
+    echo "x ${RADKIT_DATA_DIR}" > /etc/tmpfiles.d/radkit.conf
+    print_status "Exclusion rule created - data will persist across reboots"
 fi
 
 # Create data directory
