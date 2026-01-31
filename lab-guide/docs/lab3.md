@@ -173,8 +173,8 @@ For each device:
 
 The MCP (Model Context Protocol) server allows Cisco Workflows to interact with RADKit-managed devices through a standardized API.
 
-    !!! note "About MCP"
-        We will be setting up an MCP server that acts as an intermediary for Cisco Workflows to send JSON RPC requests over HTTP to the MCP server, which then runs commands in the RADKit SDK. MCP is explained in more detail here: [What is Model Context Protocol (MCP) Explained](https://composio.dev/blog/what-is-model-context-protocol-mcp-explained)
+!!! note "About MCP"
+    We will be setting up an MCP server that acts as an intermediary for Cisco Workflows to send JSON RPC requests over HTTP to the MCP server, which then runs commands in the RADKit SDK. MCP is explained in more detail here: [What is Model Context Protocol (MCP) Explained](https://composio.dev/blog/what-is-model-context-protocol-mcp-explained)
 
 ### 3.1 Update the RADKit MCP Server Repository
 
@@ -295,11 +295,11 @@ We will need to import the cognitive response workflow definitions from GitHub i
 
 You will now import workflows from the Git repository. Follow the steps below in order, as some workflows depend on others.
     
-    !!! note
-        When importing workflows, you may be prompted for credentials or API keys. Keep your Webex access token from Lab 1 handy.
+!!! note
+    When importing workflows, you may be prompted for credentials or API keys. Keep your Webex access token from Lab 1 handy.
 
-    !!! info "About Atomic Workflows"
-        The <em class="example-input">OpenAIChatCompletion</em>, <em class="example-input">MCPListTools</em>, and <em class="example-input">MCPRunTool</em> workflows are Atomic workflows. Atomic workflows are immutable, reusable workflow components found in the Activities panel or in the 'Atomics' section of workspace. See the [Atomic Actions documentation](https://documentation.meraki.com/Platform_Management/Workflows/Workflows/Atomic_Actions) for more details.
+!!! info "About Atomic Workflows"
+    The <em class="example-input">OpenAIChatCompletion</em>, <em class="example-input">MCPListTools</em>, and <em class="example-input">MCPRunTool</em> workflows are Atomic workflows. Atomic workflows are immutable, reusable workflow components found in the Activities panel or in the 'Atomics' section of workspace. See the [Atomic Actions documentation](https://documentation.meraki.com/Platform_Management/Workflows/Workflows/Atomic_Actions) for more details.
 
 #### Import Order Overview
 
@@ -381,18 +381,18 @@ The ToolBox workflow includes all tool subworkflows as embedded components, so y
 
 You should see these workflows in <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>:
 
-    - AI Agent
-    - ToolBox
-    - Tool - Send Webex Notification
-    - Tool - Request Change Approval
-    - (...and several other Tool -  [*] workflows)
+- AI Agent
+- ToolBox
+- Tool - Send Webex Notification
+- Tool - Request Change Approval
+- (...and several other Tool -  [*] workflows)
 
 You should also see these atomics:
 
-    - OpenAIChatCompletion
-    - MCPListTools
-    - MCPRunTool
-    - Tool - Send Webex Notification
+- OpenAIChatCompletion
+- MCPListTools
+- MCPRunTool
+- Tool - Send Webex Notification
 
 After importing all workflows, validate that they are configured correctly:
 
@@ -486,10 +486,10 @@ Now let's verify the full AI Agent workflow runs correctly.
     !!! bug "Troubleshooting"
         If the workflow fails:
     
-        - Verify the OPENAI_API_KEY is set correctly
-        - Check that the OPENAI_ENDPOINT target is configured properly
-        - Ensure your Webex access token is valid
-        - Re-run the individual tool tests (4.3.1 and 4.3.2) to isolate the issue
+    - Verify the OPENAI_API_KEY is set correctly
+    - Check that the OPENAI_ENDPOINT target is configured properly
+    - Ensure your Webex access token is valid
+    - Re-run the individual tool tests (4.3.1 and 4.3.2) to isolate the issue
     
 ---
 
