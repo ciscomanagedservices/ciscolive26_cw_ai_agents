@@ -232,15 +232,16 @@ Now let's hook the webhook up, so we can trigger our test message from a device'
 ### 6.1 Setting up a webhook in Cisco Workflows
 
 1. Go to <em class="button-click">Automation > Rules</em> and then click the <em class="button-click">Webhooks</em> section in the header bar and click <em class="button-click">+ New webhook</em>.
-2. Name the webhook <em class="example-input">&lt;your_name&gt;-splunk-webhook</em>. Keep the content type as <em class="example-input">application-json</em> and click <em class="button-click">Save</em>.
-3. Click back into the webhook you just created. You should now see the <em class="lab-warning">Webhook API Key</em> and <em class="lab-warning">Webhook URL</em> populated. Grab the Webhook URL (which has the API key embedded in the URL query) and stash it in a local notepad--we will need to put them back in Splunk in a minute.
-
+ 
     <figure markdown>
       ![Automation UI for Workflows](./img/lab1/lab1_4.2.png){ width="500" }
     </figure>
     <figure markdown>
       ![Adding a webhook](./img/lab1/lab1_4.3.png){ width="500" }
     </figure>
+    
+2. Name the webhook <em class="example-input">&lt;your_name&gt;-splunk-webhook</em>. Keep the content type as <em class="example-input">application-json</em> and click <em class="button-click">Save</em>.
+3. Click back into the webhook you just created. You should now see the <em class="lab-warning">Webhook API Key</em> and <em class="lab-warning">Webhook URL</em> populated. Grab the Webhook URL (which has the API key embedded in the URL query) and stash it in a local notepad--we will need to put them back in Splunk in a minute.
 
 ### 6.2 Setting up the Meraki automation 
 
