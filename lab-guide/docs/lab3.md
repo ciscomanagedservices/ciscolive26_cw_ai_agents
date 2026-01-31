@@ -57,58 +57,57 @@ RADKit (Remote Access and Diagnostic Kit) provides secure remote access to netwo
    ```bash
    ssh root@198.18.1.250
    ```
-
 ### 1.2 Verify Pre-loaded Files
 
 The RADKit service container and MCP server files are pre-loaded on the ubuntu-server.
 
 1. Verify the pre-loaded files exist:
-   ```bash
-   ls -la /home/cisco/
-   ```
+    ```bash
+    ls -la /home/cisco/
+    ```
 
-!!! note "Pre-loaded Files"
-    The following files are pre-loaded on the ubuntu-server in `/home/cisco/`:
+    !!! note "Pre-loaded Files"
+        The following files are pre-loaded on the ubuntu-server in `/home/cisco/`:
 
-    - `radkit-service.tar` - RADKit Docker image (already loaded)
-    - `radkit-mcp-server-community/` - MCP server source code repository
-    - `scripts/mcp/` - Setup scripts for this lab
+        - `radkit-service.tar` - RADKit Docker image (already loaded)
+        - `radkit-mcp-server-community/` - MCP server source code repository
+        - `scripts/` - Setup scripts for this lab. Some have already been run for you.
 
 2. If the RADKit service container is already running, you can skip to Step 2:
-   ```bash
-   docker ps | grep radkit
-   ```
+    ```bash
+    docker ps | grep radkit
+    ```
 
-   If you see `radkit-service` in the output, proceed to **Step 2: Configure RADKit Service**.
+    If you see `radkit-service` in the output, proceed to **Step 2: Configure RADKit Service**.
 
 3. If the container is not running but exists, try to start it:
-   ```bash
-   docker start radkit-service
-   ```
+    ```bash
+    docker start radkit-service
+    ```
 
 ### 1.3 Run the RADKit Installation Script (If Needed)
 
 1. Run the installation script, specifying the pre-loaded tar file:
-   ```bash
-   ./radkit-install.sh -t /home/cisco/radkit-service.tar
-   ```
+    ```bash
+    ./radkit-install.sh -t /home/cisco/radkit-service.tar
+    ```
 
 2. When prompted for the superadmin password during bootstrap, enter:
-   ```
-   0e52nsq5jf7f-bxq8whdi7dnT
-   ```
+    ```
+    0e52nsq5jf7f-bxq8whdi7dnT
+    ```
 
-The script will:
+    The script will:
 
-- Load the RADKit Docker image
-- Create a data directory at `/tmp/radkit`
-- Bootstrap the RADKit service
-- Start the container on port 8081
+    - Load the RADKit Docker image
+    - Create a data directory at `/tmp/radkit`
+    - Bootstrap the RADKit service
+    - Start the container on port 8081
 
 3. Verify the container is running:
-   ```bash
-   docker ps | grep radkit
-   ```
+    ```bash
+    docker ps | grep radkit
+    ```
 
 ---
 
