@@ -77,6 +77,11 @@ flowchart LR
     - <em class="lab-warning">Jitter</em> >= <em class="example-input">200ms</em>
     - <em class="lab-warning">Packet Loss</em> >= <em class="example-input">5%</em>
     - <em class="lab-warning">Error</em> is present
+  
+   <figure markdown>
+      ![ThousandEyes alert config](.img/lab4/4%20-%20te_alert.png){ width="600" }
+   </figure>
+    
 5. Stay on this screen through the next step.
 
 !!! tip
