@@ -50,10 +50,10 @@ In this step, you will configure router R3 to send syslog messages to Splunk. Th
 1. Open <em class="lab-warning">PuTTY</em> or your favorite terminal from your workstation
 2. SSH to router R3:
 
-    ```sh
-    ssh cisco@198.18.1.103
-    Password: cisco
-    ```
+```sh
+ssh cisco@198.18.1.103
+Password: cisco
+```
 
 ### 2.2 Configure Syslog
 
@@ -94,10 +94,10 @@ Confirm that:
 - Logging host <em class="example-input">198.18.1.210</em> is listed
 
 You may optionally want to clear the log's boot messages to see new events easier.
-    ```cisco
-    clear logging
-    <enter to confirm>
-    ```
+```cisco
+clear logging
+<enter to confirm>
+```
 
 ---
 
@@ -111,10 +111,17 @@ We will store the syslog messages from our monitored routers into a special `sys
 
 ### 3.1 Create a syslog index
 
-1. In a web browser, login to [http://198.18.1.210:8000](http://198.18.1.210:8000) with <em class="example-input">admin / cisco</em>
-2. Setup an index by going to: <em class="button-click">Settings > Data > Indexes</em>. Click the <em class="button-click">New</em> index button in the upper right corner.
-3. Set the index <em class="lab-warning">name</em> to <em class="example-input">syslog</em> and the <em class="lab-warning">App</em> to <em class="example-input">Cisco Networks</em>
-4. Click <em class="button-click">Submit</em>.
+1. In a web browser, login to [http://198.18.1.210:8000](http://198.18.1.210:8000) with <em class="example-input">admin / cisco</em>.
+2. If Splunk isn't responding, ssh to 198.18.1.210 with `admin / cisco` and make sure that the splunk service is running with:
+
+    ```bash
+    cd /opt/splunk/bin
+    sudo systemctl start splunk
+   ```
+    
+4. Setup an index by going to: <em class="button-click">Settings > Data > Indexes</em>. Click the <em class="button-click">New</em> index button in the upper right corner.
+5. Set the index <em class="lab-warning">name</em> to <em class="example-input">syslog</em> and the <em class="lab-warning">App</em> to <em class="example-input">Cisco Networks</em>
+6. Click <em class="button-click">Submit</em>.
 
 ### 3.2 Setup splunk to listen to syslog
 
