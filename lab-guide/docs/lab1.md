@@ -59,29 +59,29 @@ Password: cisco
 
 Enter configuration mode and apply the following configuration:
 
-    ```cisco
-    enable
-    configure terminal
-    
-    ! Enable syslog at debugging level to capture interface events
-    logging trap debugging
-    
-    ! Include hostname in syslog messages for identification
-    logging origin-id hostname
-    
-    ! Set source interface to mgmt interface
-    logging source-interface GigabitEthernet3
-    
-    ! Configure Splunk as the syslog destination
-    logging host 198.18.1.210
-    
-    ! Optional: you may want to set the timestamps for logging and debugging:
-    service timestamps log datetime msec
-    service timestamps debug datetime msec 
-    
-    end
-    write memory
-    ```
+```cisco
+enable
+configure terminal
+
+! Enable syslog at debugging level to capture interface events
+logging trap debugging
+
+! Include hostname in syslog messages for identification
+logging origin-id hostname
+
+! Set source interface to mgmt interface
+logging source-interface GigabitEthernet3
+
+! Configure Splunk as the syslog destination
+logging host 198.18.1.210
+
+! Optional: you may want to set the timestamps for logging and debugging:
+service timestamps log datetime msec
+service timestamps debug datetime msec 
+
+end
+write memory
+```
     
 ### 2.3 Verify Syslog Configuration
 
