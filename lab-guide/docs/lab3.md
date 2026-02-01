@@ -158,7 +158,9 @@ For each device:
     - <em class="lab-warning">Username:</em> <em class="example-input">cisco</em>
     - <em class="lab-warning">Password:</em> <em class="example-input">cisco</em>
 7. Click <em class="button-click">Add & continue</em> (or <em class="button-click">Add & close</em> for the last device)
-
+    <figure markdown>
+      ![RADKit device adding](./img/lab3/3%20-%20radkit-device-add.png){ width="500" }
+    </figure>
 ### 2.4 Add Remote Users
 
 1. Click <em class="button-click">Remote Users</em> in the left menu
