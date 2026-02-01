@@ -42,7 +42,7 @@ flowchart LR
 
 ### 1.1 Register the agent appliance
 
-1. Go to [https://198.18.1.202](https://198.18.1.202) and login with <em class="example-input">admin / welcome</em>.
+1. Go to [https://198.18.1.202](https://198.18.1.202), accept the certificate warning, and login with <em class="example-input">admin / welcome</em>.
 2. Set the new password and click <em class="button-click">change password</em>. <em class="example-input">Cisco123!</em> will work for the password policy.
 3. Add account <em class="example-input">pl4okteoylmox9t60vi1ghz456ixeoa7</em> and click <em class="button-click">continue</em>.
 4. Click <em class="button-click">Complete</em>. Don't worry about the Gateway not pingable and NTP server errors. They will resolve.
@@ -50,7 +50,7 @@ flowchart LR
 
 ### 1.2 Validate registration
 
-1. Login to [https://www.thousandeyes.com](https://www.thousandeyes.com) and go to <em class="button-click">Network & App Synthetics > Agent Settings</em>.
+1. In ThousandEyes.com, go to <em class="button-click">Network & App Synthetics > Agent Settings</em>.
 2. You should see your agent in the list, under the hostname field.
 3. Notice how the agent name has a random ID suffix created during registration due to everyone participating in the lab having the same OS hostname. Let's rename this agent name as well for better identification. Click the agent and change <em class="lab-warning">Agent Name</em> to be <em class="example-input">&lt;your_name&gt;-thousandeyes</em> and <em class="button-click">Save Changes</em>.
 
@@ -59,9 +59,10 @@ flowchart LR
 ### 2.1 Configure the HTTP Server test
 1. Login to [https://www.thousandeyes.com](https://www.thousandeyes.com) and go to <em class="button-click">Network & App Synthetics > Test Settings > Add New Test > HTTP Server</em>.
 2. Configure URL of <em class="example-input">https://cisco.webex.com</em>
-3. Run the test every <em class="example-input">1 minute</em>
-4. <em class="button-click">Select Agents</em>. Select your Agent name <em class="example-input">&lt;your_name&gt;-thousandeyes</em>. Make sure you change the <em class="lab-warning">Default interface selection</em> to <em class="example-input">eth1 198.18.13.202</em> so the test runs out the access network across R3-R2-R1 instead of across the mgmt network. Click <em class="button-click">Close</em>.
-5. Click <em class="button-click">Deploy</em>.
+3. Set the test name to something unique, like <em class="example-input"><your_name>_webex</em>
+4. Run the test every <em class="example-input">1 minute</em>
+5. <em class="button-click">Select Agents</em>. Select your Agent name <em class="example-input">&lt;your_name&gt;-thousandeyes</em>. Make sure you change the <em class="lab-warning">Default interface selection</em> to <em class="example-input">eth1 198.18.13.202</em> so the test runs out the access network across R3-R2-R1 instead of across the mgmt network. Click <em class="button-click">Close</em>.
+6. Click <em class="button-click">Deploy</em>.
 
 ### 2.2 Configure an alert for the test
 1. <em class="button-click">Manage > Alert Rules > Add New Alert Rule</em>
@@ -71,20 +72,19 @@ flowchart LR
     - <em class="lab-warning">Tests</em>: <em class="example-input">&lt;Select your test name from 2.1&gt;</em>
     - <em class="lab-warning">Agents</em>: <em class="example-input">&lt;Select your agent&gt;</em>
 3. Change <em class="lab-warning">Alert Detection</em> to <em class="example-input">Manual</em>
-4. Set to <em class="example-input">Any conditions are met by the same 1 agent 2 of 2 times in a row</em>
-5. Set the rules to:
+4. Set the rules to:
     - <em class="lab-warning">Latency</em> >= <em class="example-input">200ms</em>
     - <em class="lab-warning">Jitter</em> >= <em class="example-input">200ms</em>
     - <em class="lab-warning">Packet Loss</em> >= <em class="example-input">5%</em>
     - <em class="lab-warning">Error</em> is present
-6. Stay on this screen through the next step.
+5. Stay on this screen through the next step.
 
 !!! tip
     Adaptive alerting is a neat feature, but it requires a day to run to build normality for the anomaly detection. We don't have that much time here, so even in a world of predictive AI, we're going with old-school manual thresholds.
 
 ### 2.3 Configuring the webhook integration in Workflows
 
-1. Now we need to create a new webhook for our ThousandEyes event. <em class="button-click">Automation > Rules > Webhooks > + New webhook</em>
+1. Now we need to create a new webhook in Workflows for our ThousandEyes event. In Meraki Dashboard, go to <em class="button-click">Automation > Rules > Webhooks > + New webhook</em>
 2. Name it <em class="example-input">&lt;your_name&gt;-te</em>
 3. <em class="button-click">Save</em> and then go back and view it to get the URL and save this to your local notepad for later reference.
 
@@ -96,7 +96,7 @@ flowchart LR
 4. Choose <em class="button-click">Custom Webhook</em>
 5. Name the webhook <em class="example-input">&lt;your_name&gt;-wh</em>.
 6. Define the target as the Cisco Workflows webhook URL you created earlier in this lab.
-7. No Auth Type is needed since the API key is in the URL.
+7. No <em class="lab-warning">Auth Type</em> is needed since the API key is in the URL, so you can leave the Auth Type as <em class="example-input">Custom</em>.
 8. Click <em class="button-click">Save and assign operation</em>
 9. Set <em class="lab-warning">Operation Name</em> to <em class="example-input">&lt;your_name&gt;-congestion-json</em> and choose the <em class="lab-warning">Preset Configuration</em> of <em class="example-input">Splunk</em>. We aren't sending to Splunk but the preset for Splunk is a nice simple JSON format that Cisco Workflows and our AI agent will nicely process. It should prepopulate the <em class="lab-warning">Content-Type</em> header for <em class="example-input">application/json</em> which we want.
 10. Leave this browser tab open. We will run a test by clicking the <em class="button-click">test</em> button after we configure our workflow to handle ThousandEyes.
@@ -107,7 +107,7 @@ The ThousandEyes workflows require an API Bearer Token to query path visualizati
 
 1. In ThousandEyes, click your <em class="lab-warning">name</em> in the top right of the screen, or go to <em class="button-click">Manage > Account Settings > Users and Roles</em>.
 2. Scroll down to the <em class="lab-warning">OAuth Bearer Token</em> section.
-3. Click <em class="button-click">Create</em> to generate a new token.
+3. Click <em class="button-click">Create</em> to generate a new token. You will need to check your email and pass the token from email back to the web browser.
 4. Copy the token and save it securely - you will need this when importing the workflows.
 
 <figure markdown>
@@ -125,8 +125,9 @@ The ThousandEyes workflows require an API Bearer Token to query path visualizati
     - <em class="lab-warning">REST API Repository:</em> <em class="example-input">api.github.com/repos/ciscomanagedservices/ciscolive26_cw_ai_agents</em>
     - <em class="lab-warning">Branch:</em> <em class="example-input">main</em>
     - <em class="lab-warning">Code Path:</em> <em class="example-input">workflows/ThousandEyes</em>
-3. Click <em class="button-click">Actions > Import Workflow > From Git</em> and import the <em class="example-input">GetThousandEyesPathInfo</em> workflow first, and then <em class="example-input">ThousandEyesAlertWebhook</em> workflow.
+3. Click <em class="button-click">Actions > Import Workflow > From Git</em> and import the <em class="example-input">GetThousandEyesPathInfo</em> workflow.
 4. When prompted for the <em class="lab-warning">te_bearer</em> variable, enter the ThousandEyes OAuth Bearer Token you created in the previous step.
+5. Next, import the <em class="example-input">ThousandEyesAlertWebhook</em> workflow.
 
 ### 2.7 Configuring the trigger for the workflow
 
