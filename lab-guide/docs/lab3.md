@@ -379,7 +379,7 @@ The ToolBox workflow includes all tool subworkflows as embedded components, so y
 
 #### 4.2.6 Validate All Workflows
 
-You should see these workflows in <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>:
+Change the <em class="lab-warning">Rows per page</em> to <em class="example-input">100</em>. You should see these workflows in <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>:
 
 - AI Agent
 - ToolBox
@@ -515,13 +515,13 @@ We'll start by duplicating your Lab 2 workflow and modifying it to use the AI Ag
 ### 5.3 Add the AI Agent Activity
 
 1. On the left side panel, click <em class="button-click">Workflows</em>
-2. Search for <em class="example-input">AI Agent</em>
+2. Search for <em class="example-input">AI Agent</em>. **Don't** choose the <em class="example-input">AI Agent - Execute Single Tool</em> workflow here by mistake.
 3. Drag the <em class="lab-warning">AIAgent</em> workflow into the flow after the <em class="lab-warning">JSON Path Query</em> activity
 
 ### 5.4 Configure the AI Agent Task
 
 1. Click on the <em class="lab-warning">AI Agent</em> block to select it
-2. Expand the <em class="lab-warning">i_agent_task</em> input variable
+2. In the right side panel, expand the <em class="lab-warning">i_agent_task</em> input variable
 3. Configure it with the following text, replacing the placeholders with reference variables from the Variable Browser:
 
     ```
