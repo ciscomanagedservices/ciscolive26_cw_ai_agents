@@ -203,13 +203,28 @@ You have successfully configured:
 
 And with that, you have seen event stimulus to drive agentic network troubleshooting, all the way through root cause resolution.
 
-Now--imagine the power of it having the ThousandEyes alert, network path, and access to device level events/logs. What other types of your network issues do you think you can use Cisco workflows ambient agent to solve for you?
+Now--imagine the power of it having the ThousandEyes alert, network path, and access to device level events/logs. What other types of your network issues do you think you can use Cisco Workflows ambient agent to solve for you?
 
-## Take home ideas
+## Cleanup
+
+In order to avoid triggering unnecessary email alerts and workflow runs, please delete your ThousandEyes alert rule after you have successfully completed the lab.
+
+1. In ThousandEyes, go to <em class="button-click">Manage</em> -> <em class="button-click">Alert Rules</em>
+2. Find your alert rule (e.g., <em class="example-input">&lt;your_name&gt; - Congestion Alert</em>)
+3. Click the <em class="button-click">...</em> menu on the right side of your alert rule
+4. Click <em class="button-click">Delete</em> to remove the alert rule
+
+---
+
+## Next Steps
+
+In the next lab, you will learn how to create custom tools to extend the AI Agent's capabilities. This allows you to integrate additional data sources and APIs that the agent can use during troubleshooting.
+
+## Take Home Ideas
 
 We encourage you to continue to test and enhance the power of agentic troubleshooting at home. Some other things to consider trying are:
 
-* What tool would you build? Try to build another tool and integrate it into the AI agent. See the `scripts/tools/convert_toolbox_to_openai_tools.py`
-* Integrating both device event/log data and observability event data from ThousandEyes, Splunk, AppDynamics, or other tools
 * Integrate your knowledge base to augment and refine specific policies or processes
 * Integrate with your enterprise ITSM change management, such as ServiceNow
+* Add additional observability sources like AppDynamics, Datadog, or your own monitoring tools
+* Combine multiple event sources to give the agent richer context for troubleshooting

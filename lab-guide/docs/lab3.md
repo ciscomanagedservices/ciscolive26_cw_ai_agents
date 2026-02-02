@@ -54,9 +54,14 @@ RADKit (Remote Access and Diagnostic Kit) provides secure remote access to netwo
 ### 1.1 Connect to the Ubuntu Server
 
 1. From your workstation, SSH to the radkit-server:
-   ```bash
-   ssh root@198.18.1.250
-   ```
+
+    === "Mac/Linux"
+        ```bash
+        ssh root@198.18.1.250
+        ```
+
+    === "Windows (PuTTY)"
+        1. Open PuTTY and connect to <em class="example-input">198.18.1.250</em> with username <em class="example-input">root</em>
 ### 1.2 Verify Pre-loaded Files
 
 The RADKit service container and MCP server files are pre-loaded on the ubuntu-server.
@@ -448,23 +453,28 @@ Before testing the full AI Agent, let's verify that the individual tools work co
     !!! success "Success Criteria"
         The workflow should complete without errors and display the `show version` output from device r1.
 
-#### 4.3.2 Test Webex Notification Tool
+#### 4.3.2 Configure Global Variables
+
+Before testing the Webex notification tool, you need to configure two global variables that are used across multiple workflows.
+
+1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Variables</em>
+2. Find and update the following variables:
+    - <em class="lab-warning">AIAgent_Webex_Notification_Space_Name</em>: Set this to the name of the Webex space you created in Lab 1 (e.g., <em class="example-input">&lt;your_name&gt;-workflows-lab</em>)
+    - <em class="lab-warning">AIAgent_Meraki_Dashboard_URL</em>: Set this to your Cisco Workflows URL prefix. Look at your browser's address bar - the URL should look something like <em class="example-input">https://n219.dashboard.meraki.com/o/XXXXXX/manage/organization/overview</em>. Truncate everything after <em class="example-input">/manage</em> and ensure it ends with a <em class="example-input">/</em> (e.g., <em class="example-input">https://n219.dashboard.meraki.com/o/XXXXXX/manage/</em>).
+
+    !!! note
+        The <em class="lab-warning">AIAgent_Meraki_Dashboard_URL</em> variable is used to generate clickable links in Webex notifications that take you directly to the workflow run. If this doesn't match your environment, the links in notifications won't work correctly.
+
+#### 4.3.3 Test Webex Notification Tool
 
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
 2. Click on <em class="button-click">Tool - Send Webex Notification</em> to open the workflow
-3. On the right side panel, expand <em class="lab-warning">Variables</em>
-4. Update the local variable <em class="lab-warning">l_room_name</em> to the name of the Webex space you created in Lab 1 (e.g., <em class="example-input">&lt;your_name&gt;-workflows-lab</em>)
-5. Verify the local variable <em class="lab-warning">l_meraki_dashboard_url</em> matches your Cisco Workflows URL prefix. Look at your browser's address bar - the URL should start with something like <em class="example-input">https://n219.dashboard.meraki.com/o/XXXXXX/</em>. If the variable value doesn't match your URL prefix, update it accordingly.
-
-    !!! note
-        The <em class="lab-warning">l_meraki_dashboard_url</em> variable is used to generate clickable links in Webex notifications that take you directly to the workflow run. If this doesn't match your environment, the links in notifications won't work correctly.
-
-6. Click <em class="button-click">Run</em> in the upper right corner
-7. When prompted, fill out the input variables:
-    - <em class="lab-warning">i_instance_id:</em> <em class="example-input">test</em>
+3. Click <em class="button-click">Run</em> in the upper right corner
+4. When prompted, fill out the input variables:
+    - <em class="lab-warning">i_instance_id:</em> <em class="example-input">test</em> (or optionally copy the workflow instance ID from your browser's address bar - this is only used to generate a hyperlink in the Webex notification)
     - <em class="lab-warning">i_message:</em> <em class="example-input">Hello from the AI Agent lab! This is a test notification.</em>
-8. Click <em class="button-click">Run</em> to execute the workflow
-9. Check your Webex space to verify you received the message
+5. Click <em class="button-click">Run</em> to execute the workflow
+6. Check your Webex space to verify you received the message
 
     !!! success "Success Criteria"
         You should see your test message appear in your Webex space from Lab 1.
