@@ -423,11 +423,18 @@ After importing all workflows, validate that they are configured correctly:
 After importing the workflows, we need to configure the variables and targets properly.
 
 1. Go to <em class="button-click">Automation > Variables</em> and click on <em class="example-input">OPENAI_API_KEY</em>. Set it to the API key found in the dCloud pod information. If you can't find it, ask the instructor.
-   
+
     !!! note
-        In a production environment, API keys. and passwords should be set to secure strings so users can't reverse and see them, but for troubleshooting and ease for workflow importing, we use a plain string variable.
-   
-3. Go to <em class="button-click">Automation > Variables</em> and click on <em class="example-input">Webex Access Token</em>. Make sure it has a password set on it from import. You won't be able to validate the string since it is a secure string.
+        In a production environment, API keys and passwords should be set to secure strings so users can't reverse and see them, but for troubleshooting and ease for workflow importing, we use a plain string variable.
+
+2. Go to <em class="button-click">Automation > Variables</em> and click on <em class="example-input">Webex Access Token</em>. Make sure it has a password set on it from import. You won't be able to validate the string since it is a secure string.
+3. While still in <em class="button-click">Variables</em>, find and update the following:
+    - <em class="lab-warning">AIAgent_Webex_Notification_Space_Name</em>: Set this to the name of the Webex space you created in Lab 1 (e.g., <em class="example-input">&lt;your_name&gt;-workflows-lab</em>)
+    - <em class="lab-warning">AIAgent_Meraki_Dashboard_URL</em>: Set this to your Cisco Workflows URL prefix. Look at your browser's address bar - the URL should look something like <em class="example-input">https://n219.dashboard.meraki.com/o/XXXXXX/manage/organization/overview</em>. Truncate everything after <em class="example-input">/manage</em> and ensure it ends with a <em class="example-input">/</em> (e.g., <em class="example-input">https://n219.dashboard.meraki.com/o/XXXXXX/manage/</em>).
+
+    !!! note
+        The <em class="lab-warning">AIAgent_Meraki_Dashboard_URL</em> variable is used to generate clickable links in Webex notifications that take you directly to the workflow run. If this doesn't match your environment, the links in notifications won't work correctly.
+
 4. Go to <em class="button-click">Automation > Targets</em> and click on <em class="example-input">RADKit MCP - Lab</em>. Set the <em class="lab-warning">Remote Keys</em> to your Automation Remote you configured earlier.
 
     !!! warning
@@ -451,19 +458,7 @@ Before testing the full AI Agent, let's verify that the individual tools work co
     !!! success "Success Criteria"
         The workflow should complete without errors and display the `show version` output from device r1.
 
-#### 4.3.2 Configure Global Variables
-
-Before testing the Webex notification tool, you need to configure two global variables that are used across multiple workflows.
-
-1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Variables</em>
-2. Find and update the following variables:
-    - <em class="lab-warning">AIAgent_Webex_Notification_Space_Name</em>: Set this to the name of the Webex space you created in Lab 1 (e.g., <em class="example-input">&lt;your_name&gt;-workflows-lab</em>)
-    - <em class="lab-warning">AIAgent_Meraki_Dashboard_URL</em>: Set this to your Cisco Workflows URL prefix. Look at your browser's address bar - the URL should look something like <em class="example-input">https://n219.dashboard.meraki.com/o/XXXXXX/manage/organization/overview</em>. Truncate everything after <em class="example-input">/manage</em> and ensure it ends with a <em class="example-input">/</em> (e.g., <em class="example-input">https://n219.dashboard.meraki.com/o/XXXXXX/manage/</em>).
-
-    !!! note
-        The <em class="lab-warning">AIAgent_Meraki_Dashboard_URL</em> variable is used to generate clickable links in Webex notifications that take you directly to the workflow run. If this doesn't match your environment, the links in notifications won't work correctly.
-
-#### 4.3.3 Test Webex Notification Tool
+#### 4.3.2 Test Webex Notification Tool
 
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Workspace</em>
 2. Click on <em class="button-click">Tool - Send Webex Notification</em> to open the workflow
