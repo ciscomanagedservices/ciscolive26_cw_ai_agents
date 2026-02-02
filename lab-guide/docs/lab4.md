@@ -44,9 +44,9 @@ flowchart LR
 
 1. Go to [https://198.18.1.202](https://198.18.1.202), accept the certificate warning, and login with <em class="example-input">admin / welcome</em>.
 2. Set the new password and click <em class="button-click">change password</em>. <em class="example-input">Cisco123!</em> will work for the password policy.
-3. Add account <em class="example-input">pl4okteoylmox9t60vi1ghz456ixeoa7</em> and click <em class="button-click">continue</em>.
+3. Go to <em class="button-click">Agent > Account Group Token</em>, add token <em class="example-input">pl4okteoylmox9t60vi1ghz456ixeoa7</em>, and click <em class="button-click">Continue</em>.
 4. Click <em class="button-click">Complete</em>. Don't worry about the Gateway not pingable and NTP server errors. They will resolve.
-5. Change the <em class="lab-warning">hostname</em> to <em class="example-input">&lt;your_name&gt;-thousandeyes</em> and <em class="button-click">Save Changes</em>
+5. Go to <em class="button-click">Network</em> and update the <em class="lab-warning">hostname</em> to <em class="example-input">&lt;your_name&gt;-thousandeyes</em> and click <em class="button-click">Save Changes</em>.
 
 ### 1.2 Validate registration
 
@@ -67,14 +67,16 @@ flowchart LR
 ### 2.2 Configure an alert for the test
 1. <em class="button-click">Manage > Alert Rules > Add New Alert Rule</em>
 2. Set these parameters:
-    - <em class="lab-warning">Alert Type:</em> <em class="example-input">Web > HTTP Server</em>
-    - <em class="lab-warning">Alert Rule Name</em>: <em class="example-input">Congestion Alert</em>
+    - <em class="lab-warning">Alert Type:</em> <em class="example-input">Network > Agent to Server</em>
+    - <em class="lab-warning">Alert Rule Name</em>: <em class="example-input">&lt;your_name&gt; - Congestion Alert</em>
+    - <em class="lab-warning">Severity</em>: <em class="example-input">Major</em>
     - <em class="lab-warning">Tests</em>: <em class="example-input">&lt;Select your test name from 2.1&gt;</em>
     - <em class="lab-warning">Agents</em>: <em class="example-input">&lt;Select your agent&gt;</em>
 3. Change <em class="lab-warning">Alert Detection</em> to <em class="example-input">Manual</em>
 4. Set the rules to:
-    - <em class="lab-warning">Latency</em> >= <em class="example-input">200ms</em>
-    - <em class="lab-warning">Jitter</em> >= <em class="example-input">200ms</em>
+    - <em class="example-input">'Any'</em> (not all) conditions met by the same <em class="example-input">1</em> agent
+    - <em class="lab-warning">Latency</em> >= <em class="example-input">200ms</em> (You will need to click the icon next to `-` to switch from low/medium/high to static numbers)
+    - <em class="lab-warning">Jitter</em> >= <em class="example-input">200ms</em> (You will need to click the icon next to `-` to switch from low/medium/high to static numbers)
     - <em class="lab-warning">Packet Loss</em> >= <em class="example-input">5%</em>
     - <em class="lab-warning">Error</em> is present
   
@@ -104,7 +106,18 @@ flowchart LR
 7. No <em class="lab-warning">Auth Type</em> is needed since the API key is in the URL, so you can leave the Auth Type as <em class="example-input">Custom</em>.
 8. Click <em class="button-click">Save and assign operation</em>
 9. Set <em class="lab-warning">Operation Name</em> to <em class="example-input">&lt;your_name&gt;-congestion-json</em> and choose the <em class="lab-warning">Preset Configuration</em> of <em class="example-input">Splunk</em>. We aren't sending to Splunk but the preset for Splunk is a nice simple JSON format that Cisco Workflows and our AI agent will nicely process. It should prepopulate the <em class="lab-warning">Content-Type</em> header for <em class="example-input">application/json</em> which we want.
-10. Leave this browser tab open. We will run a test by clicking the <em class="button-click">test</em> button after we configure our workflow to handle ThousandEyes.
+10. Click <em class="button-click">Save</em>.
+11. Go back to the <em class="button-click">Alert Rules</em> tab (you may need to refresh the page). Set the <em class="lab-warning">Integration</em> to your newly created webhook. Click <em class="button-click">Save Changes</em>.
+
+<figure markdown>
+  ![ThousandEyes Alert Notifications](./img/lab4/lab4_2.4_te_alert_notifications.jpg){ width="600" }
+  <figcaption>Alert Rule Notifications tab with webhook integration selected</figcaption>
+</figure>
+
+<figure markdown>
+  ![ThousandEyes Integration Setup](./img/lab4/lab4_2.4_te_integration_setup.jpg){ width="600" }
+  <figcaption>Integrations 2.0 - Custom Webhook operation setup</figcaption>
+</figure>
 
 ### 2.5 Create ThousandEyes API Token
 
@@ -142,7 +155,7 @@ The ThousandEyes workflows require an API Bearer Token to query path visualizati
     - <em class="lab-warning">Type:</em> <em class="example-input">Webhook rule</em>
     - <em class="lab-warning">Title:</em> <em class="example-input">&lt;your_name&gt;-te-alert</em>
     - <em class="lab-warning">Webhook:</em> Select your webhook (<em class="example-input">&lt;your_name&gt;-te</em>)
-    - <em class="lab-warning">Workflow:</em> Select <em class="example-input">te_alert_webhook</em>
+    - <em class="lab-warning">Workflow:</em> Select <em class="example-input">ThousandEyes alert webhook</em>
 4. Click <em class="button-click">Save</em>
 
 ## Step 3: Create congestion on the network to generate an incident
@@ -153,13 +166,50 @@ The ThousandEyes workflows require an API Bearer Token to query path visualizati
 
 ### 3.2 Validating the troubleshooting run
 1. It will take a few minutes for ThousandEyes to see the result, since we have a 2 minute alert. Any one have any good stories or jokes? If not, Steve is going to play music he likes which may not be to your favor.
-2. If you signed up for an email alert, you should receive it soon. Otherwise, check the <em class="lab-warning">workflow run</em> section in Cisco Workflows to validate that the workflow has started to run.
+2. If you signed up for an email alert, you should receive it soon. You can view the triggered workflow by going to <em class="button-click">Automation > Run Monitoring</em>, searching for <em class="example-input">ThousandEyes alert webhook</em>, then click <em class="button-click">view run details</em>.
 3. It should now be troubleshooting the network. This takes some time to analyze output and determine the action to take for remediation--roughly 5 minutes with current early 2026 models. To watch for progress as it troubleshoots you can click <em class="button-click">...</em> on the <em class="lab-warning">AI Agent</em> subworkflow in the webhook workflow run, and then click <em class="button-click">Update I_messages variable</em> to watch for the latest updates in realtime. You will want to change the iteration in the main <em class="lab-warning">Agent Iteration Loop</em> to the last or second to last iteration (sometimes the last iteration is still processing and won't have content).
 4. Alternatively, you can just wait for Webex Teams summary messages at milestones.
 5. Eventually you should see it request a task to be approved. Go to <em class="button-click">Automation > User Tasks</em> to see if it is requesting a task approval. If it needs more info from you, it may also request something in <em class="lab-warning">Prompts</em> but for this use case we don't expect it to need a prompt as it should have all the info it needs from ThousandEyes + RADKit to identify what it needs to solve the issue.
 6. Once you see the change request, take a look at it. You should see a well curated explanation of the symptom, isolation to the root cause, and suggested fix if the change is approved. It even qualifies the risk of the change.
 7. Click <em class="button-click">Approve</em>. It will take a few more minutes, but then the policy should be removed and ThousandEyes alert should clear.
 8. The agent may keep assessing. We often see that after the fix it analyzes like a Problem Manager would, to determine how to prevent this issue from ever occurring again. See if you see that and a second change request.
+
+### 3.3 Troubleshooting
+
+If you are not seeing an alert trigger or the workflow is not running, try these troubleshooting steps:
+
+!!! tip "ThousandEyes Alert Rule Configuration"
+    In ThousandEyes, go to <em class="button-click">Manage > Alert Rules > &lt;your Rule&gt;</em>:
+
+    - Verify you have tests selected
+    - Verify your alert conditions (latency > 200ms, etc.)
+    - Make sure it says <em class="example-input">'Any'</em>, not 'All'
+    - Click the <em class="button-click">Notifications</em> tab and verify you have your email and integration set
+
+!!! tip "Check ThousandEyes Alerts"
+    In ThousandEyes, click <em class="button-click">Alerts</em>. Do you see your alert?
+
+!!! tip "Check ThousandEyes Test Status"
+    To view the status of your ThousandEyes Test, go to <em class="button-click">Network & App Synthetics > Views</em>, select your test, then <em class="button-click">Agent to Server</em>. Do you see a spike in latency?
+
+!!! tip "Verify Automation Rule in Cisco Workflows"
+    Verify your automation rule in Cisco Workflows is enabled, set to the webhook, and applied to <em class="example-input">ThousandEyes alert webhook</em>.
+
+!!! tip "Check Webhook History"
+    Go to <em class="button-click">Automation > Rules > History</em>. Do you see your webhook event?
+
+!!! tip "Check ThousandEyes Connector"
+    If you don't see your webhook but have an alert, go back to <em class="button-click">Integrations 2.0 > Connectors</em> ([https://app.thousandeyes.com/manage/integrations/v2/connectors](https://app.thousandeyes.com/manage/integrations/v2/connectors)).
+
+    - Does your connector go to the right URL?
+    - Does it have assigned operations?
+
+!!! tip "Retrigger the Alert"
+    If you need to retrigger the alert, SSH to R2 and apply these commands:
+    ```
+    event manager run CONGESTION_OFF
+    event manager run CONGESTION_ON
+    ```
 
 ---
 
