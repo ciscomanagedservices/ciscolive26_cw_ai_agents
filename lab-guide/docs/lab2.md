@@ -33,31 +33,21 @@ flowchart LR
 4. Back on the <em class="lab-warning">Remote Targets</em> page, click the <em class="button-click">...</em> under <em class="lab-warning">Actions</em> and choose <em class="button-click">Connect</em>.
 5. Click <em class="button-click">Generate Package</em> from the popup. This will generate and automatically download a file <em class="example-input">remotePackage.zip</em>.
 6. Copy the file over to the wf-remote server (<em class="example-input">198.18.1.204</em>):
+    ```sh
+    scp remotePackage.zip root@198.18.1.204:/root/
+    ```
 
-    === "Mac/Linux"
-        ```sh
-        scp remotePackage.zip root@198.18.1.204:/root/
-        ```
-
-    === "Windows (WinSCP)"
-        1. Open WinSCP and connect to <em class="example-input">198.18.1.204</em> with username <em class="example-input">root</em>
-        2. Navigate to <em class="example-input">/root/</em> on the remote side
-        3. Drag and drop <em class="example-input">remotePackage.zip</em> from your local machine to the remote side
+    !!! tip "Windows Users"
+        Use WinSCP to connect to <em class="example-input">198.18.1.204</em> with username <em class="example-input">root</em>, navigate to <em class="example-input">/root/</em> on the remote side, and drag and drop <em class="example-input">remotePackage.zip</em> from your local machine.
 
 7. SSH to the wf-remote server and run the registration script:
+    ```sh
+    ssh root@198.18.1.204
+    ./register_remote.py /root/remotePackage.zip
+    ```
 
-    === "Mac/Linux"
-        ```sh
-        ssh root@198.18.1.204
-        ./register_remote.py /root/remotePackage.zip
-        ```
-
-    === "Windows (PuTTY)"
-        1. Open PuTTY and connect to <em class="example-input">198.18.1.204</em> with username <em class="example-input">root</em>
-        2. Run the registration script:
-            ```sh
-            ./register_remote.py /root/remotePackage.zip
-            ```
+    !!! tip "Windows Users"
+        Use PuTTY to connect to <em class="example-input">198.18.1.204</em> with username <em class="example-input">root</em>, then run the registration script shown above.
 
 You will be prompted to say 'yes' to initiate registration after it checks the existing status. If there are old certifications or registration (i.e. you ran the script and/or registered before) it will first prompt to remove the certificates before prompting to register.
 
