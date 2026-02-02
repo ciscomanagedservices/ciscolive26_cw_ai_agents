@@ -396,6 +396,7 @@ You have successfully extended the AI Agent with a custom tool:
 ### Next Steps
 
 Consider extending your AI Agent with additional tools:
+
 - Integration with your ITSM system (ServiceNow, Jira)
 - Database lookups for configuration management
 - Additional monitoring integrations (AppDynamics, Datadog)
