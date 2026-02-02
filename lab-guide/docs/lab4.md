@@ -178,38 +178,14 @@ The ThousandEyes workflows require an API Bearer Token to query path visualizati
 
 If you are not seeing an alert trigger or the workflow is not running, try these troubleshooting steps:
 
-!!! tip "ThousandEyes Alert Rule Configuration"
-    In ThousandEyes, go to <em class="button-click">Manage > Alert Rules > &lt;your Rule&gt;</em>:
-
-    - Verify you have tests selected
-    - Verify your alert conditions (latency > 200ms, etc.)
-    - Make sure it says <em class="example-input">'Any'</em>, not 'All'
-    - Click the <em class="button-click">Notifications</em> tab and verify you have your email and integration set
-
-!!! tip "Check ThousandEyes Alerts"
-    In ThousandEyes, click <em class="button-click">Alerts</em>. Do you see your alert?
-
-!!! tip "Check ThousandEyes Test Status"
-    To view the status of your ThousandEyes Test, go to <em class="button-click">Network & App Synthetics > Views</em>, select your test, then <em class="button-click">Agent to Server</em>. Do you see a spike in latency?
-
-!!! tip "Verify Automation Rule in Cisco Workflows"
-    Verify your automation rule in Cisco Workflows is enabled, set to the webhook, and applied to <em class="example-input">ThousandEyes alert webhook</em>.
-
-!!! tip "Check Webhook History"
-    Go to <em class="button-click">Automation > Rules > History</em>. Do you see your webhook event?
-
-!!! tip "Check ThousandEyes Connector"
-    If you don't see your webhook but have an alert, go back to <em class="button-click">Integrations 2.0 > Connectors</em> ([https://app.thousandeyes.com/manage/integrations/v2/connectors](https://app.thousandeyes.com/manage/integrations/v2/connectors)).
-
-    - Does your connector go to the right URL?
-    - Does it have assigned operations?
-
-!!! tip "Retrigger the Alert"
-    If you need to retrigger the alert, SSH to R2 and apply these commands:
-    ```
-    event manager run CONGESTION_OFF
-    event manager run CONGESTION_ON
-    ```
+!!! tip "Troubleshooting Checklist"
+    - **ThousandEyes Alert Rule Configuration:** In ThousandEyes, go to <em class="button-click">Manage > Alert Rules > &lt;your Rule&gt;</em>. Verify you have tests selected, verify your alert conditions (latency > 200ms, etc.), make sure it says <em class="example-input">'Any'</em> not 'All', and click the <em class="button-click">Notifications</em> tab to verify you have your email and integration set.
+    - **Check ThousandEyes Alerts:** In ThousandEyes, click <em class="button-click">Alerts</em>. Do you see your alert?
+    - **Check ThousandEyes Test Status:** Go to <em class="button-click">Network & App Synthetics > Views</em>, select your test, then <em class="button-click">Agent to Server</em>. Do you see a spike in latency?
+    - **Verify Automation Rule in Cisco Workflows:** Verify your automation rule is enabled, set to the webhook, and applied to <em class="example-input">ThousandEyes alert webhook</em>.
+    - **Check Webhook History:** Go to <em class="button-click">Automation > Rules > History</em>. Do you see your webhook event?
+    - **Check ThousandEyes Connector:** If you don't see your webhook but have an alert, go back to <em class="button-click">Integrations 2.0 > Connectors</em> ([https://app.thousandeyes.com/manage/integrations/v2/connectors](https://app.thousandeyes.com/manage/integrations/v2/connectors)). Does your connector go to the right URL? Does it have assigned operations?
+    - **Retrigger the Alert:** If you need to retrigger the alert, SSH to R2 and run `event manager run CONGESTION_OFF` then `event manager run CONGESTION_ON`.
 
 ---
 
