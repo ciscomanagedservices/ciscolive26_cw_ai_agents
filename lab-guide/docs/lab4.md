@@ -205,6 +205,17 @@ And with that, you have seen event stimulus to drive agentic network troubleshoo
 
 Now--imagine the power of it having the ThousandEyes alert, network path, and access to device level events/logs. What other types of your network issues do you think you can use Cisco workflows ambient agent to solve for you?
 
+## Cleanup
+
+In order to avoid triggering unnecessary email alerts and workflow runs, please delete your ThousandEyes alert rule after you have successfully completed the lab.
+
+1. In ThousandEyes, go to <em class="button-click">Manage</em> -> <em class="button-click">Alert Rules</em>
+2. Find your alert rule (e.g., <em class="example-input">&lt;your_name&gt; - Congestion Alert</em>)
+3. Click the <em class="button-click">...</em> menu on the right side of your alert rule
+4. Click <em class="button-click">Delete</em> to remove the alert rule
+
+---
+
 ## Take home ideas
 
 We encourage you to continue to test and enhance the power of agentic troubleshooting at home. Some other things to consider trying are:
