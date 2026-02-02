@@ -455,14 +455,7 @@ Before testing the Webex notification tool, you need to configure two global var
 1. Go to <em class="button-click">Automation</em> -> <em class="button-click">Variables</em>
 2. Find and update the following variables:
     - <em class="lab-warning">AIAgent_Webex_Notification_Space_Name</em>: Set this to the name of the Webex space you created in Lab 1 (e.g., <em class="example-input">&lt;your_name&gt;-workflows-lab</em>)
-    - <em class="lab-warning">AIAgent_Meraki_Dashboard_URL</em>: Set this to your Cisco Workflows URL prefix. Look at your browser's address bar - the URL should start with something like <em class="example-input">https://n219.dashboard.meraki.com/o/XXXXXX/</em>. Truncate the URL at <em class="example-input">/manage</em> and ensure it ends with a <em class="example-input">/</em>.
-
-    !!! tip "Finding Your Meraki Dashboard URL"
-        Look at the current URL in your web browser. It will look something like:
-        `https://n219.dashboard.meraki.com/o/XXXXXX/manage/organization/overview`
-
-        Truncate everything after `/manage` and add a trailing `/` to get:
-        `https://n219.dashboard.meraki.com/o/XXXXXX/manage/`
+    - <em class="lab-warning">AIAgent_Meraki_Dashboard_URL</em>: Set this to your Cisco Workflows URL prefix. Look at your browser's address bar - the URL should look something like <em class="example-input">https://n219.dashboard.meraki.com/o/XXXXXX/manage/organization/overview</em>. Truncate everything after <em class="example-input">/manage</em> and ensure it ends with a <em class="example-input">/</em> (e.g., <em class="example-input">https://n219.dashboard.meraki.com/o/XXXXXX/manage/</em>).
 
     !!! note
         The <em class="lab-warning">AIAgent_Meraki_Dashboard_URL</em> variable is used to generate clickable links in Webex notifications that take you directly to the workflow run. If this doesn't match your environment, the links in notifications won't work correctly.
