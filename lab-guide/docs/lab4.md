@@ -110,12 +110,12 @@ flowchart LR
 11. Go back to the <em class="button-click">Alert Rules</em> tab (you may need to refresh the page). Set the <em class="lab-warning">Integration</em> to your newly created webhook. Click <em class="button-click">Save Changes</em>.
 
 <figure markdown>
-  ![ThousandEyes Alert Notifications](./img/lab4/lab4_2.4_te_alert_notifications.png){ width="600" }
+  ![ThousandEyes Alert Notifications](./img/lab4/lab4_2.4_te_alert_notifications.jpg){ width="600" }
   <figcaption>Alert Rule Notifications tab with webhook integration selected</figcaption>
 </figure>
 
 <figure markdown>
-  ![ThousandEyes Integration Setup](./img/lab4/lab4_2.4_te_integration_setup.png){ width="600" }
+  ![ThousandEyes Integration Setup](./img/lab4/lab4_2.4_te_integration_setup.jpg){ width="600" }
   <figcaption>Integrations 2.0 - Custom Webhook operation setup</figcaption>
 </figure>
 
