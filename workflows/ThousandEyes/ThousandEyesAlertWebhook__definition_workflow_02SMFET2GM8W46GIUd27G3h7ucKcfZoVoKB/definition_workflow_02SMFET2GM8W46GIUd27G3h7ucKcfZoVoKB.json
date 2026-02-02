@@ -96,7 +96,6 @@
             "variable_workflow_02SMFKPDDEF722uc5eAhU22xwyIHdFQ9AzN": "$activity.definition_activity_02SMFFXO5I1N41Z30d58JCsC7jyjzuAKm6v.output.jsonpath_queries.testId$"
           },
           "runtime_user": {
-            "override_target_runtime_user": false,
             "target_default": true
           },
           "skip_execution": false,
@@ -160,6 +159,34 @@
           "workflow_name": "AI Agent"
         },
         "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_02T75FXTDQOLA6iGk5kBm0tN9oH3UyWRD0e",
+        "name": "Webex - Send AI Agent Final Message",
+        "title": "Webex - Send AI Agent Final Message",
+        "type": "workflow.sub_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": false,
+          "description": "Sends a webex notification to space. No replies through this tool",
+          "display_name": "Webex - Send AI Agent Final Message",
+          "input": {
+            "variable_workflow_02RZPN3LZFG3X5dPTAkTgA8ClkjESLkxr0v": "$activity.definition_activity_02SMFPENCJ3FK0dZ0ulEsGGgYLr1aNobq2I.output.variable_workflow_02RYUNSPTOOH316R9o8Os3ImsRskHtaZ8s2$",
+            "variable_workflow_02RZPPQVQEKF066kT7RJHnrWVkkFpAWYf1r": "$workflow.definition_workflow_02SMFET2GM8W46GIUd27G3h7ucKcfZoVoKB.output.instance_id$"
+          },
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "execute_on_this_target": true,
+            "target_id": "definition_target_01QJVFH72J8QB0eRSLer8fqmxTlpgDM4cj5",
+            "target_type": "web-service.endpoint"
+          },
+          "workflow_id": "definition_workflow_02RZPD2GUXGG35l0Beyb336eflqiM7Hm7cu",
+          "workflow_name": "Tool - Send Webex Notification"
+        },
+        "object_type": "definition_activity"
       }
     ],
     "categories": [
@@ -198,6 +225,55 @@
       },
       "disabled": false,
       "unique_name": "ruleevent_02SMAZJJGJ2DK4M9abpenOvQ7v0mS4gPD0C"
+    },
+    "ruleevent_02T74IM5TAF9F6oCZpNPWrBzYFBvFoiKCSb": {
+      "name": "demo-te-alert",
+      "title": "demo-te-alert",
+      "type": "webhook.rule_event",
+      "rule_type": "rule_event",
+      "base_type": "rule",
+      "object_type": "ruleevent",
+      "version": "1.0.0",
+      "properties": {
+        "description": "",
+        "disabled": false,
+        "display_name": "demo-te-alert",
+        "rule_type": "rule_event",
+        "title": "demo-te-alert",
+        "webhook_id": "webhook_02T7454VT99MY4X0oprzW7tuXiJrjjEpQpz",
+        "workflows_config": [
+          {
+            "disabled": false,
+            "ref_id": "definition_workflow_02SMFET2GM8W46GIUd27G3h7ucKcfZoVoKB",
+            "status": {
+              "state": "started-polling",
+              "prev_state": "started-polling",
+              "error_msg": ""
+            }
+          }
+        ]
+      },
+      "disabled": false,
+      "unique_name": "ruleevent_02T74IM5TAF9F6oCZpNPWrBzYFBvFoiKCSb"
+    }
+  },
+  "targets": {
+    "definition_target_01QJVFH72J8QB0eRSLer8fqmxTlpgDM4cj5": {
+      "unique_name": "definition_target_01QJVFH72J8QB0eRSLer8fqmxTlpgDM4cj5",
+      "name": "Webex Teams",
+      "title": "Webex Teams",
+      "type": "web-service.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "description": "Webex Teams",
+        "disable_certificate_validation": false,
+        "display_name": "Webex Teams",
+        "host": "webexapis.com",
+        "no_runtime_user": true,
+        "port": 443,
+        "protocol": "https"
+      }
     }
   },
   "webhooks": {
@@ -214,10 +290,25 @@
       },
       "unique_name": "webhook_02SMAYGHU5YNZ2CqDQg76W4Wu7GFzBIU0y3",
       "expires_on": "2026-07-08T14:04:34.422Z"
+    },
+    "webhook_02T7454VT99MY4X0oprzW7tuXiJrjjEpQpz": {
+      "name": "demo-te",
+      "title": "demo-te",
+      "type": "generic.webhook",
+      "base_type": "webhook",
+      "object_type": "webhook",
+      "version": "1.0.0",
+      "properties": {
+        "display_name": "demo-te",
+        "request_content_type": "application/json"
+      },
+      "unique_name": "webhook_02T7454VT99MY4X0oprzW7tuXiJrjjEpQpz",
+      "expires_on": "2027-02-02T01:10:09.015Z"
     }
   },
   "dependent_workflows": [
     "definition_workflow_02SMB04MNOE315zEsrvffSMFtAac9apueYj",
-    "definition_workflow_02RYUNSPJQ28O5flKZ5yxe70kvWJQt5A4hI"
+    "definition_workflow_02RYUNSPJQ28O5flKZ5yxe70kvWJQt5A4hI",
+    "definition_workflow_02RZPD2GUXGG35l0Beyb336eflqiM7Hm7cu"
   ]
 }
