@@ -466,9 +466,9 @@ Before testing the Webex notification tool, you need to configure two global var
 2. Click on <em class="button-click">Tool - Send Webex Notification</em> to open the workflow
 3. Click <em class="button-click">Run</em> in the upper right corner
 4. When prompted, fill out the input variables:
-    - <em class="lab-warning">i_instance_id:</em> <em class="example-input">test</em>
+    - <em class="lab-warning">i_instance_id:</em> <em class="example-input">test</em> (or optionally copy the workflow instance ID from your browser's address bar - this is only used to generate a hyperlink in the Webex notification)
     - <em class="lab-warning">i_message:</em> <em class="example-input">Hello from the AI Agent lab! This is a test notification.</em>
-5. Click <em class="button-click">Run</em> to execute the workflow
+5. Click <em class="button-click">Run</em> again to execute the workflow
 6. Check your Webex space to verify you received the message
 
     !!! success "Success Criteria"
