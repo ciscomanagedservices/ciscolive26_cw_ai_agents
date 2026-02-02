@@ -54,9 +54,14 @@ RADKit (Remote Access and Diagnostic Kit) provides secure remote access to netwo
 ### 1.1 Connect to the Ubuntu Server
 
 1. From your workstation, SSH to the radkit-server:
-   ```bash
-   ssh root@198.18.1.250
-   ```
+
+    === "Mac/Linux"
+        ```bash
+        ssh root@198.18.1.250
+        ```
+
+    === "Windows (PuTTY)"
+        1. Open PuTTY and connect to <em class="example-input">198.18.1.250</em> with username <em class="example-input">root</em>
 ### 1.2 Verify Pre-loaded Files
 
 The RADKit service container and MCP server files are pre-loaded on the ubuntu-server.
