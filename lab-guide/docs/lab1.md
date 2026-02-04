@@ -212,16 +212,21 @@ Here we will first build a basic workflow to acknowledge that we can get an even
 8. Click on the <em class="lab-warning">Webex - Post Message to Room</em> activity block and configure:
     - <em class="lab-warning">Access Token:</em> Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and select your Webex API key variable
     - <em class="lab-warning">Room ID:</em> Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> and navigate to <em class="button-click">Activities > Webex - Search for Room > Room ID</em>
-    - <em class="lab-warning">Markdown Message:</em> Click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right and add the variable <em class="button-click"> > Webhook  > Output > Request Headers</em>
+    - <em class="lab-warning">Markdown Message:</em> Enter <em class="example-input">## It Worked!</em> then press enter a few times, then click the <img src="https://documentation.meraki.com/@api/deki/files/32397/variable_reference_icon.jpg" alt="variable reference icon" style="height: 14px; vertical-align: middle;"> on the right and add the variable <em class="button-click">Webhook > Output > Request Headers</em>
     - This will take the JSON from the webhook and send it in a Webex Teams message
-9. Configure the target:
-    - Under <em class="lab-warning">Target</em>, choose <em class="button-click">Override workflow target</em>
+9. Configure the workflow target. Click off the activity back to the workflow canvas and scroll down to <em class="lab-warning">Target</em>. Since all activities in this workflow use the same target, we can set it once at the workflow level:
+    - Select <em class="button-click">Execute on this target</em>
     - Click the <em class="button-click">+</em> to add a new target
     - Create an <em class="example-input">HTTP endpoint</em> with protocol of <em class="example-input">HTTPS</em>
     - Set <em class="lab-warning">host address</em> to <em class="example-input">webexapis.com</em>
     - Set <em class="lab-warning">No account keys</em> to <em class="example-input">True</em>
     - Check <em class="lab-warning">Disable server certification validation</em>
     - Click <em class="button-click">Save</em>
+
+    <figure markdown>
+      ![Workflow target configuration for webexapis.com](./img/lab1/lab1_5.3a.jpg){ width="600" }
+    </figure>
+
 10. You should now be able to click <em class="button-click">Validate</em>, and <em class="button-click">Run</em> in the upper right and receive a message in your Webex space.
 
     <figure markdown>
