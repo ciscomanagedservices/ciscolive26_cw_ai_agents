@@ -42,7 +42,7 @@ flowchart LR
 
 ### 1.1 Register the agent appliance
 
-1. Go to [https://198.18.1.202](https://198.18.1.202), accept the certificate warning, and login with <em class="example-input">admin / welcome</em>.
+1. Go to [https://198.18.1.202/login](https://198.18.1.202/login), accept the certificate warning, and login with <em class="example-input">admin / welcome</em>.
 2. Set the new password and click <em class="button-click">change password</em>. <em class="example-input">Cisco123!</em> will work for the password policy.
 3. Go to <em class="button-click">Agent > Account Group Token</em>, add token <em class="example-input">pl4okteoylmox9t60vi1ghz456ixeoa7</em>, and click <em class="button-click">Continue</em>.
 4. Click <em class="button-click">Complete</em>. Don't worry about the Gateway not pingable and NTP server errors. They will resolve.
