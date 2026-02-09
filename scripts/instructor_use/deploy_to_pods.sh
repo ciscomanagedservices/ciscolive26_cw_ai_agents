@@ -5,14 +5,18 @@
 #
 # CSV format: vpn_url,username,password
 # Example:
-#   dcloud-rtp-anyconnect.cisco.com,v2708user1,abc123
+#   dcloud-rtp-anyconnect.cisco.com,v2708user1,b73516
 #   dcloud-rtp-anyconnect.cisco.com,v2708user2,abc123
 #
 # Requirements:
 #   - Cisco Secure Client installed
 #   - sshpass installed (brew install hudochenkov/sshpass/sshpass)
 #
-# v1.0 - 4-Feb-2026
+# v1.0 - 4-Feb-2026 - Initial version
+# v1.1 - 9-Feb-2026 - Added pod validation tests after update
+#                   - Fixed SSH stdin issue (added -n flag) that caused loop to exit after first pod
+#                   - Removed MCP test (requires manual SSO enrollment first)
+#                   - Added prerequisite check for validation script
 
 # Don't use set -e as we want to continue on failures
 
@@ -20,6 +24,7 @@
 VPN_CLI="/opt/cisco/secureclient/bin/vpn"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPT_TO_DEPLOY="${SCRIPT_DIR}/update_scripts_github.sh"
+VALIDATION_SCRIPT="${SCRIPT_DIR}/pod_validation_test.sh"
 TARGET_HOST="198.18.1.250"
 TARGET_USER="root"
 TARGET_PASS="cisco"
@@ -157,16 +162,24 @@ EOF
 scp_script() {
     local pod_log="$1"
 
-    log_info "Copying update script to target..."
+    log_info "Copying scripts to target..."
 
-    if sshpass -p "$TARGET_PASS" scp -o StrictHostKeyChecking=no -o ConnectTimeout=$SSH_TIMEOUT \
+    # Copy update script
+    if ! sshpass -p "$TARGET_PASS" scp -o StrictHostKeyChecking=no -o ConnectTimeout=$SSH_TIMEOUT \
         "$SCRIPT_TO_DEPLOY" "${TARGET_USER}@${TARGET_HOST}:/tmp/update_scripts_github.sh" >> "$pod_log" 2>&1; then
-        log_status "Script copied successfully"
-        return 0
-    else
-        log_error "Failed to copy script to target"
+        log_error "Failed to copy update script to target"
         return 1
     fi
+
+    # Copy validation script
+    if ! sshpass -p "$TARGET_PASS" scp -o StrictHostKeyChecking=no -o ConnectTimeout=$SSH_TIMEOUT \
+        "$VALIDATION_SCRIPT" "${TARGET_USER}@${TARGET_HOST}:/tmp/pod_validation_test.sh" >> "$pod_log" 2>&1; then
+        log_error "Failed to copy validation script to target"
+        return 1
+    fi
+
+    log_status "Scripts copied successfully"
+    return 0
 }
 
 run_update_script() {
@@ -176,7 +189,7 @@ run_update_script() {
 
     echo "=== UPDATE SCRIPT OUTPUT ===" >> "$pod_log"
 
-    if timeout "$SCRIPT_TIMEOUT" sshpass -p "$TARGET_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=$SSH_TIMEOUT \
+    if timeout "$SCRIPT_TIMEOUT" sshpass -p "$TARGET_PASS" ssh -n -o StrictHostKeyChecking=no -o ConnectTimeout=$SSH_TIMEOUT \
         "${TARGET_USER}@${TARGET_HOST}" "bash /tmp/update_scripts_github.sh" >> "$pod_log" 2>&1; then
         log_status "Update script completed successfully"
         return 0
@@ -198,7 +211,7 @@ run_mcp_test() {
 
     echo "=== MCP TEST OUTPUT ===" >> "$pod_log"
 
-    if timeout 120 sshpass -p "$TARGET_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=$SSH_TIMEOUT \
+    if timeout 120 sshpass -p "$TARGET_PASS" ssh -n -o StrictHostKeyChecking=no -o ConnectTimeout=$SSH_TIMEOUT \
         "${TARGET_USER}@${TARGET_HOST}" "$MCP_TEST_SCRIPT" >> "$pod_log" 2>&1; then
         # Check if test output contains success indicators
         if grep -q "Test suite completed" "$pod_log"; then
@@ -215,6 +228,34 @@ run_mcp_test() {
     fi
 }
 
+run_validation_test() {
+    local pod_log="$1"
+
+    log_info "Running pod validation tests..."
+
+    echo "=== VALIDATION TEST OUTPUT ===" >> "$pod_log"
+
+    if timeout 300 sshpass -p "$TARGET_PASS" ssh -n -o StrictHostKeyChecking=no -o ConnectTimeout=$SSH_TIMEOUT \
+        "${TARGET_USER}@${TARGET_HOST}" "bash /tmp/pod_validation_test.sh" >> "$pod_log" 2>&1; then
+        # Check if all tests passed
+        if grep -q "All validation tests passed" "$pod_log"; then
+            log_status "Validation tests passed"
+            return 0
+        else
+            log_warning "Validation completed with some failures"
+            return 1
+        fi
+    else
+        local exit_code=$?
+        if [ $exit_code -eq 124 ]; then
+            log_error "Validation tests timed out"
+        else
+            log_error "Validation tests failed with exit code: $exit_code"
+        fi
+        return 1
+    fi
+}
+
 #######################################
 # Process Single Pod
 #######################################
@@ -226,7 +267,7 @@ process_pod() {
     CURRENT_POD=$((CURRENT_POD + 1))
     local pod_log="${LOG_DIR}/pod_${user}_${TIMESTAMP}.log"
     local update_ok=false
-    local mcp_ok=false
+    local validation_ok=false
     local fail_reason=""
 
     log_header "Pod ${CURRENT_POD}/${TOTAL_PODS}: ${user}"
@@ -264,14 +305,16 @@ process_pod() {
         fail_reason="Update script failed"
     fi
 
-    # Step 4: Run MCP test (even if update had issues, try the test)
-    if run_mcp_test "$pod_log"; then
-        mcp_ok=true
-    else
-        if [ -z "$fail_reason" ]; then
-            fail_reason="MCP test failed"
+    # Step 4: Run validation tests (only if update succeeded)
+    if [ "$update_ok" = true ]; then
+        if run_validation_test "$pod_log"; then
+            validation_ok=true
         else
-            fail_reason="${fail_reason}, MCP test failed"
+            if [ -z "$fail_reason" ]; then
+                fail_reason="Validation failed"
+            else
+                fail_reason="${fail_reason}, Validation failed"
+            fi
         fi
     fi
 
@@ -282,9 +325,9 @@ process_pod() {
     echo "" >> "$pod_log"
     echo "Completed: $(date)" >> "$pod_log"
 
-    if [ "$update_ok" = true ] && [ "$mcp_ok" = true ]; then
+    if [ "$update_ok" = true ] && [ "$validation_ok" = true ]; then
         SUCCESS_PODS+=("$user")
-        echo "RESULT: SUCCESS - Update: OK, MCP Test: OK" >> "$pod_log"
+        echo "RESULT: SUCCESS - Update: OK, Validation: OK" >> "$pod_log"
         log_status "Pod ${user} completed successfully"
         return 0
     else
@@ -314,7 +357,7 @@ print_summary() {
     if [ $success_count -gt 0 ]; then
         echo -e "${GREEN}SUCCESSFUL PODS:${NC}" | tee -a "$SUMMARY_LOG"
         for pod in "${SUCCESS_PODS[@]}"; do
-            echo "  [OK] $pod - Update: OK, MCP Test: OK" | tee -a "$SUMMARY_LOG"
+            echo "  [OK] $pod - Update: OK, Validation: OK" | tee -a "$SUMMARY_LOG"
         done
         echo "" | tee -a "$SUMMARY_LOG"
     fi
@@ -359,6 +402,12 @@ check_prerequisites() {
     # Check script to deploy
     if [ ! -f "$SCRIPT_TO_DEPLOY" ]; then
         log_error "Script to deploy not found: $SCRIPT_TO_DEPLOY"
+        errors=$((errors + 1))
+    fi
+
+    # Check validation script
+    if [ ! -f "$VALIDATION_SCRIPT" ]; then
+        log_error "Validation script not found: $VALIDATION_SCRIPT"
         errors=$((errors + 1))
     fi
 
