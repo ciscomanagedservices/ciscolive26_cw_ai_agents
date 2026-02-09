@@ -2,8 +2,7 @@
 # update_scripts_github.sh - Updates RADKit & MCP server scripts from GitHub
 #
 # This applies some script updates and other fixes not in the 29-jan-2026 lab image.
-# This script trues the image up to the lastest 2-feb-2026 image. This is just for instructor use. 
-# Lab participants should not have to run this.
+# This script trues the image up to the lastest 2-feb-2026 image.
 #
 # Run as: sudo bash update_scripts_github.sh
 #
@@ -12,8 +11,10 @@
 # 2. Configures R3 router loopback interface
 # 3. Downloads and deploys latest scripts from GitHub
 #
-# v1.1 - 4-feb-2026 - fixed git links and added some more robustness
-# v1.0 - 2-Feb-2026 - initial release
+# v1.0 - 2-Feb-2026 - Initial version
+# v1.1 - 9-Feb-2026 - Use ECR Public Gallery for python:3.11-slim (Docker Hub blocked/rate-limited)
+#                   - Added fallback to Docker Hub if ECR fails
+#                   - Continue gracefully if image pull fails from all sources
 
 set -e
 
@@ -138,11 +139,21 @@ DOCKERDNS
         print_status "Docker daemon.json already exists"
     fi
 
-    # 2. Pull python:3.11-slim image
+    # 2. Pull python:3.11-slim image (ECR Public first, Docker Hub blocked from dCloud)
     if ! docker images | grep -q "python.*3.11-slim"; then
-        print_status "Pulling python:3.11-slim image..."
-        docker pull python:3.11-slim
-        print_status "Python image pulled"
+        print_status "Pulling python:3.11-slim image from ECR Public Gallery..."
+        if docker pull public.ecr.aws/docker/library/python:3.11-slim 2>/dev/null; then
+            docker tag public.ecr.aws/docker/library/python:3.11-slim python:3.11-slim
+            print_status "Python image pulled from ECR Public (tagged as python:3.11-slim)"
+        else
+            # Fallback to Docker Hub (in case ECR is unavailable)
+            print_warning "ECR Public failed - trying Docker Hub..."
+            if docker pull python:3.11-slim 2>/dev/null; then
+                print_status "Python image pulled from Docker Hub"
+            else
+                print_warning "Could not pull python:3.11-slim from any source. Continuing anyway."
+            fi
+        fi
     else
         print_status "Python 3.11-slim image already present"
     fi
@@ -172,6 +183,44 @@ DOCKERDNS
         fi
     else
         print_warning "radkit-service container not found (will be created by radkit-install.sh)"
+    fi
+}
+
+#######################################
+# Check and Install RADKit Client Module
+#######################################
+check_radkit_client() {
+    print_header "Checking RADKit Client Python Module"
+
+    local RADKIT_CLIENT_VERSION="1.9.2"
+
+    # Check if radkit_client is installed
+    if python3 -c "from radkit_client.sync import Client" 2>/dev/null; then
+        print_status "radkit_client already installed"
+        return 0
+    fi
+
+    print_warning "radkit_client not found - installing cisco_radkit_client==${RADKIT_CLIENT_VERSION}..."
+
+    # Install the package
+    if pip3 install "cisco_radkit_client==${RADKIT_CLIENT_VERSION}" --break-system-packages 2>/dev/null; then
+        print_status "radkit_client installed successfully"
+    elif pip3 install "cisco_radkit_client==${RADKIT_CLIENT_VERSION}" 2>/dev/null; then
+        # Try without --break-system-packages for older pip versions
+        print_status "radkit_client installed successfully"
+    else
+        print_error "Failed to install radkit_client"
+        print_warning "You may need to install it manually:"
+        echo "  pip3 install cisco_radkit_client==${RADKIT_CLIENT_VERSION} --break-system-packages"
+        return 1
+    fi
+
+    # Verify installation
+    if python3 -c "from radkit_client.sync import Client" 2>/dev/null; then
+        print_status "radkit_client verified working"
+    else
+        print_error "radkit_client installed but import failed"
+        return 1
     fi
 }
 
@@ -360,6 +409,58 @@ check_bootstrap() {
 }
 
 #######################################
+# Check Service Identity Enrollment
+#######################################
+check_service_enrollment() {
+    print_header "Checking RADKit Service Identity"
+
+    # Check if radkit-service is running
+    if ! docker ps --format '{{.Names}}' | grep -q "^radkit-service$"; then
+        print_warning "radkit-service not running - cannot check enrollment status"
+        return 0
+    fi
+
+    # Give the service a moment to be ready
+    sleep 2
+
+    # Try to get the service serial from the API (if accessible)
+    # The service serial being "None" or empty means enrollment is needed
+    local SERVICE_INFO=$(curl -sS --connect-timeout 5 --max-time 10 \
+        -u "superadmin:0e52nsq5jf7f-bxq8whdi7dnT" \
+        "http://localhost:8081/api/v1/service/identity" 2>/dev/null || echo "")
+
+    if [[ -z "$SERVICE_INFO" ]] || [[ "$SERVICE_INFO" == *"null"* ]] || [[ "$SERVICE_INFO" == *"None"* ]] || [[ "$SERVICE_INFO" == *"\"serial\":null"* ]]; then
+        print_warning "Service Identity not enrolled!"
+        echo ""
+        echo "========================================"
+        echo "  ACTION REQUIRED: Enroll Service Identity"
+        echo "========================================"
+        echo ""
+        echo "Before running setup_mcp.sh, you must enroll your RADKit service:"
+        echo ""
+        echo "  1. Open browser: https://198.18.1.250:8081"
+        echo "     (Accept the self-signed certificate warning)"
+        echo ""
+        echo "  2. Login with:"
+        echo "     Username: superadmin"
+        echo "     Password: 0e52nsq5jf7f-bxq8whdi7dnT"
+        echo ""
+        echo "  3. Navigate to:"
+        echo "     Connectivity > Service Identity Certificate > Enroll with SSO"
+        echo ""
+        echo "  4. Complete the SSO enrollment process"
+        echo ""
+        echo "  5. Note your Service Serial (format: xxxx-yyyy-zzzz)"
+        echo "     You will need this when running setup_mcp.sh"
+        echo ""
+        echo "========================================"
+        echo ""
+    else
+        print_status "Service Identity appears to be enrolled"
+    fi
+}
+
+#######################################
 # Create Directories
 #######################################
 create_directories() {
@@ -499,14 +600,19 @@ print_summary() {
     echo "  - Docker DNS configured"
     echo "  - python:3.11-slim image pulled"
     echo "  - tmpfiles exclusion for /tmp/radkit"
+    echo "  - radkit_client Python module installed (if needed)"
     echo "  - Container renamed radkit -> radkit-service (if needed)"
     echo "  - RADKit bootstrap completed (if needed)"
+    echo "  - Service Identity enrollment checked"
     echo "  - radkit-service restart policy set"
     echo "  - R3 Loopback0 configured (203.0.113.99/24)"
     echo ""
     echo "Next step - run MCP server setup:"
     echo "  cd ${MCP_SERVER_DIR}"
     echo "  ./setup_mcp.sh"
+    echo ""
+    echo "NOTE: If Service Identity was not enrolled, follow the instructions"
+    echo "      shown above before running setup_mcp.sh"
     echo ""
 }
 
@@ -522,8 +628,10 @@ main() {
 
     check_prerequisites
     apply_system_fixes
+    check_radkit_client
     fix_container_name
     check_bootstrap
+    check_service_enrollment
     configure_router
     create_directories
     backup_scripts
