@@ -48,10 +48,10 @@ Your lab environment is hosted on Cisco dCloud and has been pre-provisioned for 
 
 1. Validate your VPN connectivity to the lab pod. You should be on the <em class="example-input">198.18.1.x/24</em> network, which is our management network. Try to ping <em class="example-input">198.18.1.200</em> which should be successful.
 
-### 1.3 Famaliarize yourself with the lan topology
+### 1.4 Famaliarize yourself with the lab topology
 
 <figure markdown>
-  ![lab topology](./img/topology.png){ width="500" }
+  ![lab topology](./img/topology.png){ width="800" }
 </figure>
 
 1. We have some workstations in the lower right corner of the topology diagram. These are your user access workstations, where users are using cloud/SaaS application services such as Webex.
