@@ -326,7 +326,7 @@ flowchart LR
 4. Click <em class="button-click">Import</em>
 5. When prompted for <em class="lab-warning">i_api_key</em>:
     - Enter your lab OpenAI API key
-    - **This is available in lab-assistant.com. Ask your instructor for this key if you don't have it**
+    - **This is available in lab-assistant.com under **LLM_KEY**. Ask your instructor for this key if you don't have it**
 6. Click <em class="button-click">Import</em>
 
 #### 4.2.2 Import MCP Server Tools
