@@ -51,7 +51,7 @@ Your lab environment is hosted on Cisco dCloud and has been pre-provisioned for 
 ### 1.3 Famaliarize yourself with the lan topology
 
 <figure markdown>
-  ![Splunk syslog index search](./img/topology.png){ width="500" }
+  ![lab topology](./img/topology.png){ width="500" }
 </figure>
 
 1. We have some workstations in the lower right corner of the topology diagram. These are your user access workstations, where users are using cloud/SaaS application services such as Webex.
