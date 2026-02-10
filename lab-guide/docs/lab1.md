@@ -25,6 +25,16 @@ flowchart LR
 
 ---
 
+Step 0: Sign up for a Webex account
+
+This account will let you join our session's discussion space where you can ask questions and obtain info that we send to you throughout the session. You will also need this account for generating notification API keys in some of the labs.
+
+1. If you already have a Webex account, login within it. If you need to register, go to [https://signup.webex.com/sign-up](https://signup.webex.com/sign-up) and then validate your email.
+2. Join our room for discussion but opening the Cisco Events app for Cisco Live, and in the sidebar go to **My sessions> Hands on building cognitive network operations agents with Cisco workflows for AI driven troubleshooting.** and click the webex icon in the lower right part of that box.
+3. Put your email associated with your webex account in for joining session LTRAI-1487.
+
+---
+
 ## Step 1: Access Your Lab Environment
 
 Your lab environment is hosted on Cisco dCloud and has been pre-provisioned for this session. You will access it through [https://lab-assistant.com/](https://lab-assistant.com/), which provides instant access to running lab pods.
