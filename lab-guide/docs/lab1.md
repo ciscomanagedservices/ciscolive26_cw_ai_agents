@@ -48,6 +48,18 @@ Your lab environment is hosted on Cisco dCloud and has been pre-provisioned for 
 
 1. Validate your VPN connectivity to the lab pod. You should be on the <em class="example-input">198.18.1.x/24</em> network, which is our management network. Try to ping <em class="example-input">198.18.1.200</em> which should be successful.
 
+### 1.3 Famaliarize yourself with the lan topology
+
+<figure markdown>
+  ![Splunk syslog index search](./img/topology.png){ width="500" }
+</figure>
+
+1. We have some workstations in the lower right corner of the topology diagram. These are your user access workstations, where users are using cloud/SaaS application services such as Webex.
+2. These users route over an access network routed by R3 -> R2 -> R1 to get out to the public Internet.
+3. The user access network has a ThousandEyes agent that will run synthetic tests for user experience after you provision it later in the lab.
+4. We have a Splunk server that can take syslog info (events) from devices and forward actionable faults on to Cisco Workflows, which will orchestrate our automated fault analysis and response.
+5. We have some utility servers to help integrate Workflows. Specifically, we have a remote access server for Cisco Workflows (used in lab 2), Cisco RADKit for connectivity via MCP (used in labs 3+). 
+
 ---
 
 ## Step 2: Configure Router Syslog
