@@ -210,9 +210,8 @@ Create a Webex space where the bot will send notifications. You will use this sp
 1. Open Webex (app or web at https://web.webex.com)
 2. Click <em class="button-click">+</em> to create a new space
 3. Name the space <em class="example-input">&lt;your_name&gt;-workflows-lab</em>
-4. Add your bot to the space by typing its username (e.g., <em class="example-input">&lt;your_name&gt;-&lt;company_name&gt;-workflows-bot@webex.bot</em>)
-5. Note the space name - you will use this in later labs for AI Agent notifications
-
+4. Add your bot to the space by pasting its username (e.g., <em class="example-input">&lt;your_name&gt;-&lt;company_name&gt;-workflows-bot@webex.bot</em>). It will not autocomplete with typeahead, so hit enter and then you should be able to click the **Add** button. Ensure that the bot user has been added to your room--you should see 2 members in the room now. If not, workflows won't be able to have programatic access to find/post to the room.
+5.  Note the space name - you will use this in later labs for AI Agent notifications
 ---
 
 ## Step 5: Building a basic response workflow
