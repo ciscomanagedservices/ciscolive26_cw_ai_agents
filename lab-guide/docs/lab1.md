@@ -27,13 +27,13 @@ flowchart LR
 
 ## Step 1: Access Your Lab Environment
 
-Your lab environment is hosted on Cisco dCloud and has been pre-provisioned for this session. You will access it through [https://lab-assistant.com/(https://lab-assistant.com/)], which provides instant access to running lab pods.
+Your lab environment is hosted on Cisco dCloud and has been pre-provisioned for this session. You will access it through [https://lab-assistant.com/](https://lab-assistant.com/), which provides instant access to running lab pods.
 
 ### 1.1 Checking out your personal Lab Pod
 
 *This step has already been completed for you by your lab instructors at your station. If you prefer to use your personal laptop instead of the workstation in front of you, and have Cisco Secure Client and SSH installed, you can use your own laptop. If you choose to use your own device, let the instructor know and we will mark your station's pod number available so you can check the pod out from your personal laptop by following steps 1.1 and 1.2.*
 
-1. Go to [https://lab-assistant.com/(https://lab-assistant.com/)] and enter the access code provided by your instructors.
+1. Go to [https://lab-assistant.com/](https://lab-assistant.com/) and enter the access code provided by your instructors.
 2. The [documentation](https://cl-ltr.ciscolabs.com/0361f55971/) button is where your lab guide lies, which is this document that you may already be reading.
 3. Check out a pod by clicking the [:: POD ::](https://lab-assistant.com/iltlab/) button, and selecting an available pod number from the list of <em class="lab-warning">Available Pods</em> shows in green.
 4. *Note:* If performing this lab outside of a proctored Cisco Live! intructor led lab, your instructor should have shared a dCloud topology with your cisco.com account, and VPN details will instead be available in the dCloud session info.
