@@ -27,17 +27,26 @@ flowchart LR
 
 ## Step 1: Access Your Lab Environment
 
-Your lab environment is hosted on Cisco dCloud and has been pre-provisioned for this session. You will access it through <em class="lab-warning">Cisco eXpo</em>, which provides instant access to running lab pods.
+Your lab environment is hosted on Cisco dCloud and has been pre-provisioned for this session. You will access it through [https://lab-assistant.com/(https://lab-assistant.com/)], which provides instant access to running lab pods.
 
-### 1.1 Connect to Your Lab Pod
+### 1.1 Checking out your personal Lab Pod
 
-1. TBD
-2. Once assigned, you will see the <em class="lab-warning">Session View</em> displaying your topology and connection details
+*This step has already been completed for you by your lab instructors at your station. If you prefer to use your personal laptop instead of the workstation in front of you, and have Cisco Secure Client and SSH installed, you can use your own laptop. If you choose to use your own device, let the instructor know and we will mark your station's pod number available so you can check the pod out from your personal laptop by following steps 1.1 and 1.2.*
 
-### 1.2 Connectivity to the lab
+1. Go to [https://lab-assistant.com/(https://lab-assistant.com/)] and enter the access code provided by your instructors.
+2. The [documentation](https://cl-ltr.ciscolabs.com/0361f55971/) button is where your lab guide lies, which is this document that you may already be reading.
+3. Check out a pod by clicking the [:: POD ::](https://lab-assistant.com/iltlab/) button, and selecting an available pod number from the list of <em class="lab-warning">Available Pods</em> shows in green.
+4. *Note:* If performing this lab outside of a proctored Cisco Live! intructor led lab, your instructor should have shared a dCloud topology with your cisco.com account, and VPN details will instead be available in the dCloud session info.
 
-1. TBD
-2. This will put you on the network that can access the <em class="example-input">198.18.1.x/24</em> network, which is our management network. You should be able to ping <em class="example-input">198.18.1.200</em>.
+### 1.2 Connecting to your Pod
+
+*This step has already been completed for you already, unless you are choosing to use your personal laptop instead for managing the lab, or if your session becomes disconnected.*
+
+1. In the <em class="lab-warning">Pod Details</em> section, you will see the VPN details. Clicking <em class="lab-warning">Connect VPN</em> should auto connect VPN, if you need to connect. You can also VPN to the defined VPN URL, and enter the VPN credentials available from this section.
+
+### 1.3 Validating VPN connectivity
+
+1. Validate your VPN connectivity to the lab pod. You should be on the <em class="example-input">198.18.1.x/24</em> network, which is our management network. Try to ping <em class="example-input">198.18.1.200</em> which should be successful.
 
 ---
 
