@@ -32,7 +32,7 @@ flowchart LR
 3. Set the <em class="lab-warning">Display name</em> to <em class="example-input">&lt;your_name&gt;-remote</em> and click <em class="button-click">Save</em>.
 4. Back on the <em class="lab-warning">Remote Targets</em> page, click the <em class="button-click">...</em> under <em class="lab-warning">Actions</em> and choose <em class="button-click">Connect</em>.
 5. Click <em class="button-click">Generate Package</em> from the popup. This will generate and automatically download a file <em class="example-input">remotePackage.zip</em>.
-6. Copy the file over to the wf-remote server (<em class="example-input">198.18.1.204</em>):
+6. Copy the file over to the wf-remote server (<em class="example-input">198.18.1.204</em>). *Note*: The password for this account is `cisco`:
     ```sh
     scp remotePackage.zip root@198.18.1.204:/root/
     ```
