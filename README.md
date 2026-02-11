@@ -1,7 +1,6 @@
 # Building Cognitive Network Operations Agents with Cisco Workflows for AI-driven Troubleshooting
-LTRAI-1487: Cisco Workflows AI Agents Lab
 
-A 4-hour instructor-led lab at Cisco Live EMEA Amsterdam demonstrating how to build agentic AI-driven network operations using Cisco Workflows, ThousandEyes, and CX RADKit.
+Sessions at Cisco Live EMEA Amsterdam demonstrating how to build agentic AI-driven network operations using Cisco Workflows, ThousandEyes, and CX RADKit.
 
 ## Authors
 
@@ -9,6 +8,12 @@ A 4-hour instructor-led lab at Cisco Live EMEA Amsterdam demonstrating how to bu
 - **Steve Holl** - Lab Developer
 - **Aman Sardana** - Contributor
 
+# BRKOPS-2303: Ambient AI Agents Running your network while you sleep
+A 1-hr technical breakout deep diving into what ambient ambient agents are and demonstrating their application. Looking to build or replicate what you saw in this session? Refer to [Lab 3](https://github.com/ciscomanagedservices/ciscolive26_cw_ai_agents/blob/main/lab-guide/docs/lab3.md) and [Lab 4](https://github.com/ciscomanagedservices/ciscolive26_cw_ai_agents/blob/main/lab-guide/docs/lab3.md).
+
+# LTRAI-1487: Cisco Workflows AI Agents Lab
+
+This is a 4 hour lab where you get hands on experience building autonomous event-driven response, starting with static workflows and building up to observability-driven agentic closed loop response.
 
 ## Lab Guide
 
