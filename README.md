@@ -1,5 +1,3 @@
-# Building Cognitive Network Operations Agents with Cisco Workflows for AI-driven Troubleshooting
-
 Sessions at Cisco Live EMEA Amsterdam demonstrating how to build agentic AI-driven network operations using Cisco Workflows, ThousandEyes, and CX RADKit.
 
 ## Authors
