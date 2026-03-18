@@ -169,7 +169,7 @@ For each device:
 1. Click <em class="button-click">Remote Users</em> in the left menu
 2. Click <em class="button-click">Add User</em>
 3. Enter your <em class="lab-warning">email address</em>
-4. Check <em class="lab-warning">Activate this user</em>
+4. Check <em class="lab-warning">Activate this user</em>. You may also want to extend the user's default active duration beyond 24 hours if doing this lab over the course of more than one day.
 5. Click <em class="button-click">Add & close</em>
 
 ---
